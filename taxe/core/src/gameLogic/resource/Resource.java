@@ -1,4 +1,4 @@
-package uk.ac.york.cs.sepr.fvs.taxe;
+package gameLogic.resource;
 
 public abstract class Resource {
 	private String name;

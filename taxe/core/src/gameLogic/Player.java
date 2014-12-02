@@ -1,4 +1,7 @@
-package uk.ac.york.cs.sepr.fvs.taxe;
+package gameLogic;
+
+import gameLogic.goal.Goal;
+import gameLogic.resource.Resource;
 
 import java.util.List;
 

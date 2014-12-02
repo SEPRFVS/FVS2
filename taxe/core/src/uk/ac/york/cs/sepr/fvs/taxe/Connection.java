@@ -1,5 +1,7 @@
 package uk.ac.york.cs.sepr.fvs.taxe;
 
+import gameLogic.resource.Train;
+
 import java.util.List;
 
 public class Connection {
