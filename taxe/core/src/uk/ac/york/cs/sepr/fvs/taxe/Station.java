@@ -2,7 +2,7 @@ package uk.ac.york.cs.sepr.fvs.taxe;
 
 public class Station{
 	private String name;
-	private Position location;
+	private IPositionable location;
 	
 	public String getName() {
 		return name;
@@ -10,10 +10,10 @@ public class Station{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Position getLocation() {
+	public IPositionable getLocation() {
 		return location;
 	}
-	public void setLocation(Position location) {
+	public void setLocation(IPositionable location) {
 		this.location = location;
 	}
 	

@@ -20,7 +20,7 @@ public class Map implements Screen{
 	//Actor Class
 	private class MapActor extends Actor{
 		
-		private Position location;
+		private IPositionable location;
 		private Object relation;
 		private Texture texture;
 		private boolean leftclick = false;
@@ -32,6 +32,8 @@ public class Map implements Screen{
 			this.relation = relation;
 			//Set image
 			String image;
+			
+			
 			if(this.relation instanceof Station){
 				image = "station.png";
 			}else if(this.relation instanceof Connection){
@@ -39,9 +41,11 @@ public class Map implements Screen{
 			}else{
 				image = "missing.png";
 			}
+			
+			
 			this.texture = new Texture(Gdx.files.internal(image));
 			//Set actor bounds (Not size)
-			setBounds((float) location.x,(float) location.y,(float) 600,(float) 600);
+			//setBounds((float) location.x,(float) location.y,(float) 600,(float) 600);
 			//Click listener
 			addListener(new InputListener(){
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
@@ -54,7 +58,7 @@ public class Map implements Screen{
 		//Draw actor on each draw call
 		@Override
 		public void draw(Batch batch, float alpha){
-			batch.draw(texture, location.x, location.y);
+			batch.draw(texture, location.getX(), location.getY());
 		}
 		
 		//Click handler
@@ -98,7 +102,8 @@ public class Map implements Screen{
 	
 	//Display individual station
 	public void renderStation(Station station){
-		MapActor actor = new MapActor(station.getLocation().x,station.getLocation().y,station);
+		IPositionable location = station.getLocation();
+		MapActor actor = new MapActor(location.getX(), location.getY(), station);
 		actor.setTouchable(Touchable.enabled);
 		stage.addActor(actor);
 	}
