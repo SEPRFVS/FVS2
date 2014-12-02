@@ -24,6 +24,7 @@ public class Map implements Screen{
 		private Object relation;
 		private Texture texture;
 		private boolean leftclick = false;
+		private Size size;
 		
 		//Initialise actor
 		public MapActor(int x, int y, Object relation){
@@ -36,6 +37,7 @@ public class Map implements Screen{
 			
 			if(this.relation instanceof Station){
 				image = "station.png";
+				size = new Size(64,64);
 			}else if(this.relation instanceof Connection){
 				image = "connection.png";
 			}else{
@@ -45,7 +47,7 @@ public class Map implements Screen{
 			
 			this.texture = new Texture(Gdx.files.internal(image));
 			//Set actor bounds (Not size)
-			//setBounds((float) location.x,(float) location.y,(float) 600,(float) 600);
+			setBounds((float) location.getX(),(float) location.getY(),(float) size.getHeight(),(float) size.getWidth());
 			//Click listener
 			addListener(new InputListener(){
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
@@ -58,7 +60,7 @@ public class Map implements Screen{
 		//Draw actor on each draw call
 		@Override
 		public void draw(Batch batch, float alpha){
-			batch.draw(texture, location.getX(), location.getY());
+			batch.draw(texture, location.getX(), location.getY(),size.getHeight(),size.getWidth());
 		}
 		
 		//Click handler
