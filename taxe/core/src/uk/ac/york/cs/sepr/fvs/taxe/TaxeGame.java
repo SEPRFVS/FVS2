@@ -2,41 +2,44 @@ package uk.ac.york.cs.sepr.fvs.taxe;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
-@SuppressWarnings("unused")
 
-/*public class TaxeGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class TaxeGame extends Game {
 	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("gamemap.png");
-	}
+	//public static final int WIDTH=1366,HEIGHT=768;
+	// Using native res of the map image we are using at the moment
+	public static final int WIDTH=1022,HEIGHT=638;
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0, 1366, 768);
-		batch.end();
-	}
-}*/
-
-public class TaxeGame extends Game{
-	
-	public static final String TITLE = "TaxE";
-	public static final int WIDTH=1366,HEIGHT=768;
+	public SpriteBatch batch;
+	public BitmapFont font;
 
 	@Override
 	public void create() {
-		setScreen(new Map());
-		
+		batch = new SpriteBatch();
+
+		//create font
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("arial.ttf"));
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = 50;
+		// font size 50 pixels
+		font = generator.generateFont(parameter);
+		generator.dispose(); // don't forget to dispose to avoid memory leaks!
+
+		setScreen(new MainMenuScreen(this));
 	}
+
+	public void render() {
+		super.render(); //important!
+	}
+
+	public void dispose() {
+		batch.dispose();
+		font.dispose();
+	}
+
 	
 }

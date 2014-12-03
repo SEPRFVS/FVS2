@@ -1,21 +1,19 @@
 package uk.ac.york.cs.sepr.fvs.taxe;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
-public class Map implements Screen{
+public class Map extends ScreenAdapter {
 	
 	//Actor Class
 	private class MapActor extends Actor{
@@ -24,6 +22,7 @@ public class Map implements Screen{
 		private Object relation;
 		private Texture texture;
 		private boolean leftclick = false;
+		private Size size;
 		
 		//Initialise actor
 		public MapActor(int x, int y, Object relation){
@@ -36,6 +35,7 @@ public class Map implements Screen{
 			
 			if(this.relation instanceof Station){
 				image = "station.png";
+				size = new Size(32,32);
 			}else if(this.relation instanceof Connection){
 				image = "connection.png";
 			}else{
@@ -45,7 +45,7 @@ public class Map implements Screen{
 			
 			this.texture = new Texture(Gdx.files.internal(image));
 			//Set actor bounds (Not size)
-			//setBounds((float) location.x,(float) location.y,(float) 600,(float) 600);
+			setBounds((float) location.getX(),(float) location.getY(),(float) size.getHeight(),(float) size.getWidth());
 			//Click listener
 			addListener(new InputListener(){
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
@@ -58,7 +58,7 @@ public class Map implements Screen{
 		//Draw actor on each draw call
 		@Override
 		public void draw(Batch batch, float alpha){
-			batch.draw(texture, location.getX(), location.getY());
+			batch.draw(texture, location.getX(), location.getY(),size.getHeight(),size.getWidth());
 		}
 		
 		//Click handler
@@ -70,15 +70,28 @@ public class Map implements Screen{
 			}
 		}
 	}
-	
-	private Stage stage = new Stage(); //Stage - Holds all actors
-	
-	//Map resources
-	private Texture mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
-	private Image mapImage = new Image(mapTexture);
-	
-	//Stations
-	private List<Station> stations = new ArrayList<Station>();
+
+	final private TaxeGame game;
+	private OrthographicCamera camera;
+	private Stage stage; // Stage - Holds all actors
+	private Vector3 touchPoint;
+	private Texture mapTexture;
+	private Image mapImage;
+	private List<Station> stations;
+
+	public Map(TaxeGame game){
+		this.game = game;
+
+		camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
+		camera.setToOrtho(false); // Makes the origin to be in the lower left corner
+		stage = new Stage();
+		touchPoint = new Vector3();
+		mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
+		mapImage = new Image(mapTexture);
+		stations = new ArrayList<Station>();
+
+
+	}
 	
 	public Station addStation(String name, Position location){
 		Station newStation = new Station();
@@ -94,9 +107,8 @@ public class Map implements Screen{
 	
 	//Display all stations
 	public void renderStations(){
-		int i = 0;
-		for(i = 0;i < stations.size();i++){
-			renderStation(stations.get(i));
+		for (Station station : stations) {
+			renderStation(station);
 		}
 	}
 	
@@ -130,17 +142,13 @@ public class Map implements Screen{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
 
 	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	// Called when Map becomes current screen of the game
 	public void show() {
 		//Create Map Image
 		Gdx.input.setInputProcessor(stage);
@@ -149,27 +157,10 @@ public class Map implements Screen{
 		stage.addActor(mapImage);
 		
 		//Add Stations
-		addStation("Test Station", new Position(100,100));
+		addStation("Test Station", new Position(150, 50));
 		renderStations();
 	}
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		dispose();
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void dispose() {
