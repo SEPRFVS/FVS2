@@ -1,4 +1,4 @@
-package uk.ac.york.cs.sepr.fvs.taxe;
+package fvs.taxe;
 
 public class Position implements IPositionable {
 	private int x;
