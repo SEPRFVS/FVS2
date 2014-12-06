@@ -1,4 +1,4 @@
-package fvs.taxe;
+package gameLogic.map;
 
 public class Station{
 	private String name;

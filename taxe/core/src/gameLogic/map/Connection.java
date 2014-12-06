@@ -1,5 +1,6 @@
-package fvs.taxe;
+package gameLogic.map;
 
+import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
 import java.util.List;
