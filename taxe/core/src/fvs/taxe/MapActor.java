@@ -2,31 +2,19 @@ package fvs.taxe;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Position;
 import gameLogic.map.Station;
 
-class MapActor extends Actor {
-
-    private IPositionable location;
-    private Object relation;
-    private Texture texture;
-    private boolean leftclick = false;
-    private Size size;
+class MapActor extends GeneralActor {
 
     //Initialise actor
     public MapActor(int x, int y, Object relation){
-        //Configure variables
-        this.location = new Position(x,y);
-        this.relation = relation;
+    	super(x,y,relation);
+        
         //Set image, Size and Name
         String image;
-        size = new Size(32,32);
 
         if(this.relation instanceof Station){
             image = "station.png";
@@ -38,34 +26,18 @@ class MapActor extends Actor {
         }else{
             image = "missing.png";
         }
-
-
         this.texture = new Texture(Gdx.files.internal(image));
-        //Set actor bounds (Not size)
-        setBounds((float) location.getX(),(float) location.getY(),(float) size.getHeight(),(float) size.getWidth());
-        //Click listener
-        addListener(new InputListener(){
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                ((MapActor)event.getTarget()).leftclick = true;
-                return true;
-            }
-        });
+        
+        //TODO may be issue if sprite resized with bounds
     }
 
     //Expand connection to correct size
     public void expandConnection(IPositionable lowerCorner, IPositionable upperCorner){
         //Set sprite size
-        Size size = new Size(upperCorner.getX() - lowerCorner.getX(), upperCorner.getY() - lowerCorner.getY());
-        this.size = size;
+        setSize(upperCorner.getX() - lowerCorner.getX(), upperCorner.getY() - lowerCorner.getY());
         //Rotate rails using SOHCAHTOA
-        double rotation = Math.toDegrees(Math.atan(size.getWidth()/size.getHeight()));
-        this.setRotation((float) rotation); //TODO Doesn't actually rotate
-    }
-
-    //Draw actor on each draw call
-    @Override
-    public void draw(Batch batch, float alpha){
-        batch.draw(texture, location.getX(), location.getY(),size.getHeight(),size.getWidth());
+        double rotation = Math.toDegrees(Math.atan(getSize().getWidth()/getSize().getHeight()));
+        this.rotateBy((float) rotation); //TODO Doesn't actually rotate
     }
 
     //Click handler
