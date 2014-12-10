@@ -2,9 +2,12 @@ package fvs.taxe;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -40,14 +43,14 @@ public class GameScreen extends ScreenAdapter {
 
 
     //Display all stations
-    public void renderStations() {
+    private void renderStations() {
         for (Station station : map.getStations()) {
             renderStation(station);
         }
     }
 
     //Display individual station
-    public void renderStation(Station station) {
+    private void renderStation(Station station) {
         IPositionable location = station.getLocation();
         MapActor actor = new MapActor(location.getX(), location.getY(), station);
         actor.setTouchable(Touchable.enabled);
@@ -56,14 +59,14 @@ public class GameScreen extends ScreenAdapter {
 
 
     //Display all connections
-    public void renderConnections() {
+    private void renderConnections() {
         for (Connection connection : map.getConnections()) {
             renderConnection(connection);
         }
     }
 
     //Display Individual connection
-    public void renderConnection(Connection connection) {
+    private void renderConnection(Connection connection) {
         IPositionable lowerCorner, upperCorner;
         if (connection.getStation1().getLocation().getX() < connection.getStation2().getLocation().getY()) {
             //Lower position at X
@@ -79,6 +82,12 @@ public class GameScreen extends ScreenAdapter {
         actors.addActor(actor);
     }
 
+    private void drawGoalText(BitmapFont font, SpriteBatch batch, float x, float y) {
+        for (int i = 1; i < 5; i++) {
+            y -= 30;
+            font.draw(batch, "Random goal " + i, x, y);
+        }
+    }
 
     //Render Screen on load
     @Override
@@ -88,6 +97,14 @@ public class GameScreen extends ScreenAdapter {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        // text must be rendered after the stage so the bg image doesn't overlap
+        game.batch.begin();
+        float top = (float)TaxeGame.HEIGHT;
+        game.fontSmall.setColor(Color.BLACK);
+        game.fontSmall.draw(game.batch, "Current Player Goals:", 10.0f, top - 10.f);
+        drawGoalText(game.fontSmall, game.batch, 10.0f, top - 10.f);
+        game.batch.end();
     }
 
     @Override
