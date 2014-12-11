@@ -1,6 +1,7 @@
 package fvs.taxe;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,10 +12,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import gameLogic.Game;
+import gameLogic.Player;
+import gameLogic.PlayerManager;
+import gameLogic.goal.Goal;
+import gameLogic.goal.GoalManager;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
+
+import java.util.ArrayList;
 
 public class GameScreen extends ScreenAdapter {
     final private TaxeGame game;
@@ -25,6 +33,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture mapTexture;
     private Image mapImage;
     private Map map;
+    private Game gameLogic;
 
 
     public GameScreen(TaxeGame game) {
@@ -38,7 +47,9 @@ public class GameScreen extends ScreenAdapter {
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         mapImage = new Image(mapTexture);
 
+        // game logic stuff
         map = new Map();
+        gameLogic = Game.getInstance();
     }
 
 
@@ -82,10 +93,42 @@ public class GameScreen extends ScreenAdapter {
         actors.addActor(actor);
     }
 
-    private void drawGoalText(BitmapFont font, SpriteBatch batch, float x, float y) {
-        for (int i = 1; i < 5; i++) {
+    private ArrayList<String> playerGoalStrings() {
+        ArrayList<String> strings = new ArrayList<String>();
+        PlayerManager pm = gameLogic.getPlayerManager();
+        Player currentPlayer = pm.GetCurrentPlayer();
+
+        for(Goal g : currentPlayer.getGoals()) {
+            strings.add(g.toString());
+        }
+
+        return strings;
+    }
+
+    private void showCurrentPlayerGoals() {
+        game.batch.begin();
+        float top = (float)TaxeGame.HEIGHT;
+        game.fontSmall.setColor(Color.BLACK);
+        float x = 10.0f;
+        float y = top - 10.0f;
+
+        game.fontSmall.draw(game.batch, "Current Player Goals:", x, y);
+
+        for(String s: playerGoalStrings()) {
             y -= 30;
-            font.draw(batch, "Random goal " + i, x, y);
+            game.fontSmall.draw(game.batch, s, x, y);
+        }
+
+        game.batch.end();
+    }
+
+    private void debugKeys() {
+        /*
+        G = give a random goal to the current player
+         */
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+            gameLogic.getGoalManager().GivePlayerGoal(gameLogic.getPlayerManager().GetCurrentPlayer());
         }
     }
 
@@ -99,12 +142,8 @@ public class GameScreen extends ScreenAdapter {
         stage.draw();
 
         // text must be rendered after the stage so the bg image doesn't overlap
-        game.batch.begin();
-        float top = (float)TaxeGame.HEIGHT;
-        game.fontSmall.setColor(Color.BLACK);
-        game.fontSmall.draw(game.batch, "Current Player Goals:", 10.0f, top - 10.f);
-        drawGoalText(game.fontSmall, game.batch, 10.0f, top - 10.f);
-        game.batch.end();
+        debugKeys();
+        showCurrentPlayerGoals();
     }
 
     @Override

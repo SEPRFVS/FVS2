@@ -9,4 +9,9 @@ public class GoalDummy extends Goal {
 	public boolean isComplete() {
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "string describing what this goal is...";
+	}
 }

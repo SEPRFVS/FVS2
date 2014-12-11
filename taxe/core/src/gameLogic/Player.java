@@ -30,4 +30,8 @@ public class Player {
 	public void addGoal(Goal g) {
 		goals.add(g);
 	}
+
+	public List<Goal> getGoals() {
+		return goals;
+	}
 }
