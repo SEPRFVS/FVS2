@@ -1,6 +1,10 @@
 package gameLogic.map;
 
+import com.sun.tools.javac.util.Pair;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public class Map {
@@ -11,12 +15,8 @@ public class Map {
         stations = new ArrayList<Station>();
         connections = new ArrayList<Connection>();
 
-        //Add Stations - TODO Make a useful implementation
-        addStation("Madrid", new Position(150, 50));
-        addStation("Paris", new Position(300, 220));
-
-        //Add Connections - TODO Make a useful implementation
-        addConnection("Paris", "Madrid");
+        addStations();
+        addConnections();
     }
 
     public Station addStation(String name, Position location){
@@ -25,6 +25,15 @@ public class Map {
         newStation.setLocation(location);
         stations.add(newStation);
         return newStation;
+    }
+
+    public void addStations(){
+        Collection<String> stationNames = StationHelper.getStationNames();
+        HashMap<String, Position> stationData = StationHelper.getStationData();
+
+        for (String name : stationNames) {
+            addStation(name, stationData.get(name));
+        }
     }
 
     public List<Station> getStations(){
@@ -50,10 +59,16 @@ public class Map {
         return addConnection(st1, st2);
     }
 
+    public void addConnections() {
+        ArrayList<Pair<String, String>> connectionPairs = StationHelper.getConnections();
+        for (Pair<String, String> connectionPair : connectionPairs) {
+            addConnection(connectionPair.fst, connectionPair.snd);
+        }
+    }
+
     //Get connections from station
-    @SuppressWarnings("null")
     public List<Connection> getConnectionsFromStation(Station station){
-        List<Connection> results = null;
+        List<Connection> results = new ArrayList<Connection>();
         for(Connection connection : connections){
             if(connection.getStation1() == station || connection.getStation2() == station){
                 results.add(connection);
@@ -65,12 +80,10 @@ public class Map {
     //Get Station by Name (May or may not be needed)
     public Station getStationByName(String name){
         int i = 0;
-        boolean found = false;
-        while(i < stations.size() && found == false){
-            if(stations.get(i).getName() == name){
-                found = true;
+        while(i < stations.size()) {
+            if(stations.get(i).getName().equals(name)){
                 return stations.get(i);
-            }else{
+            } else{
                 i++;
             }
         }

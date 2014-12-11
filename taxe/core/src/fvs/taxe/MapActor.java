@@ -22,7 +22,7 @@ class MapActor extends GeneralActor {
         }else if(this.relation instanceof Connection){
             image = "connection.png";
             this.setName(((Connection) this.relation).getStation1().getName() + "-" + ((Connection) this.relation).getStation2().getName());
-            this.location = new Position(x+16,y+16);
+            this.location = new Position(x+16,y+16); //TODO what is this hardcoded 16??
         }else{
             image = "missing.png";
         }
