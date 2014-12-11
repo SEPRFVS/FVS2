@@ -1,6 +1,7 @@
 package gameLogic;
 
 import gameLogic.goal.Goal;
+import gameLogic.goal.GoalManager;
 import gameLogic.resource.Resource;
 
 import java.util.ArrayList;
@@ -28,6 +29,14 @@ public class Player {
 	}
 	
 	public void addGoal(Goal g) {
+		if (goals.size() >= GoalManager.CONFIG_MAX_PLAYER_GOALS) {
+			throw new RuntimeException("Max player goals exceeded");
+		}
+
 		goals.add(g);
+	}
+
+	public List<Goal> getGoals() {
+		return goals;
 	}
 }

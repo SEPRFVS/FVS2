@@ -3,7 +3,7 @@ package gameLogic;
 import java.util.ArrayList;
 
 public class PlayerManager {
-	private ArrayList<Player> players;
+	private ArrayList<Player> players = new ArrayList<Player>();
 	private int currentTurn = 0;
 	
 	public void InitialisePlayers(int count) {
