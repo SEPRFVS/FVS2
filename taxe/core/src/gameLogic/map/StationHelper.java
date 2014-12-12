@@ -12,17 +12,16 @@ public final class StationHelper {
 
     private static HashMap<String, Position> stations;
 
-
     static {
         stations = new HashMap<String, Position>();
-        stations.put("Madrid", new Position(150, 50));
-        stations.put("Paris", new Position(300, 220));
+        stations.put("Madrid", new Position(155, 45));
+        stations.put("Paris", new Position(340, 290));
         stations.put("London", new Position(298, 370));
-        stations.put("Glasgow", new Position(232, 508));
-        stations.put("Lille", new Position(379, 301));
-        stations.put("Brussels", new Position(394, 333));
+        stations.put("Glasgow", new Position(245, 510));
+        stations.put("Lille", new Position(362, 331));
+        stations.put("Brussels", new Position(394, 340));
         stations.put("Amsterdam", new Position(401, 380));
-        stations.put("Berlin", new Position(560, 401));
+        stations.put("Berlin", new Position(560, 390));
 
         connections = new ArrayList<Tuple<String, String>>();
         connections.add(new Tuple<String, String>("Madrid", "Paris"));
