@@ -5,11 +5,11 @@ import gameLogic.Player;
 public class GoalManager {
 	public final static int CONFIG_MAX_PLAYER_GOALS = 7;
 
-	private Goal GenerateRandom() {
+	private Goal generateRandom() {
 		return new GoalDummy();
 	}
 	
-	public void GivePlayerGoal(Player p) {
-		p.addGoal(GenerateRandom());
+	public void givePlayerGoal(Player p) {
+		p.addGoal(generateRandom());
 	}
 }

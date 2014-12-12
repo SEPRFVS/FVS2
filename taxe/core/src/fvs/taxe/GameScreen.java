@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,7 +14,6 @@ import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
-import gameLogic.goal.GoalManager;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
@@ -96,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
     private ArrayList<String> playerGoalStrings() {
         ArrayList<String> strings = new ArrayList<String>();
         PlayerManager pm = gameLogic.getPlayerManager();
-        Player currentPlayer = pm.GetCurrentPlayer();
+        Player currentPlayer = pm.getCurrentPlayer();
 
         for(Goal g : currentPlayer.getGoals()) {
             strings.add(g.toString());
@@ -112,7 +109,8 @@ public class GameScreen extends ScreenAdapter {
         float x = 10.0f;
         float y = top - 10.0f;
 
-        game.fontSmall.draw(game.batch, "Current Player Goals:", x, y);
+        String playerGoals = "Current Player (" + gameLogic.getPlayerManager().getCurrentPlayer().toString() +") Goals:";
+        game.fontSmall.draw(game.batch, playerGoals, x, y);
 
         for(String s: playerGoalStrings()) {
             y -= 30;
@@ -123,12 +121,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void debugKeys() {
-        /*
-        G = give a random goal to the current player
-         */
-
         if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-            gameLogic.getGoalManager().GivePlayerGoal(gameLogic.getPlayerManager().GetCurrentPlayer());
+            gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            gameLogic.getPlayerManager().turnOver();
         }
     }
 

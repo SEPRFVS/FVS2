@@ -23,7 +23,7 @@ public class Game {
 
 	private void Initialise() {
 		playerManager = new PlayerManager();
-		playerManager.InitialisePlayers(CONFIG_PLAYERS);
+		playerManager.initialisePlayers(CONFIG_PLAYERS);
 
 		goalManager = new GoalManager();
 	}
