@@ -18,7 +18,7 @@ public final class StationHelper {
         stations.put("Madrid", new Position(150, 50));
         stations.put("Paris", new Position(300, 220));
         stations.put("London", new Position(298, 370));
-        stations.put("Glasgow", new Position(247, 591));
+        stations.put("Glasgow", new Position(232, 508));
         stations.put("Lille", new Position(379, 301));
         stations.put("Brussels", new Position(394, 333));
         stations.put("Amsterdam", new Position(401, 380));

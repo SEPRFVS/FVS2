@@ -20,7 +20,7 @@ public class GeneralActor extends Actor {
     	//Configure variables
         this.location = new Position(x,y);
         this.relation = relation;
-        size = new Size(32,32);
+        size = new Size(16,16);
         
         //Set actor bounds (Not size)
         setBounds((float) location.getX(),(float) location.getY(),(float) size.getHeight(),(float) size.getWidth());

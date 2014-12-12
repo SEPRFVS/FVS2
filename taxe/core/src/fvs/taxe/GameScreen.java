@@ -154,7 +154,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(mapImage);
 
         renderStations();
-        renderConnections();
+        //renderConnections();
     }
 
 
