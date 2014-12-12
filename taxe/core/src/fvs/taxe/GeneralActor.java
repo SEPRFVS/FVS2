@@ -18,9 +18,9 @@ public class GeneralActor extends Actor {
     
     public GeneralActor(int x, int y, Object relation){
     	//Configure variables
-        this.location = new Position(x,y);
         this.relation = relation;
         size = new Size(16,16);
+        this.location = new Position(x-(size.getWidth()/2),y-(size.getHeight()/2));
         
         //Set actor bounds (Not size)
         setBounds((float) location.getX(),(float) location.getY(),(float) size.getHeight(),(float) size.getWidth());
@@ -39,6 +39,8 @@ public class GeneralActor extends Actor {
     }
     
     protected void setSize(int height, int width){
+    	Size currentSize = this.size;
+    	location = new Position((location.getX() + (currentSize.getWidth()/2))-(size.getWidth()/2),(location.getY() + (currentSize.getHeight()/2))-(size.getHeight()/2));
     	size = new Size(height, width);
         setBounds((float) location.getX(),(float) location.getY(),(float) size.getHeight(),(float) size.getWidth());
     }
