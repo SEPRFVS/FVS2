@@ -1,14 +1,14 @@
 package gameLogic.map;
 
 
-import com.sun.tools.javac.util.Pair;
+import Util.Tuple;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public final class StationHelper {
-    private static ArrayList<Pair<String, String>> connections;
+    private static ArrayList<Tuple<String, String>> connections;
 
     private static HashMap<String, Position> stations;
 
@@ -24,14 +24,14 @@ public final class StationHelper {
         stations.put("Amsterdam", new Position(401, 380));
         stations.put("Berlin", new Position(560, 401));
 
-        connections = new ArrayList<Pair<String, String>>();
-        connections.add(new Pair<String, String>("Madrid", "Paris"));
-        connections.add(new Pair<String, String>("London", "Glasgow"));
-        connections.add(new Pair<String, String>("London", "Lille"));
-        connections.add(new Pair<String, String>("Lille", "Paris"));
-        connections.add(new Pair<String, String>("Lille", "Brussels"));
-        connections.add(new Pair<String, String>("Paris", "Brussels"));
-        connections.add(new Pair<String, String>("Brussels", "Amsterdam"));
+        connections = new ArrayList<Tuple<String, String>>();
+        connections.add(new Tuple<String, String>("Madrid", "Paris"));
+        connections.add(new Tuple<String, String>("London", "Glasgow"));
+        connections.add(new Tuple<String, String>("London", "Lille"));
+        connections.add(new Tuple<String, String>("Lille", "Paris"));
+        connections.add(new Tuple<String, String>("Lille", "Brussels"));
+        connections.add(new Tuple<String, String>("Paris", "Brussels"));
+        connections.add(new Tuple<String, String>("Brussels", "Amsterdam"));
 
     }
 
@@ -43,7 +43,7 @@ public final class StationHelper {
         return stations.keySet();
     }
 
-    public static ArrayList<Pair<String, String>> getConnections(){
+    public static ArrayList<Tuple<String, String>> getConnections(){
         return connections;
     }
 }

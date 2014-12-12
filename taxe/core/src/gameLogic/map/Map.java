@@ -1,6 +1,6 @@
 package gameLogic.map;
 
-import com.sun.tools.javac.util.Pair;
+import Util.Tuple;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,9 +60,9 @@ public class Map {
     }
 
     public void addConnections() {
-        ArrayList<Pair<String, String>> connectionPairs = StationHelper.getConnections();
-        for (Pair<String, String> connectionPair : connectionPairs) {
-            addConnection(connectionPair.fst, connectionPair.snd);
+        ArrayList<Tuple<String, String>> connectionPairs = StationHelper.getConnections();
+        for (Tuple<String, String> connectionPair : connectionPairs) {
+            addConnection(connectionPair.getFirst(), connectionPair.getSecond());
         }
     }
 
