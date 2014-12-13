@@ -13,7 +13,8 @@ public class Player {
 	private List<Goal> goals;
 	
 	public Player() {
-		this.goals = new ArrayList<Goal>();
+		goals = new ArrayList<Goal>();
+		resources = new ArrayList<Resource>();
 	}
 	
 	public int getScore() {
@@ -26,6 +27,10 @@ public class Player {
 	
 	public List<Resource> getResources() {
 		return resources;
+	}
+
+	public void addResource(Resource r) {
+		resources.add(r);
 	}
 	
 	public void addGoal(Goal g) {

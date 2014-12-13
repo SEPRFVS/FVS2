@@ -18,8 +18,10 @@ import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
+import gameLogic.resource.Resource;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
     final private TaxeGame game;
@@ -90,7 +92,36 @@ public class GameScreen extends ScreenAdapter {
         actors.addActor(actor);
     }
 
-    private ArrayList<String> playerGoalStrings() {
+    private List<String> playerResourceStrings() {
+        ArrayList<String> strings = new ArrayList<String>();
+        Player currentPlayer = gameLogic.getPlayerManager().getCurrentPlayer();
+
+        for(Resource r : currentPlayer.getResources()) {
+            strings.add(r.toString());
+        }
+
+        return strings;
+    }
+
+    private void showCurrentPlayerResources() {
+        game.batch.begin();
+        float top = (float)TaxeGame.HEIGHT;
+        game.fontSmall.setColor(Color.BLACK);
+        float x = 10.0f;
+        float y = top - 250.0f;
+
+        String playerGoals = "Resources:";
+        game.fontSmall.draw(game.batch, playerGoals, x, y);
+
+        for(String s: playerResourceStrings()) {
+            y -= 30;
+            game.fontSmall.draw(game.batch, s, x, y);
+        }
+
+        game.batch.end();
+    }
+
+    private List<String> playerGoalStrings() {
         ArrayList<String> strings = new ArrayList<String>();
         PlayerManager pm = gameLogic.getPlayerManager();
         Player currentPlayer = pm.getCurrentPlayer();
@@ -120,6 +151,7 @@ public class GameScreen extends ScreenAdapter {
         game.batch.end();
     }
 
+    // you can read about the debug keys and their functionality in the GitHub wiki
     private void debugKeys() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
             gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
@@ -127,6 +159,10 @@ public class GameScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             gameLogic.getPlayerManager().turnOver();
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            gameLogic.getResourceManager().addRandomResourceToPlayer(gameLogic.getPlayerManager().getCurrentPlayer());
         }
     }
 
@@ -142,6 +178,7 @@ public class GameScreen extends ScreenAdapter {
         // text must be rendered after the stage so the bg image doesn't overlap
         debugKeys();
         showCurrentPlayerGoals();
+        showCurrentPlayerResources();
     }
 
     @Override
