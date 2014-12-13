@@ -1,7 +1,6 @@
 package gameLogic.resource;
 
 public class Train extends Resource {
-    private String name;
     private String image;
 
     public Train(String name, String image) {
@@ -11,9 +10,5 @@ public class Train extends Resource {
 
     public String getImage() {
         return image;
-    }
-
-    public String getName() {
-        return name;
     }
 }

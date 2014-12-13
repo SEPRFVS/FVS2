@@ -1,5 +1,10 @@
 package gameLogic.resource;
 
 public abstract class Resource {
-	private String name;
+	protected String name;
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

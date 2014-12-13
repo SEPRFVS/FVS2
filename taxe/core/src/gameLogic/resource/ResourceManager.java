@@ -13,7 +13,7 @@ public class ResourceManager {
     public ResourceManager() {
         resources = new ArrayList<Resource>();
         resources.add(new Train("Bullet Train", "BulletTrain.png"));
-        resources.add(new Train("Nelcear Train", "NuclearTrain.png"));
+        resources.add(new Train("Nulcear Train", "NuclearTrain.png"));
     }
 
     private Resource getRandomResource() {
