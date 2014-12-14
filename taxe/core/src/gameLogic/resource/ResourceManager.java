@@ -8,7 +8,8 @@ import java.util.Random;
 
 public class ResourceManager {
     private List<Resource> resources;
-    private int CONFIG_MAX_RESOURCES = 10;
+    private final int CONFIG_MAX_RESOURCES = 10;
+    private Random random = new Random();
 
     public ResourceManager() {
         resources = new ArrayList<Resource>();
@@ -17,8 +18,7 @@ public class ResourceManager {
     }
 
     private Resource getRandomResource() {
-        Random r = new Random();
-        int index = r.nextInt(resources.size());
+        int index = random.nextInt(resources.size());
         return resources.get(index);
     }
 
