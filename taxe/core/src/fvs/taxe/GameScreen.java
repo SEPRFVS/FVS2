@@ -10,6 +10,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import fvs.taxe.dialog.DialogResourceTrain;
 import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.PlayerManager;
@@ -33,6 +38,7 @@ public class GameScreen extends ScreenAdapter {
     private Image mapImage;
     private Map map;
     private Game gameLogic;
+    private Skin skin;
 
 
     public GameScreen(TaxeGame game) {
@@ -45,6 +51,9 @@ public class GameScreen extends ScreenAdapter {
         touchPoint = new Vector3();
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         mapImage = new Image(mapTexture);
+        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+
+        Gdx.input.setInputProcessor(stage);
 
         // game logic stuff
         map = new Map();
@@ -104,21 +113,31 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void showCurrentPlayerResources() {
-        game.batch.begin();
+
         float top = (float)TaxeGame.HEIGHT;
-        game.fontSmall.setColor(Color.BLACK);
         float x = 10.0f;
         float y = top - 250.0f;
 
-        String playerGoals = "Resources:";
-        game.fontSmall.draw(game.batch, playerGoals, x, y);
-
-        for(String s: playerResourceStrings()) {
-            y -= 30;
-            game.fontSmall.draw(game.batch, s, x, y);
-        }
-
+        game.batch.begin();
+        game.fontSmall.setColor(Color.BLACK);
+        game.fontSmall.draw(game.batch, "Resources:", x, y);
         game.batch.end();
+
+        y -= 100;
+
+        for(final String s: playerResourceStrings()) {
+            TextButton button = new TextButton(s, skin);
+            button.setPosition(x, y);
+            button.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    DialogResourceTrain dia = new DialogResourceTrain(s, skin);
+                    dia.show(stage);
+                }
+            });
+            stage.addActor(button);
+
+            y -= 30;
+        }
     }
 
     private List<String> playerGoalStrings() {
@@ -185,7 +204,7 @@ public class GameScreen extends ScreenAdapter {
     // Called when GameScreen becomes current screen of the game
     public void show() {
         //Create GameScreen Image
-        Gdx.input.setInputProcessor(stage);
+
         mapImage.setWidth(TaxeGame.WIDTH);
         mapImage.setHeight(TaxeGame.HEIGHT);
         stage.addActor(mapImage);
