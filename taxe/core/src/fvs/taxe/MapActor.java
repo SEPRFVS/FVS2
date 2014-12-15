@@ -35,7 +35,7 @@ class MapActor extends GeneralActor {
         setSize(upperCorner.getX() - lowerCorner.getX(), upperCorner.getY() - lowerCorner.getY());
         //Rotate rails using SOHCAHTOA
         double rotation = Math.toDegrees(Math.atan(getSize().getWidth()/getSize().getHeight()));
-        this.rotateBy((float) rotation); //TODO Doesn't actually rotate
+        this.rotateBy((float) -rotation);
     }
 
     //Click handler
@@ -44,6 +44,9 @@ class MapActor extends GeneralActor {
         if(leftclick && this.relation instanceof Station){
             leftclick = false;
             System.out.println(((Station) this.relation).getName());
+        }else if(leftclick && this.relation instanceof Connection){
+        	leftclick = false;
+        	System.out.println(((Connection) this.relation).getStation1().getName() + " - " + ((Connection) this.relation).getStation2().getName());
         }
     }
 }

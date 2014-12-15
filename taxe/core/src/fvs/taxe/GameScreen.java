@@ -178,7 +178,7 @@ public class GameScreen extends ScreenAdapter {
         game.batch.end();
     }
 
-    private void renderTrain() {
+    private void renderTrains() {
         Image dummyTrain = new Image(new Texture(Gdx.files.internal("BulletTrain.png")));
         dummyTrain.setPosition(155, 45);
         dummyTrain.setSize(100f, 100f);
@@ -232,7 +232,7 @@ public class GameScreen extends ScreenAdapter {
 
         renderStations();
         //renderConnections();
-        renderTrain();
+        renderTrains();
     }
 
 

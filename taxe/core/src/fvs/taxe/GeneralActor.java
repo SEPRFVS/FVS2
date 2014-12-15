@@ -48,6 +48,6 @@ public class GeneralActor extends Actor {
     //Draw actor on each draw call
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(texture, location.getX(), location.getY(),size.getHeight(),size.getWidth());
+        batch.draw(texture, location.getX(), location.getY(),0,0,size.getHeight(),size.getWidth(),1,1,this.getRotation(),0,0,texture.getWidth(),texture.getHeight(),false,false);
     }
 }
