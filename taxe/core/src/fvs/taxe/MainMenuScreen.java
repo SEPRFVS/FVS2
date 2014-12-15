@@ -17,7 +17,6 @@ public class MainMenuScreen extends ScreenAdapter {
     Rectangle playBounds;
     Rectangle exitBounds;
     Vector3 touchPoint;
-    ShapeRenderer shapeRenderer;
     Texture mapTexture;
     Image mapImage;
 
@@ -29,7 +28,6 @@ public class MainMenuScreen extends ScreenAdapter {
         playBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 350, 400, 100);
         exitBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 200, 400, 100);
         touchPoint = new Vector3();
-        shapeRenderer = new ShapeRenderer();
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         mapImage = new Image(mapTexture);
     }
@@ -64,14 +62,14 @@ public class MainMenuScreen extends ScreenAdapter {
         game.batch.end();
 
         //Draw rectangles, did not use TextButtons because it was easier not to
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        game.shapeRenderer.setProjectionMatrix(camera.combined);
+        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(playBounds.getX(), playBounds.getY(), playBounds.getWidth(), playBounds.getHeight());
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(exitBounds.getX(), exitBounds.getY(), exitBounds.getWidth(), exitBounds.getHeight());
-        shapeRenderer.end();
+        game.shapeRenderer.setColor(Color.GREEN);
+        game.shapeRenderer.rect(playBounds.getX(), playBounds.getY(), playBounds.getWidth(), playBounds.getHeight());
+        game.shapeRenderer.setColor(Color.RED);
+        game.shapeRenderer.rect(exitBounds.getX(), exitBounds.getY(), exitBounds.getWidth(), exitBounds.getHeight());
+        game.shapeRenderer.end();
 
         //Draw text into rectangles
         game.batch.begin();

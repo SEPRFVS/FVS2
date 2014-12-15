@@ -7,17 +7,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import fvs.taxe.dialog.DialogResourceTrain;
 import gameLogic.Game;
 import gameLogic.Player;
@@ -30,11 +29,11 @@ import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
-
-
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class GameScreen extends ScreenAdapter {
     final private TaxeGame game;
@@ -88,35 +87,20 @@ public class GameScreen extends ScreenAdapter {
 
     //Display all connections
     private void renderConnections() {
+        int lineWidth = 5;
+        game.shapeRenderer.begin(ShapeType.Filled);
+        game.shapeRenderer.setColor(Color.GRAY);
+        game.shapeRenderer.setProjectionMatrix(camera.combined);
+
         for (Connection connection : map.getConnections()) {
-            renderConnection(connection);
+            IPositionable start = connection.getStation1().getLocation();
+            IPositionable end = connection.getStation2().getLocation();
+            game.shapeRenderer.rectLine(start.getX(), start.getY(), end.getX(), end.getY(), lineWidth);
         }
+        game.shapeRenderer.end();
     }
 
-    //Display Individual connection
-    private void renderConnection(Connection connection) {
-        IPositionable lowerCorner, upperCorner;
-        int stationSize = 16;
-        if (connection.getStation1().getLocation().getX() < connection.getStation2().getLocation().getX()) {
-            //Lower position at X
-            lowerCorner = connection.getStation1().getLocation();
-            upperCorner = connection.getStation2().getLocation();
-        } else {
-            //Lower position at Y
-            lowerCorner = connection.getStation2().getLocation();
-            upperCorner = connection.getStation1().getLocation();
-        }
-        //Assume each rail is a 16*16 tile - a^2+b^2=c^2, SOHCAHTOA
-        double distance = Math.sqrt(Math.pow(upperCorner.getX()-lowerCorner.getX(),2)+Math.pow(upperCorner.getY()-lowerCorner.getY(),2));
-        double rotation = (Math.atan(((float) (upperCorner.getX()-lowerCorner.getX()))/((float) (upperCorner.getY()-lowerCorner.getY()))));
-        for(double i = 0;i<distance; i+=stationSize){
-        	double lengthSoFar = i * Math.cos(rotation);
-        	double heightSoFar = i * Math.sin(rotation);
-        	MapActor actor = new MapActor(((int) (lowerCorner.getX()+lengthSoFar)), ((int) (lowerCorner.getY()+heightSoFar)),connection);
-        	actor.setRotation(0-((float) Math.toDegrees(rotation)));
-        	actors.addActor(actor);
-        }
-    }
+
 
     private void drawResourcesHeader() {
         game.batch.begin();
@@ -189,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
         game.batch.end();
     }
 
-    private void renderTrains() {
+    private void renderTrain() {
         Image dummyTrain = new Image(new Texture(Gdx.files.internal("BulletTrain.png")));
         dummyTrain.setPosition(155, 45);
         dummyTrain.setSize(100f, 100f);
@@ -225,6 +209,8 @@ public class GameScreen extends ScreenAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
+        renderConnections();
+
         // text must be rendered after the stage so the bg image doesn't overlap
         debugKeys();
         showCurrentPlayerGoals();
@@ -242,8 +228,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(mapImage);
 
         renderStations();
-        //renderConnections();
-        renderTrains();
+        renderTrain();
     }
 
 
