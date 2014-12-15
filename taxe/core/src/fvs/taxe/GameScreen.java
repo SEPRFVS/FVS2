@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import fvs.taxe.dialog.DialogResourceTrain;
 import gameLogic.Game;
 import gameLogic.Player;
@@ -28,6 +29,8 @@ import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
+
+
 
 
 import java.util.ArrayList;
@@ -93,7 +96,8 @@ public class GameScreen extends ScreenAdapter {
     //Display Individual connection
     private void renderConnection(Connection connection) {
         IPositionable lowerCorner, upperCorner;
-        if (connection.getStation1().getLocation().getX() < connection.getStation2().getLocation().getY()) {
+        int stationSize = 16;
+        if (connection.getStation1().getLocation().getX() < connection.getStation2().getLocation().getX()) {
             //Lower position at X
             lowerCorner = connection.getStation1().getLocation();
             upperCorner = connection.getStation2().getLocation();
@@ -102,9 +106,16 @@ public class GameScreen extends ScreenAdapter {
             lowerCorner = connection.getStation2().getLocation();
             upperCorner = connection.getStation1().getLocation();
         }
-        MapActor actor = new MapActor(lowerCorner.getX(), lowerCorner.getY(), connection);
-        actor.expandConnection(lowerCorner, upperCorner);
-        actors.addActor(actor);
+        //Assume each rail is a 16*16 tile - a^2+b^2=c^2, SOHCAHTOA
+        double distance = Math.sqrt(Math.pow(upperCorner.getX()-lowerCorner.getX(),2)+Math.pow(upperCorner.getY()-lowerCorner.getY(),2));
+        double rotation = (Math.atan(((float) (upperCorner.getX()-lowerCorner.getX()))/((float) (upperCorner.getY()-lowerCorner.getY()))));
+        for(double i = 0;i<distance; i+=stationSize){
+        	double lengthSoFar = i * Math.cos(rotation);
+        	double heightSoFar = i * Math.sin(rotation);
+        	MapActor actor = new MapActor(((int) (lowerCorner.getX()+lengthSoFar)), ((int) (lowerCorner.getY()+heightSoFar)),connection);
+        	actor.setRotation(0-((float) Math.toDegrees(rotation)));
+        	actors.addActor(actor);
+        }
     }
 
     private void drawResourcesHeader() {

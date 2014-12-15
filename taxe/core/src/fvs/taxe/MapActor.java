@@ -22,20 +22,11 @@ class MapActor extends GeneralActor {
         }else if(this.relation instanceof Connection){
             image = "connection.png";
             this.setName(((Connection) this.relation).getStation1().getName() + "-" + ((Connection) this.relation).getStation2().getName());
-            this.location = new Position(x+8,y+8); //TODO what is this hardcoded 16??
+            this.location = new Position(x+8,y+8); //TODO what is this hardcoded 8??
         }else{
             image = "missing.png";
         }
         this.texture = new Texture(Gdx.files.internal(image));
-    }
-
-    //Expand connection to correct size
-    public void expandConnection(IPositionable lowerCorner, IPositionable upperCorner){
-        //Set sprite size
-        setSize(upperCorner.getX() - lowerCorner.getX(), upperCorner.getY() - lowerCorner.getY());
-        //Rotate rails using SOHCAHTOA
-        double rotation = Math.toDegrees(Math.atan(getSize().getWidth()/getSize().getHeight()));
-        this.rotateBy((float) -rotation);
     }
 
     //Click handler
