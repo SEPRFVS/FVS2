@@ -24,6 +24,7 @@ import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
+import gameLogic.resource.Train;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
     private Map map;
     private Game gameLogic;
     private Skin skin;
+    private Group resourceButtons = new Group();
 
 
     public GameScreen(TaxeGame game) {
@@ -101,15 +103,12 @@ public class GameScreen extends ScreenAdapter {
         actors.addActor(actor);
     }
 
-    private List<String> playerResourceStrings() {
-        ArrayList<String> strings = new ArrayList<String>();
-        Player currentPlayer = gameLogic.getPlayerManager().getCurrentPlayer();
-
-        for(Resource r : currentPlayer.getResources()) {
-            strings.add(r.toString());
-        }
-
-        return strings;
+    private void drawResourcesHeader() {
+        game.batch.begin();
+        game.fontSmall.setColor(Color.BLACK);
+        game.fontSmall.draw(game.batch, "Resources:", 10.0f, (float)TaxeGame.HEIGHT - 250.0f);
+        game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float)TaxeGame.WIDTH - 100.0f, (float)TaxeGame.HEIGHT - 10.0f);
+        game.batch.end();
     }
 
     private void showCurrentPlayerResources() {
@@ -117,27 +116,32 @@ public class GameScreen extends ScreenAdapter {
         float top = (float)TaxeGame.HEIGHT;
         float x = 10.0f;
         float y = top - 250.0f;
-
-        game.batch.begin();
-        game.fontSmall.setColor(Color.BLACK);
-        game.fontSmall.draw(game.batch, "Resources:", x, y);
-        game.batch.end();
-
         y -= 100;
 
-        for(final String s: playerResourceStrings()) {
-            TextButton button = new TextButton(s, skin);
+        final Player currentPlayer = gameLogic.getPlayerManager().getCurrentPlayer();
+
+        resourceButtons.remove();
+        resourceButtons.clear();
+
+        for(final Resource r : currentPlayer.getResources()) {
+            TextButton button = new TextButton(r.toString(), skin);
             button.setPosition(x, y);
             button.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
-                    DialogResourceTrain dia = new DialogResourceTrain(s, skin);
+                    System.out.print("res button clicked");
+
+                    DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin);
+                    dia.dropTrainArgs(currentPlayer, (Train)r);
                     dia.show(stage);
                 }
             });
-            stage.addActor(button);
+
+            resourceButtons.addActor(button);
 
             y -= 30;
         }
+
+        stage.addActor(resourceButtons);
     }
 
     private List<String> playerGoalStrings() {
@@ -178,14 +182,16 @@ public class GameScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             gameLogic.getPlayerManager().turnOver();
+            showCurrentPlayerResources();
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             gameLogic.getResourceManager().addRandomResourceToPlayer(gameLogic.getPlayerManager().getCurrentPlayer());
+            showCurrentPlayerResources();
         }
     }
 
-    //Render Screen on load
+    // called every frame
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -197,7 +203,8 @@ public class GameScreen extends ScreenAdapter {
         // text must be rendered after the stage so the bg image doesn't overlap
         debugKeys();
         showCurrentPlayerGoals();
-        showCurrentPlayerResources();
+        drawResourcesHeader();
+        // showCurrentPlayerResources();
     }
 
     @Override

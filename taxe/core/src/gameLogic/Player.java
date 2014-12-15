@@ -32,6 +32,10 @@ public class Player {
 	public void addResource(Resource r) {
 		resources.add(r);
 	}
+
+	public void removeResource(Resource r) {
+		resources.remove(r);
+	}
 	
 	public void addGoal(Goal g) {
 		if (goals.size() >= GoalManager.CONFIG_MAX_PLAYER_GOALS) {
