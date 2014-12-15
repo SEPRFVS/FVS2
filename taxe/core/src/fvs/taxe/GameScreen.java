@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -25,6 +28,7 @@ import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,14 +110,14 @@ public class GameScreen extends ScreenAdapter {
     private void drawResourcesHeader() {
         game.batch.begin();
         game.fontSmall.setColor(Color.BLACK);
-        game.fontSmall.draw(game.batch, "Resources:", 10.0f, (float)TaxeGame.HEIGHT - 250.0f);
-        game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float)TaxeGame.WIDTH - 100.0f, (float)TaxeGame.HEIGHT - 10.0f);
+        game.fontSmall.draw(game.batch, "Resources:", 10.0f, (float) TaxeGame.HEIGHT - 250.0f);
+        game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float) TaxeGame.WIDTH - 100.0f, (float) TaxeGame.HEIGHT - 10.0f);
         game.batch.end();
     }
 
     private void showCurrentPlayerResources() {
 
-        float top = (float)TaxeGame.HEIGHT;
+        float top = (float) TaxeGame.HEIGHT;
         float x = 10.0f;
         float y = top - 250.0f;
         y -= 100;
@@ -123,7 +127,7 @@ public class GameScreen extends ScreenAdapter {
         resourceButtons.remove();
         resourceButtons.clear();
 
-        for(final Resource r : currentPlayer.getResources()) {
+        for (final Resource r : currentPlayer.getResources()) {
             TextButton button = new TextButton(r.toString(), skin);
             button.setPosition(x, y);
             button.addListener(new ClickListener() {
@@ -131,7 +135,7 @@ public class GameScreen extends ScreenAdapter {
                     System.out.print("res button clicked");
 
                     DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin);
-                    dia.dropTrainArgs(currentPlayer, (Train)r);
+                    dia.dropTrainArgs(currentPlayer, (Train) r);
                     dia.show(stage);
                 }
             });
@@ -149,7 +153,7 @@ public class GameScreen extends ScreenAdapter {
         PlayerManager pm = gameLogic.getPlayerManager();
         Player currentPlayer = pm.getCurrentPlayer();
 
-        for(Goal g : currentPlayer.getGoals()) {
+        for (Goal g : currentPlayer.getGoals()) {
             strings.add(g.toString());
         }
 
@@ -158,15 +162,15 @@ public class GameScreen extends ScreenAdapter {
 
     private void showCurrentPlayerGoals() {
         game.batch.begin();
-        float top = (float)TaxeGame.HEIGHT;
+        float top = (float) TaxeGame.HEIGHT;
         game.fontSmall.setColor(Color.BLACK);
         float x = 10.0f;
         float y = top - 10.0f;
 
-        String playerGoals = "Current Player (" + gameLogic.getPlayerManager().getCurrentPlayer().toString() +") Goals:";
+        String playerGoals = "Current Player (" + gameLogic.getPlayerManager().getCurrentPlayer().toString() + ") Goals:";
         game.fontSmall.draw(game.batch, playerGoals, x, y);
 
-        for(String s: playerGoalStrings()) {
+        for (String s : playerGoalStrings()) {
             y -= 30;
             game.fontSmall.draw(game.batch, s, x, y);
         }
@@ -174,21 +178,31 @@ public class GameScreen extends ScreenAdapter {
         game.batch.end();
     }
 
+    private void renderTrain() {
+        Image dummyTrain = new Image(new Texture(Gdx.files.internal("BulletTrain.png")));
+        dummyTrain.setPosition(155, 45);
+        dummyTrain.setSize(100f, 100f);
+        dummyTrain.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
+        stage.addActor(dummyTrain);
+    }
+
     // you can read about the debug keys and their functionality in the GitHub wiki
     private void debugKeys() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
             gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             gameLogic.getPlayerManager().turnOver();
             showCurrentPlayerResources();
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             gameLogic.getResourceManager().addRandomResourceToPlayer(gameLogic.getPlayerManager().getCurrentPlayer());
             showCurrentPlayerResources();
         }
+
+
     }
 
     // called every frame
@@ -218,6 +232,7 @@ public class GameScreen extends ScreenAdapter {
 
         renderStations();
         //renderConnections();
+        renderTrain();
     }
 
 
