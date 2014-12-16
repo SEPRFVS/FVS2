@@ -39,10 +39,7 @@ public class GameScreen extends ScreenAdapter {
     final private TaxeGame game;
     private OrthographicCamera camera;
     private Stage stage; // Stage - Holds all actors
-    private Group actors; //Group - Hold all actors to allow searching and redrawing
-    private Vector3 touchPoint;
     private Texture mapTexture;
-    private Image mapImage;
     private Map map;
     private Game gameLogic;
     private Skin skin;
@@ -55,10 +52,7 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
         camera.setToOrtho(false); // Makes the origin to be in the lower left corner
         stage = new Stage();
-        actors = stage.getRoot();
-        touchPoint = new Vector3();
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
-        mapImage = new Image(mapTexture);
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         Gdx.input.setInputProcessor(stage);
@@ -81,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
         IPositionable location = station.getLocation();
         MapActor actor = new MapActor(location.getX(), location.getY(), station);
         actor.setTouchable(Touchable.enabled);
-        actors.addActor(actor);
+        stage.addActor(actor);
     }
 
 
@@ -206,10 +200,16 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        game.batch.draw(mapTexture, 0, 0);
+        game.batch.end();
+
+        renderConnections();
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        renderConnections();
+
 
         // text must be rendered after the stage so the bg image doesn't overlap
         debugKeys();
@@ -221,12 +221,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     // Called when GameScreen becomes current screen of the game
     public void show() {
-        //Create GameScreen Image
-
-        mapImage.setWidth(TaxeGame.WIDTH);
-        mapImage.setHeight(TaxeGame.HEIGHT);
-        stage.addActor(mapImage);
-
         renderStations();
         renderTrain();
     }
