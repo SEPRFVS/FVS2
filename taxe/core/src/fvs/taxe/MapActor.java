@@ -19,11 +19,11 @@ class MapActor extends GeneralActor {
         if(this.relation instanceof Station){
             image = "station.png";
             this.setName(((Station) this.relation).getName());
-        }else /*if(this.relation instanceof Connection){
+        }else if(this.relation instanceof Connection){
             image = "connection.png";
             this.setName(((Connection) this.relation).getStation1().getName() + "-" + ((Connection) this.relation).getStation2().getName());
             this.location = new Position(x+8,y+8); //TODO what is this hardcoded 8??
-        }else*/{
+        }else{
             image = "missing.png";
         }
         this.texture = new Texture(Gdx.files.internal(image));
@@ -35,9 +35,9 @@ class MapActor extends GeneralActor {
         if(leftclick && this.relation instanceof Station){
             leftclick = false;
             System.out.println(((Station) this.relation).getName());
-        }/*else if(leftclick && this.relation instanceof Connection){
+        }else if(leftclick && this.relation instanceof Connection){
         	leftclick = false;
         	System.out.println(((Connection) this.relation).getStation1().getName() + " - " + ((Connection) this.relation).getStation2().getName());
-        }*/
+        }
     }
 }
