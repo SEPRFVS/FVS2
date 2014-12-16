@@ -33,6 +33,7 @@ import gameLogic.resource.Train;
 
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,22 +98,43 @@ public class GameScreen extends ScreenAdapter {
     private void renderConnection(Connection connection) {
         IPositionable lowerCorner, upperCorner;
         int stationSize = 16;
-        if (connection.getStation1().getLocation().getX() < connection.getStation2().getLocation().getX()) {
+        @SuppressWarnings("unused")
+		boolean travelRight = true;
+        if (connection.getStation1().getLocation().getY() < connection.getStation2().getLocation().getY()) {
             //Lower position at X
             lowerCorner = connection.getStation1().getLocation();
             upperCorner = connection.getStation2().getLocation();
+            if (connection.getStation1().getLocation().getX() > connection.getStation2().getLocation().getX()){
+            	travelRight = false;
+            }
         } else {
             //Lower position at Y
             lowerCorner = connection.getStation2().getLocation();
             upperCorner = connection.getStation1().getLocation();
+            if (connection.getStation1().getLocation().getX() < connection.getStation2().getLocation().getX()){
+            	travelRight = false;
+            }
         }
+
         //Assume each rail is a 16*16 tile - a^2+b^2=c^2, SOHCAHTOA
-        double distance = Math.sqrt(Math.pow(upperCorner.getX()-lowerCorner.getX(),2)+Math.pow(upperCorner.getY()-lowerCorner.getY(),2));
-        double rotation = (Math.atan(((float) (upperCorner.getX()-lowerCorner.getX()))/((float) (upperCorner.getY()-lowerCorner.getY()))));
+        double diffY = upperCorner.getY() - lowerCorner.getY();
+        double diffX;
+        if(travelRight = true){
+        	diffX = upperCorner.getX()-lowerCorner.getX();
+        }else{
+        	diffX = lowerCorner.getX()-lowerCorner.getX();
+        }
+        double distance = Math.sqrt(Math.pow(diffX,2)+Math.pow(diffY,2));
+        double rotation = (Math.atan(((float) diffX)/((float) diffY)));
         for(double i = 0;i<distance; i+=stationSize){
-        	double lengthSoFar = i * Math.cos(rotation);
-        	double heightSoFar = i * Math.sin(rotation);
-        	MapActor actor = new MapActor(((int) (lowerCorner.getX()+lengthSoFar)), ((int) (lowerCorner.getY()+heightSoFar)),connection);
+        	double lengthSoFar = (i * Math.cos(rotation));
+        	double heightSoFar = i * Math.sin(rotation) + lowerCorner.getY();
+        	if(travelRight = true){
+        		lengthSoFar += lowerCorner.getX();
+        	}else{
+        		lengthSoFar = lowerCorner.getX() - lengthSoFar;
+        	}
+        	MapActor actor = new MapActor(((int) lengthSoFar), ((int) heightSoFar),connection);
         	actor.setRotation(0-((float) Math.toDegrees(rotation)));
         	actors.addActor(actor);
         }
