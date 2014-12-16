@@ -3,10 +3,7 @@ package fvs.taxe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +14,7 @@ import fvs.taxe.dialog.DialogResourceTrain;
 import fvs.taxe.dialog.ResourceDialogClickListener;
 import gameLogic.*;
 import gameLogic.goal.Goal;
+import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
@@ -70,7 +68,7 @@ public class GameScreen extends ScreenAdapter {
         float top = (float) TaxeGame.HEIGHT;
         float x = 10.0f;
         float y = top - 250.0f;
-        y -= 100;
+        y -= 50;
 
         final Player currentPlayer = gameLogic.getPlayerManager().getCurrentPlayer();
 
@@ -92,7 +90,21 @@ public class GameScreen extends ScreenAdapter {
                                     currentPlayer.removeResource(r);
                                     break;
                                 case TRAIN_PLACE:
-                                    System.out.print("place train button clicked");
+                                    final Train train = (Train)r;
+
+                                    Pixmap pm = new Pixmap(Gdx.files.internal(train.getCursorImage()));
+                                    Gdx.input.setCursorImage(pm, 10, 25); // these numbers will need tweaking
+                                    pm.dispose();
+
+                                    mapRenderer.subscribeStationClick(new StationClickListener() {
+                                        @Override
+                                        public void clicked(Station station) {
+                                            train.setPosition(station.getLocation());
+                                            Gdx.input.setCursorImage(null, 0, 0);
+                                            mapRenderer.renderTrain(train);
+                                        }
+                                    });
+
                                     break;
                             }
                         }
@@ -182,7 +194,6 @@ public class GameScreen extends ScreenAdapter {
     // Called when GameScreen becomes current screen of the game
     public void show() {
         mapRenderer.renderStations();
-        mapRenderer.renderTrain();
     }
 
 
