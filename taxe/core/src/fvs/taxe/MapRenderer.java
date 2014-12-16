@@ -13,6 +13,7 @@ import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
+import gameLogic.resource.Train;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +59,12 @@ public class MapRenderer {
         game.shapeRenderer.end();
     }
 
-    public void renderTrain() {
-        Image dummyTrain = new Image(new Texture(Gdx.files.internal("BulletTrain.png")));
-        dummyTrain.setPosition(155, 45);
-        dummyTrain.setSize(100f, 100f);
-        dummyTrain.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
-        stage.addActor(dummyTrain);
+    public void renderTrain(Train t) {
+        Image train = new Image(new Texture(Gdx.files.internal(t.getImage())));
+        IPositionable position = t.getPosition();
+        train.setPosition(position.getX(), position.getY());
+        train.setSize(100f, 100f);
+        //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
+        stage.addActor(train);
     }
 }
