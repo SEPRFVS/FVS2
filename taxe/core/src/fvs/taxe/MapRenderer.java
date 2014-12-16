@@ -24,22 +24,11 @@ public class MapRenderer {
     private Stage stage;
     private TaxeGame game;
     private Map map;
-    private List<StationClickListener> stationClickListeners = new ArrayList<StationClickListener>();
 
     public MapRenderer(TaxeGame game, Stage stage) {
         this.game = game;
         this.stage = stage;
         map = new Map();
-    }
-
-    public void subscribeStationClick(StationClickListener listener) {
-        stationClickListeners.add(listener);
-    }
-
-    private void stationClicked(Station station) {
-        for (StationClickListener listener : stationClickListeners) {
-            listener.clicked(station);
-        }
     }
 
     public void renderStations() {
@@ -52,16 +41,6 @@ public class MapRenderer {
         IPositionable location = station.getLocation();
         MapActor actor = new MapActor(location.getX(), location.getY(), station);
         actor.setTouchable(Touchable.enabled);
-        actor.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                /*
-                 if a station is clicked, someone could be training to place a train there,
-                 or be routing a train, we don't care about this, we should just raise an event
-                  */
-                stationClicked(station);
-            }
-        });
         stage.addActor(actor);
     }
 
