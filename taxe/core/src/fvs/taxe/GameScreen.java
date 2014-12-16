@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.DialogResourceTrain;
+import fvs.taxe.dialog.ResourceDialogClickListener;
 import gameLogic.*;
 import gameLogic.goal.Goal;
 import gameLogic.resource.Resource;
@@ -81,11 +82,21 @@ public class GameScreen extends ScreenAdapter {
             button.setPosition(x, y);
             button.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
-                    System.out.print("res button clicked");
-
                     DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin);
-                    dia.dropTrainArgs(currentPlayer, (Train) r);
                     dia.show(stage);
+                    dia.subscribeClick(new ResourceDialogClickListener() {
+                        @Override
+                        public void clicked(Button button) {
+                            switch(button) {
+                                case TRAIN_DROP:
+                                    currentPlayer.removeResource(r);
+                                    break;
+                                case TRAIN_PLACE:
+                                    System.out.print("place train button clicked");
+                                    break;
+                            }
+                        }
+                    });
                 }
             });
 
