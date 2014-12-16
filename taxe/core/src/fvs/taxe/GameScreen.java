@@ -18,9 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.DialogResourceTrain;
-import gameLogic.Game;
-import gameLogic.Player;
-import gameLogic.PlayerManager;
+import gameLogic.*;
 import gameLogic.goal.Goal;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
@@ -60,6 +58,13 @@ public class GameScreen extends ScreenAdapter {
         // game logic stuff
         map = new Map();
         gameLogic = Game.getInstance();
+
+        gameLogic.getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
+            @Override
+            public void changed() {
+                showCurrentPlayerResources();
+            }
+        });
     }
 
 
@@ -183,12 +188,10 @@ public class GameScreen extends ScreenAdapter {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             gameLogic.getPlayerManager().turnOver();
-            showCurrentPlayerResources();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             gameLogic.getResourceManager().addRandomResourceToPlayer(gameLogic.getPlayerManager().getCurrentPlayer());
-            showCurrentPlayerResources();
         }
 
 
@@ -213,9 +216,9 @@ public class GameScreen extends ScreenAdapter {
 
         // text must be rendered after the stage so the bg image doesn't overlap
         debugKeys();
-        showCurrentPlayerGoals();
+
         drawResourcesHeader();
-        // showCurrentPlayerResources();
+        showCurrentPlayerGoals();
     }
 
     @Override
