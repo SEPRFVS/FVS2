@@ -76,11 +76,13 @@ public class GameScreen extends ScreenAdapter {
         resourceButtons.clear();
 
         for (final Resource r : currentPlayer.getResources()) {
+            final Train train = (Train)r;
+
             TextButton button = new TextButton(r.toString(), skin);
             button.setPosition(x, y);
             button.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
-                    DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin);
+                    DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin, train.getPosition() != null);
                     dia.show(stage);
                     dia.subscribeClick(new ResourceDialogClickListener() {
                         @Override
@@ -90,8 +92,6 @@ public class GameScreen extends ScreenAdapter {
                                     currentPlayer.removeResource(r);
                                     break;
                                 case TRAIN_PLACE:
-                                    final Train train = (Train)r;
-
                                     Pixmap pm = new Pixmap(Gdx.files.internal(train.getCursorImage()));
                                     Gdx.input.setCursorImage(pm, 10, 25); // these numbers will need tweaking
                                     pm.dispose();
@@ -102,6 +102,8 @@ public class GameScreen extends ScreenAdapter {
                                             train.setPosition(station.getLocation());
                                             Gdx.input.setCursorImage(null, 0, 0);
                                             mapRenderer.renderTrain(train);
+
+                                            // should unsubscribe after this
                                         }
                                     });
 

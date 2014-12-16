@@ -13,12 +13,15 @@ import java.util.List;
 public class DialogResourceTrain extends Dialog {
     private List<ResourceDialogClickListener> clickListeners = new ArrayList<ResourceDialogClickListener>();
 
-    public DialogResourceTrain(String title, Skin skin) {
+    public DialogResourceTrain(String title, Skin skin, boolean trainPlaced) {
         super(title, skin);
 
         text("What do you want to do with this train?");
         button("Drop", "DROP");
-        button("Place at a station", "PLACE");
+
+        if (!trainPlaced) {
+            button("Place at a station", "PLACE");
+        }
     }
 
     private void clicked(Button button) {

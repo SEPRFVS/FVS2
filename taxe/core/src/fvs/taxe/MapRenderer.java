@@ -57,8 +57,8 @@ public class MapRenderer {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 /*
-                 if a station is clicked, someone could be training to place a train there,
-                 or be routing a train, we don't care about this, we should just raise an event
+                 if a station is clicked, someone could be attempting to place a train there,
+                 or be routing a train, we don't care about this, we should just publish an event
                   */
                 stationClicked(station);
             }
