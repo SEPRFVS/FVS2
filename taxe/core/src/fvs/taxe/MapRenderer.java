@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
@@ -24,7 +24,12 @@ public class MapRenderer {
     private Stage stage;
     private TaxeGame game;
     private Map map;
-    private List<StationClickListener> stationClickListeners = new ArrayList<StationClickListener>();
+    /*
+     have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
+     their handler's method, one case unsubscribes from the event removing itself from this list
+     and this list implementation supports removing elements whilst iterating through it
+      */
+    private List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
 
     public MapRenderer(TaxeGame game, Stage stage) {
         this.game = game;
@@ -34,6 +39,10 @@ public class MapRenderer {
 
     public void subscribeStationClick(StationClickListener listener) {
         stationClickListeners.add(listener);
+    }
+
+    public void unsubscribeStationClick(StationClickListener listener) {
+        stationClickListeners.remove(listener);
     }
 
     private void stationClicked(Station station) {
@@ -79,13 +88,14 @@ public class MapRenderer {
         game.shapeRenderer.end();
     }
 
-    public void renderTrain(Train t) {
+    public Image renderTrain(Train t) {
         Image trainImage = new Image(new Texture(Gdx.files.internal(t.getImage())));
         IPositionable position = t.getPosition();
         trainImage.setSize(30f, 30f);
         trainImage.setPosition(position.getX() - 8, position.getY() - 8);
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
         stage.addActor(trainImage);
+        return trainImage;
     }
 
     public void moveTrain(Train train, IPositionable target, int sec){
