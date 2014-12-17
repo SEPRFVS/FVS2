@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,10 @@ public class MapRenderer {
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
         t.setActor(trainImage);
         stage.addActor(trainImage);
+
+        List<IPositionable> route = new ArrayList<IPositionable>();
+        route.add(new Position(0,0));
+        t.setRoute(route);
     }
 
     public static void moveTrain(Train train, IPositionable target, float sec){
