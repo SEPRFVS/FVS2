@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import gameLogic.map.Connection;
-import gameLogic.map.IPositionable;
-import gameLogic.map.Map;
-import gameLogic.map.Station;
+import gameLogic.map.*;
 import gameLogic.resource.Train;
 
 import java.util.ArrayList;
@@ -22,6 +19,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class MapRenderer {
+    public static final int OFFSET = 8;
+    public static final int ANIMATION_DURATION = 5;
+
     private Stage stage;
     private TaxeGame game;
     private Map map;
@@ -81,11 +81,16 @@ public class MapRenderer {
     }
 
     public void renderTrain(Train t) {
-        Image train = new Image(new Texture(Gdx.files.internal(t.getImage())));
+        Image trainImage = new Image(new Texture(Gdx.files.internal(t.getImage())));
         IPositionable position = t.getPosition();
-        train.setPosition(position.getX(), position.getY());
-        train.setSize(100f, 100f);
+        trainImage.setSize(30f, 30f);
+        trainImage.setPosition(position.getX() - 8, position.getY() - 8);
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
-        stage.addActor(train);
+        stage.addActor(trainImage);
+    }
+
+    private void moveTrain(Train train, IPositionable target){
+        train.getActor().addAction(moveTo(target.getX() - OFFSET, target.getY() - OFFSET, ANIMATION_DURATION));
+        train.setPosition(new Position(target.getX(), target.getY()));
     }
 }

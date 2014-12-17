@@ -31,6 +31,7 @@ public final class StationHelper {
         connections.add(new Tuple<String, String>("Lille", "Brussels"));
         connections.add(new Tuple<String, String>("Paris", "Brussels"));
         connections.add(new Tuple<String, String>("Brussels", "Amsterdam"));
+        connections.add(new Tuple<String, String>("Amsterdam", "Berlin"));
 
     }
 

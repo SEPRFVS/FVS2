@@ -12,7 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.DialogResourceTrain;
 import fvs.taxe.dialog.ResourceDialogClickListener;
-import gameLogic.*;
+import gameLogic.Game;
+import gameLogic.Player;
+import gameLogic.PlayerChangedListener;
+import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
@@ -29,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture mapTexture;
     private Game gameLogic;
     private Skin skin;
-    private Group resourceButtons = new Group();
+    private Group resourceButtons;
     private MapRenderer mapRenderer;
 
     public GameScreen(TaxeGame game) {
@@ -40,6 +43,7 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage();
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        resourceButtons  = new Group();
 
         Gdx.input.setInputProcessor(stage);
 
