@@ -50,4 +50,8 @@ public class Train extends Resource {
     public List<IPositionable> getRoute(){
         return route;
     }
+
+    public int getSpeed(){
+        return speed;
+    }
 }

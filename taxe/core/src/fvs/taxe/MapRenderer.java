@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -20,6 +21,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 public class MapRenderer {
     public static final int OFFSET = 8;
+    public static final int ANIMATION_DURATION = 5;
 
     private Stage stage;
     private TaxeGame game;
@@ -85,11 +87,50 @@ public class MapRenderer {
         trainImage.setSize(30f, 30f);
         trainImage.setPosition(position.getX() - 8, position.getY() - 8);
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
+        t.setActor(trainImage);
         stage.addActor(trainImage);
     }
 
-    public void moveTrain(Train train, IPositionable target, int sec){
+    public static void moveTrain(Train train, IPositionable target, float sec){
+        if (train.getActor() == null) return;
         train.getActor().addAction(moveTo(target.getX() - OFFSET, target.getY() - OFFSET, sec));
         train.setPosition(new Position(target.getX(), target.getY()));
+    }
+
+
+    public void moveTrainByTurn(Train train){
+        int stationsToBeRemoved = 0;
+        int totalDst = train.getSpeed();
+        int availableDst = totalDst;
+        IPositionable current = train.getPosition();
+
+        if (current == null) return;
+        if (train.getRoute() == null) return;
+
+        for (IPositionable next : train.getRoute()){
+            float distanceToNext = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY());
+
+            if (distanceToNext <= availableDst) {
+                float sec = distanceToNext / totalDst * ANIMATION_DURATION;
+                MapRenderer.moveTrain(train, next, sec);
+                availableDst -= distanceToNext;
+                current = next;
+                stationsToBeRemoved++;
+            } else {
+                int delta_x = Math.round((availableDst / distanceToNext) * (next.getX() - current.getX()));
+                int delta_y = Math.round((availableDst / distanceToNext) * (next.getY() - current.getY()));
+
+                IPositionable targetLocation = new Position(current.getX() + delta_x, current.getY() + delta_y);
+                float dist = Vector2.dst(current.getX(), current.getY(), targetLocation.getX(), targetLocation.getY());
+                float sec = dist / totalDst * ANIMATION_DURATION;
+                MapRenderer.moveTrain(train, targetLocation, sec);
+                break;
+            }
+        }
+
+        if (stationsToBeRemoved > 0){
+            train.setRoute(train.getRoute().subList(stationsToBeRemoved, train.getRoute().size()));
+        }
+
     }
 }

@@ -18,6 +18,10 @@ public class PlayerManager {
 	public Player getCurrentPlayer() {
 		return players.get(currentTurn);
 	}
+
+	public List<Player> getAllPlayers() {
+		return players;
+	}
 	
 	public void turnOver() {
 		currentTurn = currentTurn == 1 ? 0 : 1;

@@ -12,10 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.DialogResourceTrain;
 import fvs.taxe.dialog.ResourceDialogClickListener;
-import gameLogic.Game;
-import gameLogic.Player;
-import gameLogic.PlayerChangedListener;
-import gameLogic.PlayerManager;
+import gameLogic.*;
 import gameLogic.goal.Goal;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
@@ -57,6 +54,22 @@ public class GameScreen extends ScreenAdapter {
         });
 
         mapRenderer = new MapRenderer(game, stage);
+
+        gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
+            @Override
+            public void changed() {
+                animateTrainMovements();
+            }
+        });
+    }
+
+    private void animateTrainMovements(){
+        for (Player player : gameLogic.getPlayerManager().getAllPlayers()){
+            for (Resource train : player.getResources()){
+                mapRenderer.moveTrainByTurn((Train) train);
+            }
+        }
+
     }
 
     private void drawResourcesHeader() {
