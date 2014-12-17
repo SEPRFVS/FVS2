@@ -7,19 +7,20 @@ import java.util.List;
 import java.util.Random;
 
 public class ResourceManager {
-    private List<Resource> resources;
     private final int CONFIG_MAX_RESOURCES = 10;
     private Random random = new Random();
 
-    public ResourceManager() {
-        resources = new ArrayList<Resource>();
-        resources.add(new Train("Bullet Train", "BulletTrain.png", 100));
-        resources.add(new Train("Nulcear Train", "NuclearTrain.png", 200));
-    }
-
     private Resource getRandomResource() {
-        int index = random.nextInt(resources.size());
-        return resources.get(index);
+        int index = random.nextInt(2);
+
+        switch(index) {
+            case 0:
+                return new Train("Bullet Train", "BulletTrain.png", 100);
+            case 1:
+                return new Train("Nulcear Train", "NuclearTrain.png", 200);
+        }
+
+        throw new RuntimeException("local int index must be wrong" + index);
     }
 
     public void addRandomResourceToPlayer(Player p) {

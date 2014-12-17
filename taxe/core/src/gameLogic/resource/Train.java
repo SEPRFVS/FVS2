@@ -52,8 +52,14 @@ public class Train extends Resource {
     public List<IPositionable> getRoute(){
         return route;
     }
-
-    public int getSpeed(){
+    
+    public int getSpeed() {
         return speed;
+    }
+    @Override
+    public void dispose() {
+        if (actor != null) {
+            actor.remove();
+        }
     }
 }

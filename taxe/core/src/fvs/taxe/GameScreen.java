@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -117,10 +118,13 @@ public class GameScreen extends ScreenAdapter {
                                         @Override
                                         public void clicked(Station station) {
                                             train.setPosition(station.getLocation());
-                                            Gdx.input.setCursorImage(null, 0, 0);
-                                            mapRenderer.renderTrain(train);
 
-                                            // should unsubscribe after this
+                                            Gdx.input.setCursorImage(null, 0, 0);
+                                            Image trainImage = mapRenderer.renderTrain(train);
+                                            train.setActor(trainImage);
+
+                                            // java.util.ConcurrentModificationException
+                                            mapRenderer.unsubscribeStationClick(this);
                                         }
                                     });
 

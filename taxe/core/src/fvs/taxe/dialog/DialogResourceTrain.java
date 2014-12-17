@@ -17,6 +17,8 @@ public class DialogResourceTrain extends Dialog {
         super(title, skin);
 
         text("What do you want to do with this train?");
+
+        button("Cancel", "CLOSE");
         button("Drop", "DROP");
 
         if (!trainPlaced) {
@@ -36,7 +38,9 @@ public class DialogResourceTrain extends Dialog {
 
     @Override
     protected void result(Object o) {
-        if (o == "DROP") {
+        if (o == "CLOSE") {
+            this.remove();
+        } else if (o == "DROP") {
             clicked(Button.TRAIN_DROP);
         } else if(o == "PLACE") {
             clicked(Button.TRAIN_PLACE);
