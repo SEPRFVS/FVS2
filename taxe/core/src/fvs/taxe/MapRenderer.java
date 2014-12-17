@@ -3,6 +3,7 @@ package fvs.taxe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -96,7 +97,7 @@ public class MapRenderer {
         Image trainImage = new Image(new Texture(Gdx.files.internal(t.getImage())));
         IPositionable position = t.getPosition();
         trainImage.setSize(30f, 30f);
-        trainImage.setPosition(position.getX() - 8, position.getY() - 8);
+        trainImage.setPosition(position.getX() - OFFSET, position.getY() - OFFSET);
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
         t.setActor(trainImage);
         stage.addActor(trainImage);
