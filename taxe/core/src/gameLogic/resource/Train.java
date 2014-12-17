@@ -10,6 +10,8 @@ public class Train extends Resource {
     private IPositionable position;
     private Image actor;
     private int speed;
+
+    // Should NOT contain current position!
     private List<IPositionable> route;
 
 
