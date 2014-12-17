@@ -16,11 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 
 public class MapRenderer {
     public static final int OFFSET = 8;
-    public static final int ANIMATION_DURATION = 5;
 
     private Stage stage;
     private TaxeGame game;
@@ -89,8 +88,8 @@ public class MapRenderer {
         stage.addActor(trainImage);
     }
 
-    private void moveTrain(Train train, IPositionable target){
-        train.getActor().addAction(moveTo(target.getX() - OFFSET, target.getY() - OFFSET, ANIMATION_DURATION));
+    public void moveTrain(Train train, IPositionable target, int sec){
+        train.getActor().addAction(moveTo(target.getX() - OFFSET, target.getY() - OFFSET, sec));
         train.setPosition(new Position(target.getX(), target.getY()));
     }
 }

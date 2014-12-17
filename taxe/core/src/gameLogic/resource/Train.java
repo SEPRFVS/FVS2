@@ -3,14 +3,20 @@ package gameLogic.resource;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import gameLogic.map.IPositionable;
 
+import java.util.List;
+
 public class Train extends Resource {
     private String image;
     private IPositionable position;
     private Image actor;
+    private int speed;
+    private List<IPositionable> route;
 
-    public Train(String name, String image) {
+
+    public Train(String name, String image, int speed) {
         this.name = name;
         this.image = image;
+        this.speed = speed;
     }
 
     public String getImage() {
@@ -35,5 +41,13 @@ public class Train extends Resource {
 
     public Image getActor(){
         return actor;
+    }
+
+    public void setRoute(List<IPositionable> route) {
+        this.route = route;
+    }
+
+    public List<IPositionable> getRoute(){
+        return route;
     }
 }
