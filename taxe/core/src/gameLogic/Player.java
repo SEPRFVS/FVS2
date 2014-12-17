@@ -38,6 +38,7 @@ public class Player {
 
     public void removeResource(Resource r) {
         resources.remove(r);
+        r.dispose();
         pm.playerChanged();
     }
 

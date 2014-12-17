@@ -50,4 +50,11 @@ public class Train extends Resource {
     public List<IPositionable> getRoute(){
         return route;
     }
+
+    @Override
+    public void dispose() {
+        if (actor != null) {
+            actor.remove();
+        }
+    }
 }

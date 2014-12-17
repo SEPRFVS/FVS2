@@ -1,6 +1,8 @@
 package gameLogic.resource;
 
-public abstract class Resource {
+import gameLogic.Disposable;
+
+public abstract class Resource implements Disposable {
 	protected String name;
 
 	@Override
