@@ -110,7 +110,7 @@ public class MapRenderer {
         IPositionable current = train.getPosition();
 
         if (current == null) return;
-        if (train.getRoute() == null) return;
+        if (train.getRoute() == null || train.getRoute().size() == 0) return;
 
         for (IPositionable next : train.getRoute()){
             float distanceToNext = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY());
