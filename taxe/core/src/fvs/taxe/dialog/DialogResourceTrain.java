@@ -23,6 +23,8 @@ public class DialogResourceTrain extends Dialog {
 
         if (!trainPlaced) {
             button("Place at a station", "PLACE");
+        } else {
+            button("Choose a route", "ROUTE");
         }
     }
 
@@ -44,6 +46,8 @@ public class DialogResourceTrain extends Dialog {
             clicked(Button.TRAIN_DROP);
         } else if(obj == "PLACE") {
             clicked(Button.TRAIN_PLACE);
+        } else if(obj == "ROUTE") {
+            clicked(Button.TRAIN_ROUTE);
         }
     }
 }
