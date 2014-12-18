@@ -20,9 +20,7 @@ public class Map {
     }
 
     public Station addStation(String name, Position location){
-        Station newStation = new Station();
-        newStation.setName(name);
-        newStation.setLocation(location);
+        Station newStation = new Station(name, location);
         stations.add(newStation);
         return newStation;
     }

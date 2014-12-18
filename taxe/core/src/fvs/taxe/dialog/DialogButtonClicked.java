@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import fvs.taxe.Button;
 import fvs.taxe.MapRenderer;
 import fvs.taxe.StationClickListener;
+import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
@@ -36,9 +37,10 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                     @Override
                     public void clicked(Station station) {
                         train.setPosition(station.getLocation());
+                        train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
 
                         Gdx.input.setCursorImage(null, 0, 0);
-                        Image trainImage = mapRenderer.renderTrain(train, currentPlayer);
+                        Image trainImage = mapRenderer.renderTrain(train);
                         train.setActor(trainImage);
 
                         // java.util.ConcurrentModificationException

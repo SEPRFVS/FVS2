@@ -6,6 +6,7 @@ import java.util.List;
 public class PlayerManager {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private int currentTurn = 0;
+	private int turnNumber = 0;
 	private List<TurnListener> turnListeners = new ArrayList<TurnListener>();
 	private List<PlayerChangedListener> playerListeners = new ArrayList<PlayerChangedListener>();
 	
@@ -35,6 +36,7 @@ public class PlayerManager {
 	}
 
 	private void turnChanged() {
+		turnNumber++;
 		for(TurnListener listener : turnListeners) {
 			listener.changed();
 		}
@@ -49,5 +51,9 @@ public class PlayerManager {
 		for (PlayerChangedListener listener : playerListeners) {
 			listener.changed();
 		}
+	}
+
+	public int getTurnNumber() {
+		return turnNumber;
 	}
 }
