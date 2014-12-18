@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.DialogResourceTrain;
+import fvs.taxe.dialog.ResourceClickListener;
 import fvs.taxe.dialog.ResourceDialogClickListener;
 import gameLogic.*;
 import gameLogic.goal.Goal;
@@ -100,38 +101,10 @@ public class GameScreen extends ScreenAdapter {
             button.setPosition(x, y);
             button.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
+                    ResourceClickListener listener = new ResourceClickListener(currentPlayer, train, mapRenderer);
                     DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin, train.getPosition() != null);
                     dia.show(stage);
-                    dia.subscribeClick(new ResourceDialogClickListener() {
-                        @Override
-                        public void clicked(Button button) {
-                            switch(button) {
-                                case TRAIN_DROP:
-                                    currentPlayer.removeResource(r);
-                                    break;
-                                case TRAIN_PLACE:
-                                    Pixmap pm = new Pixmap(Gdx.files.internal(train.getCursorImage()));
-                                    Gdx.input.setCursorImage(pm, 10, 25); // these numbers will need tweaking
-                                    pm.dispose();
-
-                                    mapRenderer.subscribeStationClick(new StationClickListener() {
-                                        @Override
-                                        public void clicked(Station station) {
-                                            train.setPosition(station.getLocation());
-
-                                            Gdx.input.setCursorImage(null, 0, 0);
-                                            Image trainImage = mapRenderer.renderTrain(train);
-                                            train.setActor(trainImage);
-
-                                            // java.util.ConcurrentModificationException
-                                            mapRenderer.unsubscribeStationClick(this);
-                                        }
-                                    });
-
-                                    break;
-                            }
-                        }
-                    });
+                    dia.subscribeClick(listener);
                 }
             });
 
