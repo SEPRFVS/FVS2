@@ -37,12 +37,12 @@ public class DialogResourceTrain extends Dialog {
     }
 
     @Override
-    protected void result(Object o) {
-        if (o == "CLOSE") {
+    protected void result(Object obj) {
+        if (obj == "CLOSE") {
             this.remove();
-        } else if (o == "DROP") {
+        } else if (obj == "DROP") {
             clicked(Button.TRAIN_DROP);
-        } else if(o == "PLACE") {
+        } else if(obj == "PLACE") {
             clicked(Button.TRAIN_PLACE);
         }
     }

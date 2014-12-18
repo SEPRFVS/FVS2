@@ -15,8 +15,8 @@ public class TrainClicked extends ClickListener {
     private MapRenderer mapRenderer;
     private Stage stage;
 
-    public TrainClicked(Train t, Skin skin, MapRenderer mr, Stage stage) {
-        train = t;
+    public TrainClicked(Train train, Skin skin, MapRenderer mr, Stage stage) {
+        this.train = train;
         mapRenderer = mr;
         this.skin = skin;
         this.stage = stage;

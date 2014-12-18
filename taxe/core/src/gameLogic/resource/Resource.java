@@ -11,8 +11,8 @@ public abstract class Resource implements Disposable {
 		this.player = player;
 	}
 
-	public boolean isOwnedBy(Player p) {
-		return p == this.player;
+	public boolean isOwnedBy(Player player) {
+		return player == this.player;
 	}
 
 	@Override

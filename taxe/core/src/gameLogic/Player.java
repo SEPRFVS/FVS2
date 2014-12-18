@@ -31,23 +31,23 @@ public class Player {
         return resources;
     }
 
-    public void addResource(Resource r) {
-        resources.add(r);
+    public void addResource(Resource resource) {
+        resources.add(resource);
         pm.playerChanged();
     }
 
-    public void removeResource(Resource r) {
-        resources.remove(r);
-        r.dispose();
+    public void removeResource(Resource resource) {
+        resources.remove(resource);
+        resource.dispose();
         pm.playerChanged();
     }
 
-    public void addGoal(Goal g) {
+    public void addGoal(Goal goal) {
         if (goals.size() >= GoalManager.CONFIG_MAX_PLAYER_GOALS) {
             throw new RuntimeException("Max player goals exceeded");
         }
 
-        goals.add(g);
+        goals.add(goal);
         pm.playerChanged();
     }
 
