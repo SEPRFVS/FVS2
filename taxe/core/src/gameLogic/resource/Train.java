@@ -13,6 +13,7 @@ public class Train extends Resource {
     private IPositionable position;
     private Image actor;
     private int speed;
+    private Station finalDestination;
 
     // Should NOT contain current position!
     private List<Station> route;
@@ -55,6 +56,7 @@ public class Train extends Resource {
 
     public void setRoute(List<Station> route) {
         this.route = route;
+        finalDestination = route.get(route.size() - 1);
     }
 
     public List<Station> getRoute(){
