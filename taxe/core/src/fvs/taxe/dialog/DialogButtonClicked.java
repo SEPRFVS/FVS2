@@ -10,12 +10,12 @@ import gameLogic.Player;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
-public class ResourceClickListener implements ResourceDialogClickListener {
+public class DialogButtonClicked implements ResourceDialogClickListener {
     private Player currentPlayer;
     private Train train;
     private MapRenderer mapRenderer;
 
-    public ResourceClickListener(Player p, Train t, MapRenderer mr) {
+    public DialogButtonClicked(Player p, Train t, MapRenderer mr) {
         currentPlayer = p;
         train = t;
         mapRenderer = mr;
@@ -38,7 +38,7 @@ public class ResourceClickListener implements ResourceDialogClickListener {
                         train.setPosition(station.getLocation());
 
                         Gdx.input.setCursorImage(null, 0, 0);
-                        Image trainImage = mapRenderer.renderTrain(train);
+                        Image trainImage = mapRenderer.renderTrain(train, currentPlayer);
                         train.setActor(trainImage);
 
                         // java.util.ConcurrentModificationException

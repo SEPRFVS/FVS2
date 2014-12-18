@@ -10,7 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import fvs.taxe.dialog.TrainClicked;
+import gameLogic.Player;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
 import javafx.geometry.Pos;
@@ -29,6 +32,7 @@ public class MapRenderer {
     private Stage stage;
     private TaxeGame game;
     private Map map;
+    private Skin skin;
     /*
      have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
      their handler's method, one case unsubscribes from the event removing itself from this list
@@ -36,9 +40,11 @@ public class MapRenderer {
       */
     private List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
 
-    public MapRenderer(TaxeGame game, Stage stage) {
+    public MapRenderer(TaxeGame game, Stage stage, Skin skin) {
         this.game = game;
         this.stage = stage;
+        this.skin = skin;
+
         map = new Map();
     }
 
@@ -93,11 +99,13 @@ public class MapRenderer {
         game.shapeRenderer.end();
     }
 
-    public Image renderTrain(Train t) {
+    public Image renderTrain(Train t, Player currentPlayer) {
         Image trainImage = new Image(new Texture(Gdx.files.internal(t.getImage())));
         IPositionable position = t.getPosition();
         trainImage.setSize(30f, 30f);
         trainImage.setPosition(position.getX() - OFFSET, position.getY() - OFFSET);
+        trainImage.addListener(new TrainClicked(t, currentPlayer, skin, this, stage));
+
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
         t.setActor(trainImage);
         stage.addActor(trainImage);

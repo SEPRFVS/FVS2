@@ -7,16 +7,14 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.DialogResourceTrain;
-import fvs.taxe.dialog.ResourceClickListener;
-import fvs.taxe.dialog.ResourceDialogClickListener;
+import fvs.taxe.dialog.DialogButtonClicked;
+import fvs.taxe.dialog.TrainClicked;
 import gameLogic.*;
 import gameLogic.goal.Goal;
-import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
@@ -55,7 +53,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
-        mapRenderer = new MapRenderer(game, stage);
+        mapRenderer = new MapRenderer(game, stage, skin);
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
@@ -95,18 +93,11 @@ public class GameScreen extends ScreenAdapter {
         resourceButtons.clear();
 
         for (final Resource r : currentPlayer.getResources()) {
-            final Train train = (Train)r;
+            TrainClicked listener = new TrainClicked((Train)r, currentPlayer, skin, mapRenderer, stage);
 
             TextButton button = new TextButton(r.toString(), skin);
             button.setPosition(x, y);
-            button.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    ResourceClickListener listener = new ResourceClickListener(currentPlayer, train, mapRenderer);
-                    DialogResourceTrain dia = new DialogResourceTrain(r.toString(), skin, train.getPosition() != null);
-                    dia.show(stage);
-                    dia.subscribeClick(listener);
-                }
-            });
+            button.addListener(listener);
 
             resourceButtons.addActor(button);
 
