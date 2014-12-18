@@ -13,6 +13,7 @@ public class Train extends Resource {
     private IPositionable position;
     private Image actor;
     private int speed;
+    // Final destination should be set to null after firing the arrival event
     private Station finalDestination;
 
     // Should NOT contain current position!
@@ -55,12 +56,18 @@ public class Train extends Resource {
     }
 
     public void setRoute(List<Station> route) {
+        // Final destination should be set to null after firing the arrival event
+        if (route.size() > 0) finalDestination = route.get(route.size() - 1);
+
         this.route = route;
-        finalDestination = route.get(route.size() - 1);
     }
 
     public List<Station> getRoute(){
         return route;
+    }
+
+    public Station getFinalDestination() {
+        return finalDestination;
     }
     
     public int getSpeed() {

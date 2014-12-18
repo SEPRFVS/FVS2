@@ -1,5 +1,6 @@
 package fvs.taxe;
 
+import Util.Tuple;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,12 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
-import gameLogic.Player;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
 
@@ -116,10 +118,16 @@ public class MapRenderer {
         return trainImage;
     }
 
-    public static void moveTrain(Train train, IPositionable target, float sec){
-        if (train.getActor() == null) return;
-        train.getActor().addAction(moveTo(target.getX() - OFFSET, target.getY() - OFFSET, sec));
-        train.setPosition(new Position(target.getX(), target.getY()));
+    public static void moveTrain(Train train, List<Tuple<IPositionable, Float>> targets){
+        if (train.getActor() == null || targets == null) return;
+
+        //Sequential action of all of the trains' moveTo actions for one turn
+        SequenceAction action = Actions.sequence();
+        for (Tuple<IPositionable, Float> target : targets) {
+            action.addAction(moveTo(target.getFirst().getX(), target.getFirst().getY(), target.getSecond()));
+            train.setPosition(new Position(target.getFirst().getX(), target.getFirst().getY()));
+        }
+        train.getActor().addAction(action);
     }
 
 
@@ -128,6 +136,9 @@ public class MapRenderer {
         int totalDst = train.getSpeed();
         int availableDst = totalDst;
         IPositionable current = train.getPosition();
+
+        // Hold moveTo target positions and animation durations in here
+        List<Tuple<IPositionable, Float>> targets = new ArrayList<Tuple<IPositionable, Float>>();
 
         if (current == null) return;
         if (train.getRoute() == null || train.getRoute().size() == 0) return;
@@ -139,10 +150,11 @@ public class MapRenderer {
 
             if (distanceToNext <= availableDst) {
                 float sec = distanceToNext / totalDst * ANIMATION_DURATION;
-                MapRenderer.moveTrain(train, next, sec);
+                //MapRenderer.moveTrain(train, next, sec);
+                targets.add(new Tuple<IPositionable, Float>(next, sec));
                 availableDst -= distanceToNext;
-                current = next;
                 stationsToBeRemoved++;
+                current = next;
                 train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
             } else {
                 int delta_x = Math.round((availableDst / distanceToNext) * (next.getX() - current.getX()));
@@ -151,7 +163,8 @@ public class MapRenderer {
                 IPositionable targetLocation = new Position(current.getX() + delta_x, current.getY() + delta_y);
                 float dist = Vector2.dst(current.getX(), current.getY(), targetLocation.getX(), targetLocation.getY());
                 float sec = dist / totalDst * ANIMATION_DURATION;
-                MapRenderer.moveTrain(train, targetLocation, sec);
+                //MapRenderer.moveTrain(train, targetLocation, sec);
+                targets.add(new Tuple<IPositionable, Float>(targetLocation, sec));
                 break;
             }
         }
@@ -160,5 +173,6 @@ public class MapRenderer {
             train.setRoute(train.getRoute().subList(stationsToBeRemoved, train.getRoute().size()));
         }
 
+        MapRenderer.moveTrain(train, targets);
     }
 }
