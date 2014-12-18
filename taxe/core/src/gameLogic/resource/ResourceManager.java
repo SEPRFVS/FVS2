@@ -21,16 +21,16 @@ public class ResourceManager {
         throw new RuntimeException("local int index must be wrong" + index);
     }
 
-    public void addRandomResourceToPlayer(Player p) {
-        addResourceToPlayer(p, getRandomResource());
+    public void addRandomResourceToPlayer(Player player) {
+        addResourceToPlayer(player, getRandomResource());
     }
 
-    public void addResourceToPlayer(Player p, Resource r) {
-        if (p.getResources().size() >= CONFIG_MAX_RESOURCES) {
+    public void addResourceToPlayer(Player player, Resource resource) {
+        if (player.getResources().size() >= CONFIG_MAX_RESOURCES) {
             throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
         }
 
-        r.setPlayer(p);
-        p.addResource(r);
+        resource.setPlayer(player);
+        player.addResource(resource);
     }
 }

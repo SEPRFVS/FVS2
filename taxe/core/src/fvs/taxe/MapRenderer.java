@@ -98,22 +98,20 @@ public class MapRenderer {
         game.shapeRenderer.end();
     }
 
-    public Image renderTrain(Train t) {
-        Image trainImage = new Image(new Texture(Gdx.files.internal(t.getImage())));
-        IPositionable position = t.getPosition();
+    public Image renderTrain(Train train) {
+        Image trainImage = new Image(new Texture(Gdx.files.internal(train.getImage())));
+        IPositionable position = train.getPosition();
         trainImage.setSize(30f, 30f);
         trainImage.setPosition(position.getX() - OFFSET, position.getY() - OFFSET);
-        trainImage.addListener(new TrainClicked(t, skin, this, stage));
-
+        trainImage.addListener(new TrainClicked(train, skin, this, stage));
 
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
-        t.setActor(trainImage);
+        train.setActor(trainImage);
         stage.addActor(trainImage);
-
         List<Station> route = new ArrayList<Station>();
         route.add(new Station("Test", new Position(200, 200)));
         route.add(new Station("Test", new Position(300, 300)));
-        t.setRoute(route);
+        train.setRoute(route);
 
         return trainImage;
     }

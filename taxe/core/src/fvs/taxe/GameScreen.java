@@ -92,10 +92,10 @@ public class GameScreen extends ScreenAdapter {
         resourceButtons.remove();
         resourceButtons.clear();
 
-        for (final Resource r : currentPlayer.getResources()) {
-            TrainClicked listener = new TrainClicked((Train)r, skin, mapRenderer, stage);
+        for (final Resource resource : currentPlayer.getResources()) {
+            TrainClicked listener = new TrainClicked((Train)resource, skin, mapRenderer, stage);
 
-            TextButton button = new TextButton(r.toString(), skin);
+            TextButton button = new TextButton(resource.toString(), skin);
             button.setPosition(x, y);
             button.addListener(listener);
 
@@ -112,8 +112,8 @@ public class GameScreen extends ScreenAdapter {
         PlayerManager pm = gameLogic.getPlayerManager();
         Player currentPlayer = pm.getCurrentPlayer();
 
-        for (Goal g : currentPlayer.getGoals()) {
-            strings.add(g.toString());
+        for (Goal goal : currentPlayer.getGoals()) {
+            strings.add(goal.toString());
         }
 
         return strings;
@@ -129,9 +129,9 @@ public class GameScreen extends ScreenAdapter {
         String playerGoals = "Current Player (" + gameLogic.getPlayerManager().getCurrentPlayer().toString() + ") Goals:";
         game.fontSmall.draw(game.batch, playerGoals, x, y);
 
-        for (String s : playerGoalStrings()) {
+        for (String goalString : playerGoalStrings()) {
             y -= 30;
-            game.fontSmall.draw(game.batch, s, x, y);
+            game.fontSmall.draw(game.batch, goalString, x, y);
         }
 
         game.batch.end();

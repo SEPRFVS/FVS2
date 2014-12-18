@@ -7,7 +7,7 @@ public abstract class Goal {
 	
 	abstract public boolean isComplete();
 	
-	public void awardScore(Player p) {
-		p.addScore(rewardScore);
+	public void awardScore(Player player) {
+		player.addScore(rewardScore);
 	}
 }

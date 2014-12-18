@@ -9,7 +9,7 @@ public class GoalManager {
 		return new GoalDummy();
 	}
 	
-	public void givePlayerGoal(Player p) {
-		p.addGoal(generateRandom());
+	public void givePlayerGoal(Player player) {
+		player.addGoal(generateRandom());
 	}
 }

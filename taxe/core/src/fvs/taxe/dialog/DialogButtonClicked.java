@@ -16,9 +16,9 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
     private Train train;
     private MapRenderer mapRenderer;
 
-    public DialogButtonClicked(Player p, Train t, MapRenderer mr) {
-        currentPlayer = p;
-        train = t;
+    public DialogButtonClicked(Player player, Train train, MapRenderer mr) {
+        currentPlayer = player;
+        this.train = train;
         mapRenderer = mr;
     }
 
@@ -29,9 +29,9 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                 currentPlayer.removeResource(train);
                 break;
             case TRAIN_PLACE:
-                Pixmap pm = new Pixmap(Gdx.files.internal(train.getCursorImage()));
-                Gdx.input.setCursorImage(pm, 10, 25); // these numbers will need tweaking
-                pm.dispose();
+                Pixmap pixmap = new Pixmap(Gdx.files.internal(train.getCursorImage()));
+                Gdx.input.setCursorImage(pixmap, 10, 25); // these numbers will need tweaking
+                pixmap.dispose();
 
                 mapRenderer.subscribeStationClick(new StationClickListener() {
                     @Override
