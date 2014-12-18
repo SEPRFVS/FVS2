@@ -41,12 +41,11 @@ public class MapRenderer {
       */
     private List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
 
-    public MapRenderer(TaxeGame game, Stage stage, Skin skin) {
+    public MapRenderer(TaxeGame game, Stage stage, Skin skin, Map map) {
         this.game = game;
         this.stage = stage;
         this.skin = skin;
-
-        map = new Map();
+        this.map = map;
     }
 
     public void subscribeStationClick(StationClickListener listener) {
@@ -86,13 +85,13 @@ public class MapRenderer {
         stage.addActor(actor);
     }
 
-    public void renderConnections() {
+    public void renderConnections(List<Connection> connections, Color color) {
         int lineWidth = 5;
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.shapeRenderer.setColor(Color.GRAY);
+        game.shapeRenderer.setColor(color);
         //game.shapeRenderer.setProjectionMatrix(camera.combined);
 
-        for (Connection connection : map.getConnections()) {
+        for (Connection connection : connections) {
             IPositionable start = connection.getStation1().getLocation();
             IPositionable end = connection.getStation2().getLocation();
             game.shapeRenderer.rectLine(start.getX(), start.getY(), end.getX(), end.getY(), lineWidth);

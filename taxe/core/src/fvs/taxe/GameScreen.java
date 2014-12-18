@@ -15,6 +15,7 @@ import fvs.taxe.dialog.DialogButtonClicked;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.*;
 import gameLogic.goal.Goal;
+import gameLogic.map.Map;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
@@ -31,6 +32,7 @@ public class GameScreen extends ScreenAdapter {
     private Skin skin;
     private Group resourceButtons;
     private MapRenderer mapRenderer;
+    private Map map;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -45,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         // game logic stuff
+        map = new Map();
         gameLogic = Game.getInstance();
         gameLogic.getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
             @Override
@@ -53,7 +56,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
-        mapRenderer = new MapRenderer(game, stage, skin);
+        mapRenderer = new MapRenderer(game, stage, skin, map);
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
@@ -164,7 +167,7 @@ public class GameScreen extends ScreenAdapter {
         game.batch.draw(mapTexture, 0, 0);
         game.batch.end();
 
-        mapRenderer.renderConnections();
+        mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
