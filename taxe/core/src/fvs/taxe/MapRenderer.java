@@ -124,7 +124,7 @@ public class MapRenderer {
         //Sequential action of all of the trains' moveTo actions for one turn
         SequenceAction action = Actions.sequence();
         for (Tuple<IPositionable, Float> target : targets) {
-            action.addAction(moveTo(target.getFirst().getX(), target.getFirst().getY(), target.getSecond()));
+            action.addAction(moveTo(target.getFirst().getX() - OFFSET, target.getFirst().getY() - OFFSET, target.getSecond()));
             train.setPosition(new Position(target.getFirst().getX(), target.getFirst().getY()));
         }
         train.getActor().addAction(action);
