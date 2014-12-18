@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
@@ -37,6 +39,7 @@ public class MapRenderer {
     private Skin skin;
     private GameState state = GameState.NORMAL;
     private List<IPositionable> placingPositions;
+    private Group routingButtons = new Group();
     /*
      have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
      their handler's method, one case unsubscribes from the event removing itself from this list
@@ -49,6 +52,10 @@ public class MapRenderer {
         this.stage = stage;
         this.skin = skin;
         this.map = map;
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     public GameState getState() {
@@ -85,6 +92,45 @@ public class MapRenderer {
         for (Station station : map.getStations()) {
             renderStation(station);
         }
+    }
+
+    public void beginRoutingState(RouteConfirmedListener listener, List<IPositionable> initialPositions) {
+        setPlacingPositions(initialPositions);
+        setState(GameState.ROUTING);
+        addRoutingButtons(listener);
+    }
+
+    private void addRoutingButtons(final RouteConfirmedListener listener) {
+        TextButton doneRouting = new TextButton("Route Complete", skin);
+        TextButton cancel = new TextButton("Cancel", skin);
+
+        doneRouting.setPosition(500, 500);
+        cancel.setPosition(500, 450);
+
+        cancel.addListener(new ClickListener() {
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                endRouting();
+            }
+        });
+
+        doneRouting.addListener(new ClickListener() {
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                listener.confirmed();
+                endRouting();
+            }
+        });
+
+        routingButtons.addActor(doneRouting);
+        routingButtons.addActor(cancel);
+
+        stage.addActor(routingButtons);
+    }
+
+    private void endRouting() {
+        setState(GameState.NORMAL);
+        routingButtons.remove();
     }
 
     private void renderStation(final Station station) {

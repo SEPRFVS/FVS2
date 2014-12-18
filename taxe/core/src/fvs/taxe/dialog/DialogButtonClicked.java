@@ -51,7 +51,7 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
 
                 break;
             case TRAIN_ROUTE:
-                RouteListener routeListener = new RouteListener(mapRenderer, train.getPosition());
+                RouteListener routeListener = new RouteListener(mapRenderer, train);
                 mapRenderer.subscribeStationClick(routeListener);
 
                 break;

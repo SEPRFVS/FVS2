@@ -1,26 +1,45 @@
 package fvs.taxe;
 
 import gameLogic.map.IPositionable;
+import gameLogic.map.Map;
 import gameLogic.map.Station;
+import gameLogic.resource.Train;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteListener implements StationClickListener {
+public class RouteListener implements StationClickListener, RouteConfirmedListener {
     private List<IPositionable> positions = new ArrayList<IPositionable>();
     private MapRenderer mapRenderer;
+    private Train train;
 
-    public RouteListener(MapRenderer mapRenderer, IPositionable trainCurrentPosition) {
+    public RouteListener(MapRenderer mapRenderer, Train train) {
         this.mapRenderer = mapRenderer;
+        this.train = train;
 
-        positions.add(trainCurrentPosition);
-        mapRenderer.setPlacingPositions(positions);
-        mapRenderer.setState(GameState.ROUTING);
+        positions.add(train.getPosition());
+        mapRenderer.beginRoutingState(this, positions);
     }
 
     @Override
     public void clicked(Station station) {
+
+        // TODO check immediate connection exists in Map.connections between current and clicked position
+        // TODO check connection doesn't already exist in route
+
         positions.add(station.getLocation());
         mapRenderer.setPlacingPositions(positions);
+    }
+
+    @Override
+    public void confirmed() {
+        List<Station> route = new ArrayList<Station>();
+        Map map = mapRenderer.getMap();
+
+        for (IPositionable position : positions) {
+            route.add(map.getStationFromPosition(position));
+        }
+
+        train.setRoute(route);
     }
 }
