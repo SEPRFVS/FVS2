@@ -87,4 +87,14 @@ public class Map {
         }
         return null;
     }
+
+    public Station getStationFromPosition(IPositionable position) {
+        for (Station station : stations) {
+            if (station.getLocation() == position) {
+                return station;
+            }
+        }
+
+        throw new RuntimeException("Station does not exist for that position");
+    }
 }
