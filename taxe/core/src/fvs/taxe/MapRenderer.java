@@ -3,7 +3,6 @@ package fvs.taxe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,10 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.TrainClicked;
+import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,20 +98,34 @@ public class MapRenderer {
         game.shapeRenderer.end();
     }
 
+<<<<<<< HEAD
     public Image renderTrain(Train train, Player currentPlayer) {
         Image trainImage = new Image(new Texture(Gdx.files.internal(train.getImage())));
         IPositionable position = train.getPosition();
+=======
+    public Image renderTrain(Train t) {
+        Image trainImage = new Image(new Texture(Gdx.files.internal(t.getImage())));
+        IPositionable position = t.getPosition();
+>>>>>>> development
         trainImage.setSize(30f, 30f);
         trainImage.setPosition(position.getX() - OFFSET, position.getY() - OFFSET);
         trainImage.addListener(new TrainClicked(train, skin, this, stage));
+
 
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
         train.setActor(trainImage);
         stage.addActor(trainImage);
 
+<<<<<<< HEAD
         List<IPositionable> route = new ArrayList<IPositionable>();
         route.add(new Position(0, 0));
         train.setRoute(route);
+=======
+        List<Station> route = new ArrayList<Station>();
+        route.add(new Station("Test", new Position(200, 200)));
+        route.add(new Station("Test", new Position(300, 300)));
+        t.setRoute(route);
+>>>>>>> development
 
         return trainImage;
     }
@@ -133,7 +146,9 @@ public class MapRenderer {
         if (current == null) return;
         if (train.getRoute() == null || train.getRoute().size() == 0) return;
 
-        for (IPositionable next : train.getRoute()){
+        IPositionable next;
+        for (Station station : train.getRoute()){
+            next = station.getLocation();
             float distanceToNext = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY());
 
             if (distanceToNext <= availableDst) {
@@ -142,6 +157,7 @@ public class MapRenderer {
                 availableDst -= distanceToNext;
                 current = next;
                 stationsToBeRemoved++;
+                train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
             } else {
                 int delta_x = Math.round((availableDst / distanceToNext) * (next.getX() - current.getX()));
                 int delta_y = Math.round((availableDst / distanceToNext) * (next.getY() - current.getY()));
