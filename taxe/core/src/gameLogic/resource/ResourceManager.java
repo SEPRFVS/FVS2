@@ -32,6 +32,7 @@ public class ResourceManager {
             throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
         }
 
+        r.setPlayer(p);
         p.addResource(r);
     }
 }

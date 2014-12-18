@@ -1,9 +1,19 @@
 package gameLogic.resource;
 
 import gameLogic.Disposable;
+import gameLogic.Player;
 
 public abstract class Resource implements Disposable {
 	protected String name;
+	private Player player;
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public boolean isOwnedBy(Player p) {
+		return p == this.player;
+	}
 
 	@Override
 	public String toString() {

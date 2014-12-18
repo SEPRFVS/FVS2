@@ -104,7 +104,7 @@ public class MapRenderer {
         IPositionable position = t.getPosition();
         trainImage.setSize(30f, 30f);
         trainImage.setPosition(position.getX() - OFFSET, position.getY() - OFFSET);
-        trainImage.addListener(new TrainClicked(t, currentPlayer, skin, this, stage));
+        trainImage.addListener(new TrainClicked(t, skin, this, stage));
 
         //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
         t.setActor(trainImage);

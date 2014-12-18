@@ -93,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
         resourceButtons.clear();
 
         for (final Resource r : currentPlayer.getResources()) {
-            TrainClicked listener = new TrainClicked((Train)r, currentPlayer, skin, mapRenderer, stage);
+            TrainClicked listener = new TrainClicked((Train)r, skin, mapRenderer, stage);
 
             TextButton button = new TextButton(r.toString(), skin);
             button.setPosition(x, y);
