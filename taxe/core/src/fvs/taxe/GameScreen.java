@@ -5,13 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import fvs.taxe.dialog.DialogResourceTrain;
-import fvs.taxe.dialog.DialogButtonClicked;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.*;
 import gameLogic.goal.Goal;
@@ -169,7 +165,7 @@ public class GameScreen extends ScreenAdapter {
 
         mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
 
-        if(mapRenderer.getState() == GameState.PLACING) {
+        if(mapRenderer.getState() == GameState.ROUTING) {
             mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.RED);
         }
 

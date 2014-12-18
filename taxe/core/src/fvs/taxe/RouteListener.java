@@ -1,6 +1,5 @@
 package fvs.taxe;
 
-import com.badlogic.gdx.graphics.Color;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Station;
 
@@ -16,7 +15,7 @@ public class RouteListener implements StationClickListener {
 
         positions.add(trainCurrentPosition);
         mapRenderer.setPlacingPositions(positions);
-        mapRenderer.setState(GameState.PLACING);
+        mapRenderer.setState(GameState.ROUTING);
     }
 
     @Override
