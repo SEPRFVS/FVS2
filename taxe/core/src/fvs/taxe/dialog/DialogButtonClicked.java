@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import fvs.taxe.Button;
 import fvs.taxe.MapRenderer;
+import fvs.taxe.RouteListener;
 import fvs.taxe.StationClickListener;
 import gameLogic.Game;
 import gameLogic.Player;
@@ -47,6 +48,11 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                         mapRenderer.unsubscribeStationClick(this);
                     }
                 });
+
+                break;
+            case TRAIN_ROUTE:
+                RouteListener routeListener = new RouteListener(mapRenderer, train.getPosition());
+                mapRenderer.subscribeStationClick(routeListener);
 
                 break;
         }

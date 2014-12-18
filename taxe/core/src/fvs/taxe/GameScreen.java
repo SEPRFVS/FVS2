@@ -169,6 +169,10 @@ public class GameScreen extends ScreenAdapter {
 
         mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
 
+        if(mapRenderer.getState() == GameState.PLACING) {
+            mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.RED);
+        }
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 

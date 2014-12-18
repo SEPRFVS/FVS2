@@ -29,11 +29,14 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 public class MapRenderer {
     public static final int OFFSET = 8;
     public static final int ANIMATION_DURATION = 5;
+    private final int LINE_WIDTH = 5;
 
     private Stage stage;
     private TaxeGame game;
     private Map map;
     private Skin skin;
+    private GameState state = GameState.NORMAL;
+    private List<IPositionable> placingPositions;
     /*
      have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
      their handler's method, one case unsubscribes from the event removing itself from this list
@@ -46,6 +49,22 @@ public class MapRenderer {
         this.stage = stage;
         this.skin = skin;
         this.map = map;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public void setPlacingPositions(List<IPositionable> placingPositions) {
+        this.placingPositions = placingPositions;
+    }
+
+    public List<IPositionable> getPlacingPositions() {
+        return placingPositions;
     }
 
     public void subscribeStationClick(StationClickListener listener) {
@@ -85,8 +104,24 @@ public class MapRenderer {
         stage.addActor(actor);
     }
 
+    public void drawRoute(List<IPositionable>positions, Color color) {
+        IPositionable previousPosition = null;
+        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        game.shapeRenderer.setColor(color);
+
+        for(IPositionable position : positions) {
+            if(previousPosition != null) {
+                game.shapeRenderer.rectLine(previousPosition.getX(), previousPosition.getY(), position.getX(),
+                        position.getY(), LINE_WIDTH);
+            }
+
+            previousPosition = position;
+        }
+
+        game.shapeRenderer.end();
+    }
+
     public void renderConnections(List<Connection> connections, Color color) {
-        int lineWidth = 5;
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(color);
         //game.shapeRenderer.setProjectionMatrix(camera.combined);
@@ -94,7 +129,7 @@ public class MapRenderer {
         for (Connection connection : connections) {
             IPositionable start = connection.getStation1().getLocation();
             IPositionable end = connection.getStation2().getLocation();
-            game.shapeRenderer.rectLine(start.getX(), start.getY(), end.getX(), end.getY(), lineWidth);
+            game.shapeRenderer.rectLine(start.getX(), start.getY(), end.getX(), end.getY(), LINE_WIDTH);
         }
         game.shapeRenderer.end();
     }
