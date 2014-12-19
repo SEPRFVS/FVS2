@@ -1,9 +1,14 @@
 package gameLogic.map;
 
-public interface IPositionable {
-	
-    public int getX();
-    public int getY();
-    public void setX(int x);
-    public void setY(int y);
+    abstract public class IPositionable {
+
+        public abstract int getX();
+
+        public abstract int getY();
+
+        public abstract void setX(int x);
+
+        public abstract void setY(int y);
+
+        public abstract boolean equals(Object o);
 }

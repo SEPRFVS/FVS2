@@ -1,6 +1,6 @@
 package gameLogic.map;
 
-public class Position implements IPositionable {
+public class Position extends IPositionable {
 	private int x;
 	private int y;
 	
@@ -29,9 +29,11 @@ public class Position implements IPositionable {
 		this.y = y;
 	}
 
-	public boolean equals(IPositionable pos) {
+	@Override
+	public boolean equals(Object o) {
+		Position pos = (Position) o;
 		return (x == pos.getX() && y == pos.getY());
+
 	}
-
-
 }
+
