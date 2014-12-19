@@ -28,5 +28,10 @@ public class Position implements IPositionable {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
+	public boolean equals(IPositionable pos) {
+		return (x == pos.getX() && y == pos.getY());
+	}
+
+
 }
