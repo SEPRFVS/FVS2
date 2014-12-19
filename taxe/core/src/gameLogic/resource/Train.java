@@ -69,6 +69,10 @@ public class Train extends Resource {
     public Station getFinalDestination() {
         return finalDestination;
     }
+
+    public void setFinalDestination(Station station) {
+        finalDestination = station;
+    }
     
     public int getSpeed() {
         return speed;

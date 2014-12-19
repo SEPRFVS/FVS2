@@ -90,7 +90,7 @@ public class Map {
 
     public Station getStationFromPosition(IPositionable position) {
         for (Station station : stations) {
-            if (station.getLocation().getX() == position.getX() && station.getLocation().getY() == position.getY()) {
+            if (station.getLocation().equals(position)) {
                 return station;
             }
         }

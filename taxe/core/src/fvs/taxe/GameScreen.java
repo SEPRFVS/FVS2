@@ -65,7 +65,7 @@ public class GameScreen extends ScreenAdapter {
     private void animateTrainMovements(){
         for (Player player : gameLogic.getPlayerManager().getAllPlayers()){
             for (Resource train : player.getResources()){
-                mapRenderer.moveTrainByTurn((Train) train);
+                mapRenderer.moveTrainByTurn((Train) train, player);
             }
         }
 
