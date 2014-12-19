@@ -1,5 +1,6 @@
 package fvs.taxe.dialog;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -16,6 +17,7 @@ public class DialogResourceTrain extends Dialog {
     public DialogResourceTrain(String title, Skin skin, boolean trainPlaced) {
         super(title, skin);
 
+
         text("What do you want to do with this train?");
 
         button("Cancel", "CLOSE");
@@ -26,6 +28,18 @@ public class DialogResourceTrain extends Dialog {
         } else {
             button("Choose a route", "ROUTE");
         }
+    }
+
+    @Override
+    public Dialog show (Stage stage) {
+        show(stage, null);
+        setPosition(Math.round((stage.getWidth() - getWidth()) / 2), Math.round((stage.getHeight() - getHeight()) / 2));
+        return this;
+    }
+
+    @Override
+    public void hide () {
+        hide(null);
     }
 
     private void clicked(Button button) {
