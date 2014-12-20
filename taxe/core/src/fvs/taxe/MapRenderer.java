@@ -6,16 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
@@ -42,6 +38,7 @@ public class MapRenderer {
     private GameState state = GameState.NORMAL;
     private List<IPositionable> placingPositions;
     private Group routingButtons = new Group();
+    private Window tooltip;
     /*
      have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
      their handler's method, one case unsubscribes from the event removing itself from this list
@@ -54,6 +51,13 @@ public class MapRenderer {
         this.stage = stage;
         this.skin = skin;
         this.map = map;
+
+        tooltip = new Window("", skin);
+        //tooltip.add(new Label("TESTING TOOLTIP", skin));
+        tooltip.setSize(150, 20);
+        tooltip.setVisible(false);
+
+        stage.addActor(tooltip);
     }
 
     public Map getMap() {
@@ -136,20 +140,38 @@ public class MapRenderer {
     }
 
     private void renderStation(final Station station) {
+        int width = 35;
+        int height = 22;
+
         IPositionable location = station.getLocation();
-        MapActor actor = new MapActor(location.getX(), location.getY(), station);
-        actor.setTouchable(Touchable.enabled);
-        actor.addListener(new ClickListener() {
+        final Image stationActor = new Image(new Texture(Gdx.files.internal("station_icon.png")));
+        stationActor.setPosition(location.getX() - width / 2, location.getY() - height / 2);
+        stationActor.setSize(width, height);
+        stationActor.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 /*
                  if a station is clicked, someone could be attempting to place a train there,
                  or be routing a train, we don't care about this, we should just publish an event
                   */
+                System.out.println(station.getName());
                 stationClicked(station);
             }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                tooltip.setTitle(station.getName());
+                tooltip.setVisible(true);
+                tooltip.setPosition(stationActor.getX() + 20, stationActor.getY() + 20);
+                tooltip.toFront();
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                tooltip.setVisible(false);
+            }
         });
-        stage.addActor(actor);
+        stage.addActor(stationActor);
     }
 
     public void drawRoute(List<IPositionable>positions, Color color) {
