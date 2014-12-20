@@ -33,13 +33,13 @@ public class Player {
 
     public void addResource(Resource resource) {
         resources.add(resource);
-        pm.playerChanged();
+        changed();
     }
 
     public void removeResource(Resource resource) {
         resources.remove(resource);
         resource.dispose();
-        pm.playerChanged();
+        changed();
     }
 
     public void addGoal(Goal goal) {
@@ -48,6 +48,13 @@ public class Player {
         }
 
         goals.add(goal);
+        changed();
+    }
+
+    /**
+     * Method is called whenever a property of this player changes, or one of the player's resources changes
+     */
+    public void changed() {
         pm.playerChanged();
     }
 

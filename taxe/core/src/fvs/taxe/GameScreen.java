@@ -74,7 +74,7 @@ public class GameScreen extends ScreenAdapter {
     private void drawResourcesHeader() {
         game.batch.begin();
         game.fontSmall.setColor(Color.BLACK);
-        game.fontSmall.draw(game.batch, "Resources:", 10.0f, (float) TaxeGame.HEIGHT - 250.0f);
+        game.fontSmall.draw(game.batch, "Unplaced Resources:", 10.0f, (float) TaxeGame.HEIGHT - 250.0f);
         game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float) TaxeGame.WIDTH - 100.0f, (float) TaxeGame.HEIGHT - 10.0f);
         game.batch.end();
     }
@@ -92,15 +92,24 @@ public class GameScreen extends ScreenAdapter {
         resourceButtons.clear();
 
         for (final Resource resource : currentPlayer.getResources()) {
-            TrainClicked listener = new TrainClicked((Train)resource, skin, mapRenderer, stage);
+            if (resource instanceof Train) {
+                Train train = (Train) resource;
 
-            TextButton button = new TextButton(resource.toString(), skin);
-            button.setPosition(x, y);
-            button.addListener(listener);
+                // don't show a button for trains that have been placed
+                if (train.getPosition() != null) {
+                    continue;
+                }
 
-            resourceButtons.addActor(button);
+                TrainClicked listener = new TrainClicked(train, skin, mapRenderer, stage);
 
-            y -= 30;
+                TextButton button = new TextButton(resource.toString(), skin);
+                button.setPosition(x, y);
+                button.addListener(listener);
+
+                resourceButtons.addActor(button);
+
+                y -= 30;
+            }
         }
 
         stage.addActor(resourceButtons);

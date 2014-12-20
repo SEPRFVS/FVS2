@@ -19,4 +19,8 @@ public abstract class Resource implements Disposable {
 	public String toString() {
 		return name;
 	}
+
+	protected void changed() {
+		player.changed();
+	}
 }

@@ -41,6 +41,7 @@ public class Train extends Resource {
 
     public void setPosition(IPositionable position) {
         this.position = position;
+        changed();
     }
 
     public IPositionable getPosition() {
