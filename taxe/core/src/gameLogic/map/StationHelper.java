@@ -46,4 +46,15 @@ public final class StationHelper {
     public static ArrayList<Tuple<String, String>> getConnections(){
         return connections;
     }
+
+    public static boolean doesConnectionExist(String stationName, String anotherStationName) {
+        for (Tuple<String, String> connection : connections) {
+            if (connection.getFirst() == stationName && connection.getSecond() == anotherStationName
+                    || connection.getFirst() == anotherStationName && connection.getSecond() == stationName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

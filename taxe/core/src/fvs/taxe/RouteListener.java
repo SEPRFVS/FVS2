@@ -3,6 +3,7 @@ package fvs.taxe;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
+import gameLogic.map.StationHelper;
 import gameLogic.resource.Train;
 
 import java.util.ArrayList;
@@ -27,8 +28,14 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
         // TODO check immediate connection exists in Map.connections between current and clicked position
         // TODO check connection doesn't already exist in route
 
-        positions.add(station.getLocation());
-        mapRenderer.setPlacingPositions(positions);
+        // the latest position chosen in the route so far
+        IPositionable lastPosition =  positions.get(positions.size() - 1);
+        Station lastStation = mapRenderer.getMap().getStationFromPosition(lastPosition);
+
+        if(StationHelper.doesConnectionExist(station.getName(), lastStation.getName())) {
+            positions.add(station.getLocation());
+            mapRenderer.setPlacingPositions(positions);
+        }
     }
 
     @Override
