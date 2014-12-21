@@ -25,7 +25,7 @@ public class ResourceManager {
         addResourceToPlayer(player, getRandomResource());
     }
 
-    public void addResourceToPlayer(Player player, Resource resource) {
+    private void addResourceToPlayer(Player player, Resource resource) {
         if (player.getResources().size() >= CONFIG_MAX_RESOURCES) {
             throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
         }

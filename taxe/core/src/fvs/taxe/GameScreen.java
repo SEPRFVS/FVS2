@@ -175,7 +175,7 @@ public class GameScreen extends ScreenAdapter {
         mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
 
         if(mapRenderer.getState() == GameState.ROUTING) {
-            mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.RED);
+            mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.BLACK);
         }
 
         stage.act(Gdx.graphics.getDeltaTime());

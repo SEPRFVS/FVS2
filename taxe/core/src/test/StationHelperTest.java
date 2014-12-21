@@ -1,5 +1,6 @@
-package gameLogic.map;
+package test;
 
+import gameLogic.map.StationHelper;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
