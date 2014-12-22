@@ -17,6 +17,15 @@ public class PlayerManagerTest {
     }
 
     @Test
+    public void testInitialisePlayers() {
+        Player currentPlayer = pm.getCurrentPlayer();
+
+        // fresh players should start with at least 1 goal and resource
+        assertTrue(currentPlayer.getResources().size() > 0);
+        assertTrue(currentPlayer.getGoals().size() > 0);
+    }
+
+    @Test
     public void testGetCurrentPlayer() throws Exception {
         Player p1 = pm.getCurrentPlayer();
         pm.turnOver();
