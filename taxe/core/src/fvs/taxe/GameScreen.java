@@ -5,9 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.*;
 import gameLogic.goal.Goal;
@@ -75,7 +77,7 @@ public class GameScreen extends ScreenAdapter {
         game.batch.begin();
         game.fontSmall.setColor(Color.BLACK);
         game.fontSmall.draw(game.batch, "Unplaced Resources:", 10.0f, (float) TaxeGame.HEIGHT - 250.0f);
-        game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float) TaxeGame.WIDTH - 100.0f, (float) TaxeGame.HEIGHT - 10.0f);
+        game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float) TaxeGame.WIDTH - 70.0f, 20.0f);
         game.batch.end();
     }
 
@@ -145,15 +147,28 @@ public class GameScreen extends ScreenAdapter {
         game.batch.end();
     }
 
+    private void addEndTurnButton() {
+        TextButton endTurn = new TextButton("End Turn", skin);
+        endTurn.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 40.0f);
+        endTurn.addListener(new ClickListener() {
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                gameLogic.getPlayerManager().turnOver();
+            }
+        });
+
+        stage.addActor(endTurn);
+    }
+
     // you can read about the debug keys and their functionality in the GitHub wiki
     private void debugKeys() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
             gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-            gameLogic.getPlayerManager().turnOver();
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+//            gameLogic.getPlayerManager().turnOver();
+//        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             gameLogic.getResourceManager().addRandomResourceToPlayer(gameLogic.getPlayerManager().getCurrentPlayer());
@@ -191,6 +206,7 @@ public class GameScreen extends ScreenAdapter {
     // Called when GameScreen becomes current screen of the game
     public void show() {
         mapRenderer.renderStations();
+        addEndTurnButton();
     }
 
 
