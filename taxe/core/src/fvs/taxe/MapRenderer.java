@@ -188,10 +188,17 @@ public class MapRenderer {
         SequenceAction action = Actions.sequence();
         IPositionable current = train.getPosition();
 
-        for (Station station : train.getRoute()) {
+        for (final Station station : train.getRoute()) {
             IPositionable next = station.getLocation();
             float duration = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY()) / train.getSpeed();
-            action.addAction(moveTo(next.getX(), next.getY(), duration));
+            action.addAction(moveTo(next.getX() - TRAIN_OFFSET, next.getY() - TRAIN_OFFSET, duration));
+            action.addAction(new RunnableAction() {
+                public void run() {
+                    train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
+                    System.out.println("Added to history: passed " + station.getName() + " on turn "
+                            + Game.getInstance().getPlayerManager().getTurnNumber());
+                }
+            });
             current = next;
         }
 
