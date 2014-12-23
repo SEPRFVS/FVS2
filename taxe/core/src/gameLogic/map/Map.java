@@ -2,14 +2,12 @@ package gameLogic.map;
 
 import Util.Tuple;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Map {
     private List<Station> stations;
     private List<Connection> connections;
+    private Random random = new Random();
 
     public Map() {
         stations = new ArrayList<Station>();
@@ -17,6 +15,10 @@ public class Map {
 
         addStations();
         addConnections();
+    }
+
+    public Station getRandomStation() {
+        return stations.get(random.nextInt(stations.size() - 1));
     }
 
     public Station addStation(String name, Position location){
