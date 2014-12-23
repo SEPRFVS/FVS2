@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.MapRenderer;
 import gameLogic.Game;
+import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.resource.Train;
 
@@ -24,6 +25,8 @@ public class TrainClicked extends ClickListener {
 
     @Override
     public void clicked(InputEvent event, float x, float y) {
+        if (Game.getInstance().getState() != GameState.NORMAL) return;
+
         // current player can't be passed in as it changes so find out current player at this instant
         Player currentPlayer = Game.getInstance().getPlayerManager().getCurrentPlayer();
 

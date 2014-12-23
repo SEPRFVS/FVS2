@@ -167,7 +167,7 @@ public class GameScreen extends ScreenAdapter {
 
     // you can read about the debug keys and their functionality in the GitHub wiki
     private void debugKeys() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.G) && gameLogic.getState() == GameState.NORMAL) {
             gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
         }
 
@@ -175,7 +175,7 @@ public class GameScreen extends ScreenAdapter {
 //            gameLogic.getPlayerManager().turnOver();
 //        }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R) && gameLogic.getState() == GameState.NORMAL) {
             gameLogic.getResourceManager().addRandomResourceToPlayer(gameLogic.getPlayerManager().getCurrentPlayer());
         }
     }
