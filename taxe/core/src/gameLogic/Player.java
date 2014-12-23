@@ -71,4 +71,8 @@ public class Player {
     public List<Goal> getGoals() {
         return goals;
     }
+    
+    public PlayerManager getPlayerManager(){
+    	return pm;
+    }
 }
