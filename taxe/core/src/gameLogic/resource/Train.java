@@ -58,9 +58,13 @@ public class Train extends Resource {
 
     public void setRoute(List<Station> route) {
         // Final destination should be set to null after firing the arrival event
-        if (route.size() > 0) finalDestination = route.get(route.size() - 1);
+        if (route != null && route.size() > 0) finalDestination = route.get(route.size() - 1);
 
         this.route = route;
+    }
+
+    public boolean isMoving() {
+        return finalDestination != null;
     }
 
     public List<Station> getRoute(){
