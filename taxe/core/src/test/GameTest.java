@@ -26,4 +26,18 @@ public class GameTest {
         assertTrue(currentPlayer.getResources().size() > 0);
         assertTrue(currentPlayer.getGoals().size() > 0);
     }
+
+    @Test
+    public void testPlayerChanged() throws Exception {
+        Player p1 = pm.getCurrentPlayer();
+        int resourceCount = p1.getResources().size();
+        int goalCount = p1.getGoals().size();
+
+        pm.turnOver();
+        pm.turnOver();
+
+        // resource count should increase when p1 has another turn
+        assertTrue(p1.getResources().size() > resourceCount);
+        assertTrue(p1.getGoals().size() > goalCount);
+    }
 }

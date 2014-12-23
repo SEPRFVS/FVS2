@@ -23,6 +23,15 @@ public class Game {
 		map = new Map();
 		
 		state = GameState.NORMAL;
+
+		playerManager.subscribeTurnChanged(new TurnListener() {
+			@Override
+			public void changed() {
+				Player currentPlayer = playerManager.getCurrentPlayer();
+				goalManager.givePlayerGoal(currentPlayer);
+				resourceManager.addRandomResourceToPlayer(currentPlayer);
+			}
+		});
 	}
 
 	public static Game getInstance() {
@@ -41,7 +50,6 @@ public class Game {
 	 */
 	private void initialisePlayers() {
 		for (Player player : playerManager.getAllPlayers()) {
-			//TODO Needs access to station list
 			goalManager.givePlayerGoal(player);
 			resourceManager.addRandomResourceToPlayer(player);
 		}

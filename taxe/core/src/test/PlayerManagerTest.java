@@ -25,17 +25,5 @@ public class PlayerManagerTest {
         assertFalse(p1.equals(pm.getCurrentPlayer()));
     }
 
-    @Test
-    public void testPlayerChanged() throws Exception {
-        Player p1 = pm.getCurrentPlayer();
-        int resourceCount = p1.getResources().size();
-        int goalCount = p1.getGoals().size();
 
-        pm.turnOver();
-        pm.turnOver();
-
-        // resource count should increase when p1 has another turn
-        assertTrue(p1.getResources().size() > resourceCount);
-        assertTrue(p1.getGoals().size() > goalCount);
-    }
 }
