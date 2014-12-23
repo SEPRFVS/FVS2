@@ -20,7 +20,7 @@ public class GoalManager {
 			destination = map.getRandomStation();
 		} while (destination == origin);
 
-		return new Goal(origin, destination, 10, turn);
+		return new Goal(origin, destination, turn);
 	}
 	
 	//TODO is there a better way as supposed to passing in the player?

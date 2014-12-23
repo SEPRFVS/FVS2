@@ -1,6 +1,7 @@
 package gameLogic.goal;
 
 import Util.Tuple;
+import fvs.taxe.TaxeGame;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
@@ -12,11 +13,28 @@ public class Goal {
 	private boolean complete = false;
 	//TODO Add in constraints
 	
-	public Goal(Station origin, Station destination, int score, int turn){
+	public Goal(Station origin, Station destination, int turn){
 		this.origin = origin;
 		this.destination = destination;
-		this.rewardScore = score;
 		this.turnIssued = turn;
+		setRewardScore();
+	}
+	
+	private void setRewardScore(){
+		int distX, distY;
+		if(origin.getLocation().getX() < destination.getLocation().getX()){
+			distX = destination.getLocation().getX() - origin.getLocation().getX();
+		}else{
+			distX = origin.getLocation().getX() - destination.getLocation().getX();
+		}
+		if(origin.getLocation().getY() < destination.getLocation().getY()){
+			distY = destination.getLocation().getY() - origin.getLocation().getY();
+		}else{
+			distY = origin.getLocation().getY() - destination.getLocation().getY();
+		}
+		double dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY,2));
+		double maxDist = Math.sqrt(Math.pow(TaxeGame.HEIGHT,2) + Math.pow(TaxeGame.WIDTH,2));
+		rewardScore = Math.round((float) (30 * (dist/maxDist)));
 	}
 
 	public int getRewardScore() {
