@@ -1,9 +1,7 @@
 package fvs.taxe;
 
 import Util.Tuple;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -12,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import fvs.taxe.actor.StationActor;
+import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
 import gameLogic.GameState;
@@ -27,7 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 
 public class MapRenderer {
-    public static final int OFFSET = 8;
+    public static final int TRAIN_OFFSET = 8;
     public static final int ANIMATION_DURATION = 5;
     private final int LINE_WIDTH = 5;
 
@@ -37,7 +37,7 @@ public class MapRenderer {
     private Skin skin;
     private List<IPositionable> placingPositions;
     private Group routingButtons = new Group();
-    private Window tooltip;
+    private Tooltip tooltip;
     /*
      have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
      their handler's method, one case unsubscribes from the event removing itself from this list
@@ -51,11 +51,7 @@ public class MapRenderer {
         this.skin = skin;
         this.map = map;
 
-        tooltip = new Window("", skin);
-        //tooltip.add(new Label("TESTING TOOLTIP", skin));
-        tooltip.setSize(150, 20);
-        tooltip.setVisible(false);
-
+        tooltip = new Tooltip(skin);
         stage.addActor(tooltip);
     }
 
@@ -131,37 +127,26 @@ public class MapRenderer {
     }
 
     private void renderStation(final Station station) {
-        int width = 35;
-        int height = 22;
+        final StationActor stationActor = new StationActor(station.getLocation());
 
-        IPositionable location = station.getLocation();
-        final Image stationActor = new Image(new Texture(Gdx.files.internal("station_icon.png")));
-        stationActor.setPosition(location.getX() - width / 2, location.getY() - height / 2);
-        stationActor.setSize(width, height);
         stationActor.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                /*
-                 if a station is clicked, someone could be attempting to place a train there,
-                 or be routing a train, we don't care about this, we should just publish an event
-                  */
-                System.out.println(station.getName());
                 stationClicked(station);
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                tooltip.setTitle(station.getName());
-                tooltip.setVisible(true);
                 tooltip.setPosition(stationActor.getX() + 20, stationActor.getY() + 20);
-                tooltip.toFront();
+                tooltip.show(station.getName());
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                tooltip.setVisible(false);
+                tooltip.hide();
             }
         });
+
         stage.addActor(stationActor);
     }
 
@@ -196,17 +181,11 @@ public class MapRenderer {
     }
 
     public Image renderTrain(Train train) {
-        Image trainImage = new Image(new Texture(Gdx.files.internal(train.getImage())));
-        IPositionable position = train.getPosition();
-        trainImage.setSize(30f, 30f);
-        trainImage.setPosition(position.getX() - OFFSET, position.getY() - OFFSET);
-        trainImage.addListener(new TrainClicked(train, skin, this, stage));
+        TrainActor trainActor = new TrainActor(train);
+        trainActor.addListener(new TrainClicked(train, skin, this, stage));
+        stage.addActor(trainActor);
 
-        //train.addAction(sequence(moveTo(340f, 290f, 5f), moveTo(560, 390, 5f), moveTo(245, 510, 5f)));
-        train.setActor(trainImage);
-        stage.addActor(trainImage);
-
-        return trainImage;
+        return trainActor;
     }
 
     public static void moveTrain(final Train train, List<Tuple<IPositionable, Float>> targets, final Player player, boolean lastTrain){
@@ -222,7 +201,7 @@ public class MapRenderer {
         });
 
         for (Tuple<IPositionable, Float> target : targets) {
-            action.addAction(moveTo(target.getFirst().getX() - OFFSET, target.getFirst().getY() - OFFSET, target.getSecond()));
+            action.addAction(moveTo(target.getFirst().getX() - TRAIN_OFFSET, target.getFirst().getY() - TRAIN_OFFSET, target.getSecond()));
             train.setPosition(new Position(target.getFirst().getX(), target.getFirst().getY()));
 
             if (train.getFinalDestination().getLocation() == target.getFirst()) {
