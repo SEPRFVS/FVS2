@@ -10,7 +10,7 @@ public class PlayerManager {
 	private List<TurnListener> turnListeners = new ArrayList<TurnListener>();
 	private List<PlayerChangedListener> playerListeners = new ArrayList<PlayerChangedListener>();
 	
-	public void initialisePlayers(int count) {
+	public void createPlayers(int count) {
 		for (int i = 0; i < count; i++) {
 			players.add(new Player(this));
 		}

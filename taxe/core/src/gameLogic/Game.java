@@ -13,10 +13,12 @@ public class Game {
 
 	private Game() {
 		playerManager = new PlayerManager();
-		playerManager.initialisePlayers(CONFIG_PLAYERS);
+		playerManager.createPlayers(CONFIG_PLAYERS);
 
 		goalManager = new GoalManager();
 		resourceManager = new ResourceManager();
+
+		initialisePlayers();
 	}
 
 	public static Game getInstance() {
@@ -25,6 +27,16 @@ public class Game {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * players should start with a goal and resource
+	 */
+	private void initialisePlayers() {
+		for (Player player : playerManager.getAllPlayers()) {
+			goalManager.givePlayerGoal(player);
+			resourceManager.addRandomResourceToPlayer(player);
+		}
 	}
 
 	public PlayerManager getPlayerManager() {
