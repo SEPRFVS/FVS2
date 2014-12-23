@@ -31,6 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private Group resourceButtons;
     private MapRenderer mapRenderer;
     private Map map;
+    private int animationFrames = 0;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -59,23 +60,9 @@ public class GameScreen extends ScreenAdapter {
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
             public void changed() {
-                animateTrainMovements();
+                Game.getInstance().setState(GameState.ANIMATING);
             }
         });
-    }
-
-    private void animateTrainMovements(){
-        for (Player player : gameLogic.getPlayerManager().getAllPlayers()){
-            for (int i = 0; i < player.getResources().size(); i++) {
-                // Is last train to animate
-                if (i == player.getResources().size() - 1) {
-                    mapRenderer.moveTrainByTurn((Train) player.getResources().get(i), player, true);
-                } else {
-                    mapRenderer.moveTrainByTurn((Train) player.getResources().get(i), player, false);
-                }
-            }
-
-        }
     }
 
     private void drawResourcesHeader() {
@@ -198,6 +185,13 @@ public class GameScreen extends ScreenAdapter {
 
         if(gameLogic.getState() == GameState.ROUTING) {
             mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.BLACK);
+        }
+
+        if(gameLogic.getState() == GameState.ANIMATING) {
+            if (animationFrames++ >= 60) {
+                gameLogic.setState(GameState.NORMAL);
+                animationFrames = 0;
+            }
         }
 
         stage.act(Gdx.graphics.getDeltaTime());

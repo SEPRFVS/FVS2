@@ -23,4 +23,8 @@ public abstract class Resource implements Disposable {
 	protected void changed() {
 		player.changed();
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
 }

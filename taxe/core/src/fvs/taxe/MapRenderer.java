@@ -1,6 +1,5 @@
 package fvs.taxe;
 
-import Util.Tuple;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -15,11 +14,9 @@ import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
 import gameLogic.GameState;
-import gameLogic.Player;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -28,7 +25,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 public class MapRenderer {
     public static final int TRAIN_OFFSET = 8;
-    public static final int ANIMATION_DURATION = 5;
     private final int LINE_WIDTH = 5;
 
     private Stage stage;
@@ -188,84 +184,27 @@ public class MapRenderer {
         return trainActor;
     }
 
-    public static void moveTrain(final Train train, List<Tuple<IPositionable, Float>> targets, final Player player, boolean lastTrain){
-        if (train.getActor() == null || targets == null) return;
-
-        //Sequential action of all of the trains' moveTo actions for one turn
+    public void addMoveActions(final Train train) {
         SequenceAction action = Actions.sequence();
+        IPositionable current = train.getPosition();
+
+        for (Station station : train.getRoute()) {
+            IPositionable next = station.getLocation();
+            float duration = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY()) / train.getSpeed();
+            action.addAction(moveTo(next.getX(), next.getY(), duration));
+            current = next;
+        }
+
+        final IPositionable finalPosition = current;
 
         action.addAction(new RunnableAction(){
             public void run(){
-                Game.getInstance().setState(GameState.ANIMATING);
+                Game.getInstance().getGoalManager().trainArrived(train, train.getPlayer());
+                train.setFinalDestination(null);
+                train.setPosition(finalPosition);
             }
         });
 
-        for (Tuple<IPositionable, Float> target : targets) {
-            action.addAction(moveTo(target.getFirst().getX() - TRAIN_OFFSET, target.getFirst().getY() - TRAIN_OFFSET, target.getSecond()));
-            train.setPosition(new Position(target.getFirst().getX(), target.getFirst().getY()));
-
-            if (train.getFinalDestination().getLocation() == target.getFirst()) {
-                action.addAction(new RunnableAction(){
-                    public void run(){
-                        Game.getInstance().getGoalManager().trainArrived(train, player);
-                        train.setFinalDestination(null);
-                    }
-                });
-            }
-        }
-
-        if (lastTrain) {
-            action.addAction(new RunnableAction(){
-                public void run(){
-                    Game.getInstance().setState(GameState.NORMAL);
-                }
-            });
-        }
-
         train.getActor().addAction(action);
-    }
-
-
-    public void moveTrainByTurn(Train train, Player player, boolean lastTrain){
-        int stationsToBeRemoved = 0;
-        int totalDst = train.getSpeed();
-        int availableDst = totalDst;
-        IPositionable current = train.getPosition();
-
-        // Hold moveTo target positions and animation durations in here
-        List<Tuple<IPositionable, Float>> targets = new ArrayList<Tuple<IPositionable, Float>>();
-
-        if (current == null) return;
-        if (train.getRoute() == null || train.getRoute().size() == 0) return;
-
-        IPositionable next;
-        for (Station station : train.getRoute()){
-            next = station.getLocation();
-            float distanceToNext = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY());
-
-            if (distanceToNext <= availableDst) {
-                float sec = distanceToNext / totalDst * ANIMATION_DURATION;
-                targets.add(new Tuple<IPositionable, Float>(next, sec));
-                availableDst -= distanceToNext;
-                stationsToBeRemoved++;
-                current = next;
-                train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
-            } else {
-                int delta_x = Math.round((availableDst / distanceToNext) * (next.getX() - current.getX()));
-                int delta_y = Math.round((availableDst / distanceToNext) * (next.getY() - current.getY()));
-
-                IPositionable targetLocation = new Position(current.getX() + delta_x, current.getY() + delta_y);
-                float dist = Vector2.dst(current.getX(), current.getY(), targetLocation.getX(), targetLocation.getY());
-                float sec = dist / totalDst * ANIMATION_DURATION;
-                targets.add(new Tuple<IPositionable, Float>(targetLocation, sec));
-                break;
-            }
-        }
-
-        if (stationsToBeRemoved > 0){
-            train.setRoute(train.getRoute().subList(stationsToBeRemoved, train.getRoute().size()));
-        }
-
-        MapRenderer.moveTrain(train, targets, player, lastTrain);
     }
 }
