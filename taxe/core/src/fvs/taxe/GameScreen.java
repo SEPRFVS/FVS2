@@ -66,11 +66,16 @@ public class GameScreen extends ScreenAdapter {
 
     private void animateTrainMovements(){
         for (Player player : gameLogic.getPlayerManager().getAllPlayers()){
-            for (Resource train : player.getResources()){
-                mapRenderer.moveTrainByTurn((Train) train, player);
+            for (int i = 0; i < player.getResources().size(); i++) {
+                // Is last train to animate
+                if (i == player.getResources().size() - 1) {
+                    mapRenderer.moveTrainByTurn((Train) player.getResources().get(i), player, true);
+                } else {
+                    mapRenderer.moveTrainByTurn((Train) player.getResources().get(i), player, false);
+                }
             }
-        }
 
+        }
     }
 
     private void drawResourcesHeader() {
@@ -187,7 +192,7 @@ public class GameScreen extends ScreenAdapter {
 
         mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
 
-        if(mapRenderer.getState() == GameState.ROUTING) {
+        if(gameLogic.getState() == GameState.ROUTING) {
             mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.BLACK);
         }
 

@@ -8,6 +8,7 @@ public class Game {
 	private PlayerManager playerManager;
 	private GoalManager goalManager;
 	private ResourceManager resourceManager;
+	private GameState state;
 
 	private final int CONFIG_PLAYERS = 2;
 
@@ -17,6 +18,7 @@ public class Game {
 
 		goalManager = new GoalManager();
 		resourceManager = new ResourceManager();
+		state = GameState.NORMAL;
 
 		initialisePlayers();
 	}
@@ -50,5 +52,13 @@ public class Game {
 
 	public ResourceManager getResourceManager() {
 		return resourceManager;
+	}
+
+	public GameState getState() {
+		return state;
+	}
+
+	public void setState(GameState state) {
+		this.state = state;
 	}
 }

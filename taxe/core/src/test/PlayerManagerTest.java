@@ -22,7 +22,7 @@ public class PlayerManagerTest {
         pm.turnOver();
 
         // player should change after PlayerManager.turnOver() is called
-        assertNotEquals(p1, pm.getCurrentPlayer());
+        assertFalse(p1.equals(pm.getCurrentPlayer()));
     }
 
     @Test

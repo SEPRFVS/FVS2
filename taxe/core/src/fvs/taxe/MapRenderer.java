@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
+import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
@@ -35,7 +35,6 @@ public class MapRenderer {
     private TaxeGame game;
     private Map map;
     private Skin skin;
-    private GameState state = GameState.NORMAL;
     private List<IPositionable> placingPositions;
     private Group routingButtons = new Group();
     private Window tooltip;
@@ -62,14 +61,6 @@ public class MapRenderer {
 
     public Map getMap() {
         return map;
-    }
-
-    public GameState getState() {
-        return state;
-    }
-
-    public void setState(GameState state) {
-        this.state = state;
     }
 
     public void setPlacingPositions(List<IPositionable> placingPositions) {
@@ -102,7 +93,7 @@ public class MapRenderer {
 
     public void beginRoutingState(RouteConfirmedListener listener, List<IPositionable> initialPositions) {
         setPlacingPositions(initialPositions);
-        setState(GameState.ROUTING);
+        Game.getInstance().setState(GameState.ROUTING);
         addRoutingButtons(listener);
     }
 
@@ -135,7 +126,7 @@ public class MapRenderer {
     }
 
     private void endRouting() {
-        setState(GameState.NORMAL);
+        Game.getInstance().setState(GameState.NORMAL);
         routingButtons.remove();
     }
 
@@ -218,11 +209,18 @@ public class MapRenderer {
         return trainImage;
     }
 
-    public static void moveTrain(final Train train, List<Tuple<IPositionable, Float>> targets, final Player player){
+    public static void moveTrain(final Train train, List<Tuple<IPositionable, Float>> targets, final Player player, boolean lastTrain){
         if (train.getActor() == null || targets == null) return;
 
         //Sequential action of all of the trains' moveTo actions for one turn
         SequenceAction action = Actions.sequence();
+
+        action.addAction(new RunnableAction(){
+            public void run(){
+                Game.getInstance().setState(GameState.ANIMATING);
+            }
+        });
+
         for (Tuple<IPositionable, Float> target : targets) {
             action.addAction(moveTo(target.getFirst().getX() - OFFSET, target.getFirst().getY() - OFFSET, target.getSecond()));
             train.setPosition(new Position(target.getFirst().getX(), target.getFirst().getY()));
@@ -236,11 +234,20 @@ public class MapRenderer {
                 });
             }
         }
+
+        if (lastTrain) {
+            action.addAction(new RunnableAction(){
+                public void run(){
+                    Game.getInstance().setState(GameState.NORMAL);
+                }
+            });
+        }
+
         train.getActor().addAction(action);
     }
 
 
-    public void moveTrainByTurn(Train train, Player player){
+    public void moveTrainByTurn(Train train, Player player, boolean lastTrain){
         int stationsToBeRemoved = 0;
         int totalDst = train.getSpeed();
         int availableDst = totalDst;
@@ -280,6 +287,6 @@ public class MapRenderer {
             train.setRoute(train.getRoute().subList(stationsToBeRemoved, train.getRoute().size()));
         }
 
-        MapRenderer.moveTrain(train, targets, player);
+        MapRenderer.moveTrain(train, targets, player, lastTrain);
     }
 }
