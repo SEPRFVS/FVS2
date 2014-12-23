@@ -25,6 +25,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 public class MapRenderer {
     public static final int TRAIN_OFFSET = 8;
+    public static final int ANIMATION_TIME = 2;
     private final int LINE_WIDTH = 5;
 
     private Stage stage;

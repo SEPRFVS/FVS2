@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private Group resourceButtons;
     private MapRenderer mapRenderer;
     private Map map;
-    private int animationFrames = 0;
+    private float timeAnimated = 0;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -188,9 +188,10 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if(gameLogic.getState() == GameState.ANIMATING) {
-            if (animationFrames++ >= 60) {
+            timeAnimated += delta;
+            if (timeAnimated >= MapRenderer.ANIMATION_TIME) {
                 gameLogic.setState(GameState.NORMAL);
-                animationFrames = 0;
+                timeAnimated = 0;
             }
         }
 
