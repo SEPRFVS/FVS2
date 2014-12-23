@@ -1,6 +1,7 @@
 package gameLogic.goal;
 
 import gameLogic.map.Station;
+import gameLogic.resource.Train;
 
 public class Goal {
 	private int rewardScore;
@@ -18,7 +19,13 @@ public class Goal {
 		return rewardScore;
 	}
 
-	//abstract public boolean isComplete();
+	public boolean isComplete(Train train){
+		if(train.getFinalDestination() == destination){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	//TODO Rename to be more descriptive of function (Doesn't represent entire goal)
 	//TODO represent goals as boxes instead of strings (Code needed in MapRenderer)
