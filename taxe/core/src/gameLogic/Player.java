@@ -50,6 +50,16 @@ public class Player {
         goals.add(goal);
         changed();
     }
+    
+    public void completeGoal(Goal goal){
+    	addScore(goal.getRewardScore());
+    	removeGoal(goal);
+    }
+    
+    public void removeGoal(Goal goal){
+    	goals.remove(goal);
+    	changed();
+    }
 
     /**
      * Method is called whenever a property of this player changes, or one of the player's resources changes

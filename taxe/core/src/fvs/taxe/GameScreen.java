@@ -163,7 +163,7 @@ public class GameScreen extends ScreenAdapter {
     // you can read about the debug keys and their functionality in the GitHub wiki
     private void debugKeys() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-            gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
+            gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer(),map.getStations());
         }
 
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {

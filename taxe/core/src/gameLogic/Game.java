@@ -34,7 +34,8 @@ public class Game {
 	 */
 	private void initialisePlayers() {
 		for (Player player : playerManager.getAllPlayers()) {
-			goalManager.givePlayerGoal(player);
+			//TODO Needs access to station list
+			//goalManager.givePlayerGoal(player);
 			resourceManager.addRandomResourceToPlayer(player);
 		}
 	}
