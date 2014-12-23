@@ -18,7 +18,7 @@ public class Map {
     }
 
     public Station getRandomStation() {
-        return stations.get(random.nextInt(stations.size() - 1));
+        return stations.get(random.nextInt(stations.size()));
     }
 
     public Station addStation(String name, Position location){

@@ -30,11 +30,11 @@ public class GoalManager {
 
 	public void trainArrived(Train train, Player player){
 		//TODO fancy goal checking stuff
-		//for(Goal goal:player.getGoals()){
-		//	if(goal.isComplete(train)){
-		//		player.completeGoal(goal);
-		//	}
-		//}
+		for(Goal goal:player.getGoals()){
+			if(goal.isComplete(train)){
+				player.completeGoal(goal);
+			}
+		}
 		System.out.println("Train arrived to final destination: " + train.getFinalDestination().getName());
 	}
 }

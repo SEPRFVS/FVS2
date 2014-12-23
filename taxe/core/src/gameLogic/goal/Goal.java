@@ -9,6 +9,7 @@ public class Goal {
 	private Station origin;
 	private Station destination;
 	private int turnIssued;
+	private boolean complete = false;
 	//TODO Add in constraints
 	
 	public Goal(Station origin, Station destination, int score, int turn){
@@ -41,5 +42,12 @@ public class Goal {
 	public String toString(){
 		return "Send a train from " + origin.getName() + " to " + destination.getName() + " - " + rewardScore + " points";
 	}
-	
+
+	public void setComplete() {
+		complete = true;
+	}
+
+	public boolean getComplete() {
+		return complete;
+	}
 }

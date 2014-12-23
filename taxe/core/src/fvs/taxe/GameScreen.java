@@ -128,6 +128,10 @@ public class GameScreen extends ScreenAdapter {
         Player currentPlayer = pm.getCurrentPlayer();
 
         for (Goal goal : currentPlayer.getGoals()) {
+            if(goal.getComplete()) {
+                continue;
+            }
+
             strings.add(goal.toString());
         }
 

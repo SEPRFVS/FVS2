@@ -53,12 +53,8 @@ public class Player {
     
     public void completeGoal(Goal goal){
     	addScore(goal.getRewardScore());
-    	removeGoal(goal);
-    }
-    
-    public void removeGoal(Goal goal){
-    	goals.remove(goal);
-    	changed();
+    	goal.setComplete();
+        changed();
     }
 
     /**
