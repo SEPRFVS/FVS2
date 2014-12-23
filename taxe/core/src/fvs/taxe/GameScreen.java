@@ -207,6 +207,7 @@ public class GameScreen extends ScreenAdapter {
     public void show() {
         mapRenderer.renderStations();
         addEndTurnButton();
+        showCurrentPlayerResources();
     }
 
 
