@@ -205,6 +205,8 @@ public class MapRenderer {
             }
         });
 
+        // Remove previous actions if any and add new sequential action
+        train.getActor().clearActions();
         train.getActor().addAction(action);
     }
 }
