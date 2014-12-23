@@ -1,6 +1,7 @@
 package gameLogic;
 
 import gameLogic.goal.GoalManager;
+import gameLogic.map.Map;
 import gameLogic.resource.ResourceManager;
 
 public class Game {
@@ -8,7 +9,7 @@ public class Game {
 	private PlayerManager playerManager;
 	private GoalManager goalManager;
 	private ResourceManager resourceManager;
-
+	private Map map;
 	private final int CONFIG_PLAYERS = 2;
 
 	private Game() {
@@ -17,13 +18,15 @@ public class Game {
 
 		goalManager = new GoalManager();
 		resourceManager = new ResourceManager();
-
-		initialisePlayers();
+		map = new Map();
 	}
 
 	public static Game getInstance() {
 		if (instance == null) {
 			instance = new Game();
+			// initialisePlayers gives them a goal, and the GoalManager requires an instance of game to exist so this
+			// method can't be called in the constructor
+			instance.initialisePlayers();
 		}
 
 		return instance;
@@ -35,7 +38,7 @@ public class Game {
 	private void initialisePlayers() {
 		for (Player player : playerManager.getAllPlayers()) {
 			//TODO Needs access to station list
-			//goalManager.givePlayerGoal(player);
+			goalManager.givePlayerGoal(player);
 			resourceManager.addRandomResourceToPlayer(player);
 		}
 	}
@@ -50,5 +53,9 @@ public class Game {
 
 	public ResourceManager getResourceManager() {
 		return resourceManager;
+	}
+
+	public Map getMap() {
+		return map;
 	}
 }

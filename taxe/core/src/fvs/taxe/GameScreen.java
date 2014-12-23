@@ -45,7 +45,6 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         // game logic stuff
-        map = new Map();
         gameLogic = Game.getInstance();
         gameLogic.getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
             @Override
@@ -54,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
+        map = gameLogic.getMap();
         mapRenderer = new MapRenderer(game, stage, skin, map);
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
@@ -163,7 +163,7 @@ public class GameScreen extends ScreenAdapter {
     // you can read about the debug keys and their functionality in the GitHub wiki
     private void debugKeys() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-            gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer(),map.getStations());
+            gameLogic.getGoalManager().givePlayerGoal(gameLogic.getPlayerManager().getCurrentPlayer());
         }
 
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
