@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import fvs.taxe.MapRenderer;
+import gameLogic.Game;
+import gameLogic.GameState;
 import gameLogic.map.IPositionable;
 import gameLogic.resource.Train;
 
@@ -16,5 +18,12 @@ public class TrainActor extends Image {
         train.setActor(this);
         setSize(30f, 30f);
         setPosition(position.getX() - MapRenderer.TRAIN_OFFSET, position.getY() - MapRenderer.TRAIN_OFFSET);
+    }
+
+    @Override
+    public void act (float delta) {
+        if (Game.getInstance().getState() == GameState.ANIMATING) {
+            super.act(delta);
+        }
     }
 }

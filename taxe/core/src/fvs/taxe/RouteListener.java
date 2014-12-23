@@ -48,5 +48,6 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
         }
 
         train.setRoute(route);
+        mapRenderer.addMoveActions(train);
     }
 }

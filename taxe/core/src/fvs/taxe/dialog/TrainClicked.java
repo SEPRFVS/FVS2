@@ -35,7 +35,7 @@ public class TrainClicked extends ClickListener {
         }
 
         DialogButtonClicked listener = new DialogButtonClicked(currentPlayer, train, mapRenderer);
-        DialogResourceTrain dia = new DialogResourceTrain(train.toString(), skin, train.getPosition() != null);
+        DialogResourceTrain dia = new DialogResourceTrain(train, skin, train.getPosition() != null);
         dia.show(stage);
         dia.subscribeClick(listener);
     }

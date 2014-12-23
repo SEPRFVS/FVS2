@@ -13,9 +13,9 @@ public class ResourceManager {
 
         switch(index) {
             case 0:
-                return new Train("Bullet Train", "BulletTrain.png", 100);
+                return new Train("Bullet Train", "BulletTrain.png", 50);
             case 1:
-                return new Train("Nulcear Train", "NuclearTrain.png", 200);
+                return new Train("Nuclear Train", "NuclearTrain.png", 100);
         }
 
         throw new RuntimeException("local int index must be wrong" + index);
