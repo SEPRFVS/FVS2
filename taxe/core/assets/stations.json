@@ -1,0 +1,78 @@
+{
+    "stations": [
+        {
+            "name": "Madrid",
+            "x": 155,
+            "y": 45
+        },
+        {
+            "name": "Paris",
+            "x": 340,
+            "y": 290
+        },
+        {
+            "name": "London",
+            "x": 298,
+            "y": 370
+        },
+        {
+            "name": "Glasgow",
+            "x": 245,
+            "y": 510
+        },
+        {
+            "name": "Lille",
+            "x": 362,
+            "y": 331
+        },
+        {
+            "name": "Brussels",
+            "x": 394,
+            "y": 340
+        },
+        {
+            "name": "Amsterdam",
+            "x": 401,
+            "y": 380
+        },
+        {
+            "name": "Berlin",
+            "x": 560,
+            "y": 390
+        }
+    ],
+    "connections": [
+        {
+            "station1": "Madrid",
+            "station2": "Paris"
+        },
+        {
+            "station1": "London",
+            "station2": "Glasgow"
+        },
+        {
+            "station1": "London",
+            "station2": "Lille"
+        },
+        {
+            "station1": "Lille",
+            "station2": "Paris"
+        },
+        {
+            "station1": "Lille",
+            "station2": "Brussels"
+        },
+        {
+            "station1": "Paris",
+            "station2": "Brussels"
+        },
+        {
+            "station1": "Brussels",
+            "station2": "Amsterdam"
+        },
+        {
+            "station1": "Amsterdam",
+            "station2": "Berlin"
+        }
+    ]
+}
