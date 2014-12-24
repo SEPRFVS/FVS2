@@ -13,7 +13,6 @@ import fvs.taxe.actor.StationActor;
 import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
-import gameLogic.GameState;
 import gameLogic.map.*;
 import gameLogic.resource.Train;
 
@@ -33,7 +32,6 @@ public class MapRenderer {
     private Map map;
     private Skin skin;
     private List<IPositionable> placingPositions;
-    private Group routingButtons = new Group();
     private Tooltip tooltip;
     /*
      have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
@@ -54,6 +52,14 @@ public class MapRenderer {
 
     public Map getMap() {
         return map;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
     }
 
     public void setPlacingPositions(List<IPositionable> placingPositions) {
@@ -82,45 +88,6 @@ public class MapRenderer {
         for (Station station : map.getStations()) {
             renderStation(station);
         }
-    }
-
-    public void beginRoutingState(RouteConfirmedListener listener, List<IPositionable> initialPositions) {
-        setPlacingPositions(initialPositions);
-        Game.getInstance().setState(GameState.ROUTING);
-        addRoutingButtons(listener);
-    }
-
-    private void addRoutingButtons(final RouteConfirmedListener listener) {
-        TextButton doneRouting = new TextButton("Route Complete", skin);
-        TextButton cancel = new TextButton("Cancel", skin);
-
-        doneRouting.setPosition(500, 500);
-        cancel.setPosition(500, 450);
-
-        cancel.addListener(new ClickListener() {
-            @Override
-            public void clicked (InputEvent event, float x, float y) {
-                endRouting();
-            }
-        });
-
-        doneRouting.addListener(new ClickListener() {
-            @Override
-            public void clicked (InputEvent event, float x, float y) {
-                listener.confirmed();
-                endRouting();
-            }
-        });
-
-        routingButtons.addActor(doneRouting);
-        routingButtons.addActor(cancel);
-
-        stage.addActor(routingButtons);
-    }
-
-    private void endRouting() {
-        Game.getInstance().setState(GameState.NORMAL);
-        routingButtons.remove();
     }
 
     private void renderStation(final Station station) {
