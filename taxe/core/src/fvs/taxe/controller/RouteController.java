@@ -1,5 +1,7 @@
-package fvs.taxe.gui;
+package fvs.taxe.controller;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,14 +17,13 @@ import gameLogic.map.IPositionable;
 
 import java.util.List;
 
-public class Routing {
+public class RouteController {
     private Group routingButtons = new Group();
     private Stage stage;
     private Skin skin;
-    private MapRenderer mapRenderer;
 
-    public Routing(MapRenderer mapRenderer, RouteConfirmedListener listener,
-                   List<IPositionable> initialPosition) {
+    public RouteController(MapRenderer mapRenderer, RouteConfirmedListener listener,
+                           List<IPositionable> initialPosition) {
         this.stage = mapRenderer.getStage();
         this.skin = mapRenderer.getSkin();
         this.mapRenderer = mapRenderer;
@@ -63,5 +64,22 @@ public class Routing {
     private void endRouting() {
         Game.getInstance().setState(GameState.NORMAL);
         routingButtons.remove();
+    }
+
+    public void drawRoute(List<IPositionable>positions, Color color) {
+        IPositionable previousPosition = null;
+        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        game.shapeRenderer.setColor(color);
+
+        for(IPositionable position : positions) {
+            if(previousPosition != null) {
+                game.shapeRenderer.rectLine(previousPosition.getX(), previousPosition.getY(), position.getX(),
+                        position.getY(), LINE_WIDTH);
+            }
+
+            previousPosition = position;
+        }
+
+        game.shapeRenderer.end();
     }
 }

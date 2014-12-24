@@ -1,6 +1,6 @@
 package fvs.taxe;
 
-import fvs.taxe.gui.Routing;
+import fvs.taxe.controller.RouteController;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
@@ -20,7 +20,7 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
         this.train = train;
 
         positions.add(train.getPosition());
-        Routing routing = new Routing(mapRenderer, this, positions);
+        RouteController routeController = new RouteController(mapRenderer, this, positions);
     }
 
     @Override
