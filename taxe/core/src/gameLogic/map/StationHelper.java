@@ -7,32 +7,49 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+
 public final class StationHelper {
     private static ArrayList<Tuple<String, String>> connections;
 
     private static HashMap<String, Position> stations;
-
+    
     static {
+    	JsonReader jsonReader = new JsonReader();
+    	JsonValue jsonVal = jsonReader.parse(Gdx.files.local("stations.json"));
+    	
         stations = new HashMap<String, Position>();
-        stations.put("Madrid", new Position(155, 45));
-        stations.put("Paris", new Position(340, 290));
-        stations.put("London", new Position(298, 370));
-        stations.put("Glasgow", new Position(245, 510));
-        stations.put("Lille", new Position(362, 331));
-        stations.put("Brussels", new Position(394, 340));
-        stations.put("Amsterdam", new Position(401, 380));
-        stations.put("Berlin", new Position(560, 390));
+        for(JsonValue station = jsonVal.getChild("stations"); station != null; station = station.next){
+        	String name = "";
+        	int x = 0;
+        	int y = 0;
+        	for(JsonValue val = station.child; val != null; val = val.next){
+        		if(val.name.equalsIgnoreCase("name")){
+        			name = val.asString();
+        		}else if(val.name.equalsIgnoreCase("x")){
+        			x = val.asInt();
+        		}else{
+        			y = val.asInt();
+        		}
+        	}
+        	stations.put(name, new Position(x,y));
+        }
 
         connections = new ArrayList<Tuple<String, String>>();
-        connections.add(new Tuple<String, String>("Madrid", "Paris"));
-        connections.add(new Tuple<String, String>("London", "Glasgow"));
-        connections.add(new Tuple<String, String>("London", "Lille"));
-        connections.add(new Tuple<String, String>("Lille", "Paris"));
-        connections.add(new Tuple<String, String>("Lille", "Brussels"));
-        connections.add(new Tuple<String, String>("Paris", "Brussels"));
-        connections.add(new Tuple<String, String>("Brussels", "Amsterdam"));
-        connections.add(new Tuple<String, String>("Amsterdam", "Berlin"));
-
+        for(JsonValue connection = jsonVal.getChild("connections"); connection != null; connection = connection.next){
+        	String station1 = "";
+        	String station2 = "";
+        	for(JsonValue val = connection.child; val != null; val = val.next){
+        		if(val.name.equalsIgnoreCase("station1")){
+        			station1 = val.asString();
+        		}else{
+        			station2 = val.asString();
+        		}
+        	}
+        	connections.add(new Tuple<String, String>(station1, station2));
+        }
     }
 
     public static HashMap<String, Position> getStationData() {
