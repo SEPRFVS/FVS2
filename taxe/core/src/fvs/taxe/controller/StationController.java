@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.StationClickListener;
+import fvs.taxe.TaxeGame;
 import fvs.taxe.actor.StationActor;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
@@ -15,13 +16,19 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StationController {
-    private final int CONNECTION_LINE_WIDTH = 5;
+    public final static int CONNECTION_LINE_WIDTH = 5;
+
+    private Context context;
     /*
     have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
     their handler's method, one case unsubscribes from the event removing itself from this list
     and this list implementation supports removing elements whilst iterating through it
     */
     private List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
+
+    public StationController(Context context) {
+        this.context = context;
+    }
 
     public void subscribeStationClick(StationClickListener listener) {
         stationClickListeners.add(listener);
@@ -58,16 +65,20 @@ public class StationController {
             }
         });
 
-        stage.addActor(stationActor);
+        context.getStage().addActor(stationActor);
     }
 
     public void renderStations() {
-        for (Station station : map.getStations()) {
+        List<Station> stations = context.getGameLogic().getMap().getStations();
+
+        for (Station station : stations) {
             renderStation(station);
         }
     }
 
     public void renderConnections(List<Connection> connections, Color color) {
+        TaxeGame game = context.getTaxeGame();
+
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(color);
         //game.shapeRenderer.setProjectionMatrix(camera.combined);

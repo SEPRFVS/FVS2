@@ -17,10 +17,16 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 public class TrainController {
     public static final int TRAIN_OFFSET = 8;
 
+    private Context context;
+
+    public TrainController(Context context) {
+        this.context = context;
+    }
+
     public Image renderTrain(Train train) {
         TrainActor trainActor = new TrainActor(train);
-        trainActor.addListener(new TrainClicked(train, skin, this, stage));
-        stage.addActor(trainActor);
+        trainActor.addListener(new TrainClicked(context, train));
+        context.getStage().addActor(trainActor);
 
         return trainActor;
     }

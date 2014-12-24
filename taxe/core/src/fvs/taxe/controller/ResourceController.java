@@ -12,18 +12,23 @@ import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
 public class ResourceController {
-    private Group resourceButtons = new Group();;
+    private Context context;
+    private Group resourceButtons = new Group();
 
-    public ResourceController() {
-        gameLogic.getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
+    public ResourceController(final Context context) {
+        this.context = context;
+
+        context.getGameLogic().getPlayerManager().subscribePlayerChanged(new PlayerChangedListener() {
             @Override
             public void changed() {
-                showCurrentPlayerResources();
+                drawPlayerResources(context.getGameLogic().getPlayerManager().getCurrentPlayer());
             }
         });
     }
 
-    private void drawResourcesHeader() {
+    public void drawHeaderText() {
+        TaxeGame game = context.getTaxeGame();
+
         game.batch.begin();
         game.fontSmall.setColor(Color.BLACK);
         game.fontSmall.draw(game.batch, "Unplaced Resources:", 10.0f, (float) TaxeGame.HEIGHT - 250.0f);
@@ -31,19 +36,17 @@ public class ResourceController {
         game.batch.end();
     }
 
-    private void showCurrentPlayerResources() {
+    public void drawPlayerResources(Player player) {
 
         float top = (float) TaxeGame.HEIGHT;
         float x = 10.0f;
         float y = top - 250.0f;
         y -= 50;
 
-        final Player currentPlayer = gameLogic.getPlayerManager().getCurrentPlayer();
-
         resourceButtons.remove();
         resourceButtons.clear();
 
-        for (final Resource resource : currentPlayer.getResources()) {
+        for (final Resource resource : player.getResources()) {
             if (resource instanceof Train) {
                 Train train = (Train) resource;
 
@@ -52,9 +55,9 @@ public class ResourceController {
                     continue;
                 }
 
-                TrainClicked listener = new TrainClicked(train, skin, mapRenderer, stage);
+                TrainClicked listener = new TrainClicked(context, train);
 
-                TextButton button = new TextButton(resource.toString(), skin);
+                TextButton button = new TextButton(resource.toString(), context.getSkin());
                 button.setPosition(x, y);
                 button.addListener(listener);
 
@@ -64,6 +67,6 @@ public class ResourceController {
             }
         }
 
-        stage.addActor(resourceButtons);
+        context.getStage().addActor(resourceButtons);
     }
 }

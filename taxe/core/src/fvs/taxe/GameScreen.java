@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import fvs.taxe.controller.*;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.*;
 import gameLogic.goal.Goal;
@@ -24,33 +25,31 @@ import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
     final private TaxeGame game;
-    private OrthographicCamera camera;
-    private Stage stage; // Stage - Holds all actors
+    private Stage stage;
     private Texture mapTexture;
     private Game gameLogic;
     private Skin skin;
-    private MapRenderer mapRenderer;
     private Map map;
     private float timeAnimated = 0;
+    public static final int ANIMATION_TIME = 2;
+    private Tooltip tooltip;
+    private Context context;
+
+    private StationController stationController;
+    private TopBarController topBarController;
+    private ResourceController resourceController;
+    private GoalController goalController;
+    private RouteController routeController;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
-
-        //camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
-        //camera.setToOrtho(false); // Makes the origin to be in the lower left corner
         stage = new Stage();
-        mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
-
+        context = new Context(stage, skin, game);
         Gdx.input.setInputProcessor(stage);
-
-        // game logic stuff
         gameLogic = Game.getInstance();
-
-
+        mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         map = gameLogic.getMap();
-        mapRenderer = new MapRenderer(game, stage, skin, map);
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
@@ -59,9 +58,15 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
+        tooltip = new Tooltip(skin);
+        stage.addActor(tooltip);
 
+        stationController = new StationController(context);
+        topBarController = new TopBarController(context);
+        resourceController = new ResourceController(context);
+        goalController = new GoalController(context);
+        routeController = new RouteController();
     }
-
 
 
     // called every frame
@@ -74,17 +79,17 @@ public class GameScreen extends ScreenAdapter {
         game.batch.draw(mapTexture, 0, 0);
         game.batch.end();
 
-        controlsBackground();
+        topBarController.drawBackground();
 
-        mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
+        stationController.renderConnections(map.getConnections(), Color.GRAY);
 
         if(gameLogic.getState() == GameState.ROUTING) {
-            mapRenderer.drawRoute(mapRenderer.getPlacingPositions(), Color.BLACK);
+            routeController.drawRoute(getPlacingPositions(), Color.BLACK);
         }
 
         if(gameLogic.getState() == GameState.ANIMATING) {
             timeAnimated += delta;
-            if (timeAnimated >= MapRenderer.ANIMATION_TIME) {
+            if (timeAnimated >= ANIMATION_TIME) {
                 gameLogic.setState(GameState.NORMAL);
                 timeAnimated = 0;
             }
@@ -93,20 +98,16 @@ public class GameScreen extends ScreenAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-
-        // text must be rendered after the stage so the bg image doesn't overlap
-        debugKeys();
-
-        drawResourcesHeader();
-        showCurrentPlayerGoals();
+        resourceController.drawHeaderText();
+        goalController.showCurrentPlayerGoals();
     }
 
     @Override
     // Called when GameScreen becomes current screen of the game
     public void show() {
-        mapRenderer.renderStations();
-        addEndTurnButton();
-        showCurrentPlayerResources();
+        stationController.renderStations();
+        topBarController.addEndTurnButton();
+        resourceController.drawPlayerResources(gameLogic.getPlayerManager().getCurrentPlayer());
     }
 
 

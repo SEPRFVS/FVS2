@@ -1,26 +1,21 @@
 package fvs.taxe.dialog;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import fvs.taxe.MapRenderer;
+import fvs.taxe.controller.Context;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.resource.Train;
 
 public class TrainClicked extends ClickListener {
+    private Context context;
     private Train train;
-    private Skin skin;
-    private MapRenderer mapRenderer;
-    private Stage stage;
 
-    public TrainClicked(Train train, Skin skin, MapRenderer mr, Stage stage) {
+
+    public TrainClicked(Context context, Train train) {
         this.train = train;
-        mapRenderer = mr;
-        this.skin = skin;
-        this.stage = stage;
+        this.context = context;
     }
 
     @Override
@@ -34,9 +29,9 @@ public class TrainClicked extends ClickListener {
             return;
         }
 
-        DialogButtonClicked listener = new DialogButtonClicked(currentPlayer, train, mapRenderer);
-        DialogResourceTrain dia = new DialogResourceTrain(train, skin, train.getPosition() != null);
-        dia.show(stage);
+        DialogButtonClicked listener = new DialogButtonClicked(context, currentPlayer, train);
+        DialogResourceTrain dia = new DialogResourceTrain(train, context.getSkin(), train.getPosition() != null);
+        dia.show(context.getStage());
         dia.subscribeClick(listener);
     }
 

@@ -11,14 +11,18 @@ import gameLogic.GameStateListener;
 
 public class TopBarController {
     public final static int CONTROLS_HEIGHT = 40;
+
+    private Context context;
     private Color controlsColor = Color.LIGHT_GRAY;
     private TextButton endTurnButton;
 
-    public TopBarController() {
-        gameLogic.subscribeStateChanged(new GameStateListener() {
+    public TopBarController(Context context) {
+        this.context = context;
+
+        context.getGameLogic().subscribeStateChanged(new GameStateListener() {
             @Override
             public void changed(GameState state) {
-                switch(state) {
+                switch (state) {
                     case ANIMATING:
                         controlsColor = Color.GREEN;
                         break;
@@ -30,7 +34,9 @@ public class TopBarController {
         });
     }
 
-    private void controlsBackground() {
+    public void drawBackground() {
+        TaxeGame game = context.getTaxeGame();
+
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(controlsColor);
         game.shapeRenderer.rect(0, TaxeGame.HEIGHT - CONTROLS_HEIGHT, TaxeGame.WIDTH, CONTROLS_HEIGHT);
@@ -39,17 +45,17 @@ public class TopBarController {
         game.shapeRenderer.end();
     }
 
-    private void addEndTurnButton() {
-        endTurnButton = new TextButton("End Turn", skin);
+    public void addEndTurnButton() {
+        endTurnButton = new TextButton("End Turn", context.getSkin());
         endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 33.0f);
         endTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameLogic.getPlayerManager().turnOver();
+                context.getGameLogic().getPlayerManager().turnOver();
             }
         });
 
-        gameLogic.subscribeStateChanged(new GameStateListener() {
+        context.getGameLogic().subscribeStateChanged(new GameStateListener() {
             @Override
             public void changed(GameState state) {
                 if(state == GameState.NORMAL) {
@@ -60,10 +66,6 @@ public class TopBarController {
             }
         });
 
-        stage.addActor(endTurnButton);
-    }
-
-    public TextButton getEndTurnButton() {
-        return endTurnButton;
+        context.getStage().addActor(endTurnButton);
     }
 }

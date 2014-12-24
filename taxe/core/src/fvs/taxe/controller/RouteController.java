@@ -4,11 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import fvs.taxe.MapRenderer;
 import fvs.taxe.RouteConfirmedListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
@@ -18,24 +15,19 @@ import gameLogic.map.IPositionable;
 import java.util.List;
 
 public class RouteController {
+    private Context context;
     private Group routingButtons = new Group();
-    private Stage stage;
-    private Skin skin;
 
-    public RouteController(MapRenderer mapRenderer, RouteConfirmedListener listener,
-                           List<IPositionable> initialPosition) {
-        this.stage = mapRenderer.getStage();
-        this.skin = mapRenderer.getSkin();
-        this.mapRenderer = mapRenderer;
-
-        mapRenderer.setPlacingPositions(initialPosition);
+    public RouteController(Context context, RouteConfirmedListener listener, List<IPositionable> initialPosition) {
+        this.context = context;
+        setPlacingPositions(initialPosition);
         Game.getInstance().setState(GameState.ROUTING);
         addRoutingButtons(listener);
     }
 
     private void addRoutingButtons(final RouteConfirmedListener listener) {
-        TextButton doneRouting = new TextButton("Route Complete", skin);
-        TextButton cancel = new TextButton("Cancel", skin);
+        TextButton doneRouting = new TextButton("Route Complete", context.getSkin());
+        TextButton cancel = new TextButton("Cancel", context.getSkin());
 
         doneRouting.setPosition(TaxeGame.WIDTH - 250, TaxeGame.HEIGHT - 33);
         cancel.setPosition(TaxeGame.WIDTH - 100, TaxeGame.HEIGHT - 33);
@@ -58,7 +50,7 @@ public class RouteController {
         routingButtons.addActor(doneRouting);
         routingButtons.addActor(cancel);
 
-        stage.addActor(routingButtons);
+        context.getStage().addActor(routingButtons);
     }
 
     private void endRouting() {
@@ -67,6 +59,8 @@ public class RouteController {
     }
 
     public void drawRoute(List<IPositionable>positions, Color color) {
+        TaxeGame game = context.getTaxeGame();
+
         IPositionable previousPosition = null;
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(color);
@@ -74,7 +68,7 @@ public class RouteController {
         for(IPositionable position : positions) {
             if(previousPosition != null) {
                 game.shapeRenderer.rectLine(previousPosition.getX(), previousPosition.getY(), position.getX(),
-                        position.getY(), LINE_WIDTH);
+                        position.getY(), StationController.CONNECTION_LINE_WIDTH);
             }
 
             previousPosition = position;

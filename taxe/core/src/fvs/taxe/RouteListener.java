@@ -1,6 +1,8 @@
 package fvs.taxe;
 
+import fvs.taxe.controller.Context;
 import fvs.taxe.controller.RouteController;
+import fvs.taxe.controller.TrainController;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
@@ -12,15 +14,17 @@ import java.util.List;
 
 public class RouteListener implements StationClickListener, RouteConfirmedListener {
     private List<IPositionable> positions = new ArrayList<IPositionable>();
-    private MapRenderer mapRenderer;
     private Train train;
+    private Context context;
+    private Map map;
 
-    public RouteListener(MapRenderer mapRenderer, Train train) {
-        this.mapRenderer = mapRenderer;
+    public RouteListener(Context context, Train train) {
         this.train = train;
+        this.context = context;
+        map = context.getGameLogic().getMap();
 
         positions.add(train.getPosition());
-        RouteController routeController = new RouteController(mapRenderer, this, positions);
+        RouteController routeController = new RouteController(context, this, positions);
     }
 
     @Override
@@ -31,24 +35,25 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
 
         // the latest position chosen in the route so far
         IPositionable lastPosition =  positions.get(positions.size() - 1);
-        Station lastStation = mapRenderer.getMap().getStationFromPosition(lastPosition);
+        Station lastStation = map.getStationFromPosition(lastPosition);
 
         if(StationHelper.doesConnectionExist(station.getName(), lastStation.getName())) {
             positions.add(station.getLocation());
-            mapRenderer.setPlacingPositions(positions);
+            setPlacingPositions(positions);
         }
     }
 
     @Override
     public void confirmed() {
         List<Station> route = new ArrayList<Station>();
-        Map map = mapRenderer.getMap();
 
         for (IPositionable position : positions) {
             route.add(map.getStationFromPosition(position));
         }
 
         train.setRoute(route);
-        mapRenderer.addMoveActions(train);
+
+        TrainController trainController = new TrainController(context);
+        trainController.addMoveActions(train);
     }
 }
