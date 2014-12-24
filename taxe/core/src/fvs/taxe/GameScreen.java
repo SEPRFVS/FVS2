@@ -32,6 +32,7 @@ public class GameScreen extends ScreenAdapter {
     private MapRenderer mapRenderer;
     private Map map;
     private float timeAnimated = 0;
+    private TextButton endTurnButton;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -63,6 +64,10 @@ public class GameScreen extends ScreenAdapter {
                 Game.getInstance().setState(GameState.ANIMATING);
             }
         });
+    }
+
+    public TextButton getEndTurnButton() {
+        return endTurnButton;
     }
 
     private void drawResourcesHeader() {
@@ -144,16 +149,27 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void addEndTurnButton() {
-        TextButton endTurn = new TextButton("End Turn", skin);
-        endTurn.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 40.0f);
-        endTurn.addListener(new ClickListener() {
+        endTurnButton = new TextButton("End Turn", skin);
+        endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 40.0f);
+        endTurnButton.addListener(new ClickListener() {
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) {
                 gameLogic.getPlayerManager().turnOver();
             }
         });
 
-        stage.addActor(endTurn);
+        gameLogic.subscribeStateChanged(new GameStateListener() {
+            @Override
+            public void changed(GameState state) {
+                if(state == GameState.NORMAL) {
+                    endTurnButton.setVisible(true);
+                } else {
+                    endTurnButton.setVisible(false);
+                }
+            }
+        });
+
+        stage.addActor(endTurnButton);
     }
 
     // you can read about the debug keys and their functionality in the GitHub wiki

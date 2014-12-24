@@ -4,6 +4,9 @@ import gameLogic.goal.GoalManager;
 import gameLogic.map.Map;
 import gameLogic.resource.ResourceManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
 	private static Game instance;
 	private PlayerManager playerManager;
@@ -11,6 +14,7 @@ public class Game {
 	private ResourceManager resourceManager;
 	private Map map;
 	private GameState state;
+	private List<GameStateListener> gameStateListeners = new ArrayList<GameStateListener>();
 
 	private final int CONFIG_PLAYERS = 2;
 
@@ -77,5 +81,16 @@ public class Game {
 
 	public void setState(GameState state) {
 		this.state = state;
+		stateChanged();
+	}
+
+	public void subscribeStateChanged(GameStateListener listener) {
+		gameStateListeners.add(listener);
+	}
+
+	private void stateChanged() {
+		for(GameStateListener listener : gameStateListeners) {
+			listener.changed(state);
+		}
 	}
 }
