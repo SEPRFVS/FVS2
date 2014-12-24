@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.MapRenderer;
 import fvs.taxe.RouteConfirmedListener;
+import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.map.IPositionable;
@@ -35,8 +36,8 @@ public class Routing {
         TextButton doneRouting = new TextButton("Route Complete", skin);
         TextButton cancel = new TextButton("Cancel", skin);
 
-        doneRouting.setPosition(500, 500);
-        cancel.setPosition(500, 450);
+        doneRouting.setPosition(TaxeGame.WIDTH - 250, TaxeGame.HEIGHT - 33);
+        cancel.setPosition(TaxeGame.WIDTH - 100, TaxeGame.HEIGHT - 33);
 
         cancel.addListener(new ClickListener() {
             @Override

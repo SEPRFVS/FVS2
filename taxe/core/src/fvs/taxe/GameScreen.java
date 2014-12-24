@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,6 +34,8 @@ public class GameScreen extends ScreenAdapter {
     private Map map;
     private float timeAnimated = 0;
     private TextButton endTurnButton;
+    private Color controlsColor = Color.LIGHT_GRAY;
+    private final int CONTROLS_HEIGHT = 40;
 
     public GameScreen(TaxeGame game) {
         this.game = game;
@@ -62,6 +65,20 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public void changed() {
                 Game.getInstance().setState(GameState.ANIMATING);
+            }
+        });
+
+        gameLogic.subscribeStateChanged(new GameStateListener() {
+            @Override
+            public void changed(GameState state) {
+                switch(state) {
+                    case ANIMATING:
+                        controlsColor = Color.GREEN;
+                        break;
+                    default:
+                        controlsColor = Color.LIGHT_GRAY;
+                        break;
+                }
             }
         });
     }
@@ -135,7 +152,7 @@ public class GameScreen extends ScreenAdapter {
         float top = (float) TaxeGame.HEIGHT;
         game.fontSmall.setColor(Color.BLACK);
         float x = 10.0f;
-        float y = top - 10.0f;
+        float y = top - 10.0f - CONTROLS_HEIGHT;
 
         String playerGoals = "Current Player (" + gameLogic.getPlayerManager().getCurrentPlayer().toString() + ") Goals:";
         game.fontSmall.draw(game.batch, playerGoals, x, y);
@@ -150,7 +167,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void addEndTurnButton() {
         endTurnButton = new TextButton("End Turn", skin);
-        endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 40.0f);
+        endTurnButton.setPosition(TaxeGame.WIDTH - 100.0f, TaxeGame.HEIGHT - 33.0f);
         endTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -187,6 +204,15 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    private void controlsBackground() {
+        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        game.shapeRenderer.setColor(controlsColor);
+        game.shapeRenderer.rect(0, TaxeGame.HEIGHT - CONTROLS_HEIGHT, TaxeGame.WIDTH, CONTROLS_HEIGHT);
+        game.shapeRenderer.setColor(Color.BLACK);
+        game.shapeRenderer.rect(0, TaxeGame.HEIGHT - CONTROLS_HEIGHT, TaxeGame.WIDTH, 1);
+        game.shapeRenderer.end();
+    }
+
     // called every frame
     @Override
     public void render(float delta) {
@@ -196,6 +222,8 @@ public class GameScreen extends ScreenAdapter {
         game.batch.begin();
         game.batch.draw(mapTexture, 0, 0);
         game.batch.end();
+
+        controlsBackground();
 
         mapRenderer.renderConnections(map.getConnections(), Color.GRAY);
 
