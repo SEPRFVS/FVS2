@@ -8,6 +8,7 @@ import fvs.taxe.MapRenderer;
 import fvs.taxe.RouteListener;
 import fvs.taxe.StationClickListener;
 import gameLogic.Game;
+import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
@@ -34,6 +35,8 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                 Gdx.input.setCursorImage(pixmap, 10, 25); // these numbers will need tweaking
                 pixmap.dispose();
 
+                Game.getInstance().setState(GameState.PLACING);
+
                 mapRenderer.subscribeStationClick(new StationClickListener() {
                     @Override
                     public void clicked(Station station) {
@@ -44,8 +47,8 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                         Image trainImage = mapRenderer.renderTrain(train);
                         train.setActor(trainImage);
 
-                        // java.util.ConcurrentModificationException
                         mapRenderer.unsubscribeStationClick(this);
+                        Game.getInstance().setState(GameState.NORMAL);
                     }
                 });
 
