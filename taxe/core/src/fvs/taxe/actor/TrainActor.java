@@ -3,7 +3,7 @@ package fvs.taxe.actor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import fvs.taxe.MapRenderer;
+import fvs.taxe.controller.TrainController;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.map.IPositionable;
@@ -17,7 +17,7 @@ public class TrainActor extends Image {
 
         train.setActor(this);
         setSize(30f, 30f);
-        setPosition(position.getX() - MapRenderer.TRAIN_OFFSET, position.getY() - MapRenderer.TRAIN_OFFSET);
+        setPosition(position.getX() - TrainController.TRAIN_OFFSET, position.getY() - TrainController.TRAIN_OFFSET);
     }
 
     @Override
