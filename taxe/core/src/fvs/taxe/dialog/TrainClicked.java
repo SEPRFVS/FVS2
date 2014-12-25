@@ -3,6 +3,7 @@ package fvs.taxe.dialog;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.controller.Context;
+import fvs.taxe.controller.RouteController;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.Player;
@@ -11,7 +12,6 @@ import gameLogic.resource.Train;
 public class TrainClicked extends ClickListener {
     private Context context;
     private Train train;
-
 
     public TrainClicked(Context context, Train train) {
         this.train = train;

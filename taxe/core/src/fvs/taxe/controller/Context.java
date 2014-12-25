@@ -10,6 +10,7 @@ public class Context {
     private Stage stage;
     private Skin skin;
     private Game gameLogic;
+    private RouteController routeController;
 
     public Context(Stage stage, Skin skin, TaxeGame taxeGame) {
         this.stage = stage;
@@ -32,5 +33,13 @@ public class Context {
 
     public Game getGameLogic() {
         return gameLogic;
+    }
+
+    public RouteController getRouteController() {
+        return routeController;
+    }
+
+    public void setRouteController(RouteController routeController) {
+        this.routeController = routeController;
     }
 }

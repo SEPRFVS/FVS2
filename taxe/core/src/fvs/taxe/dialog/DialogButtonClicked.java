@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import fvs.taxe.Button;
-import fvs.taxe.RouteListener;
 import fvs.taxe.StationClickListener;
 import fvs.taxe.controller.Context;
 import fvs.taxe.controller.StationController;
@@ -58,8 +57,7 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
 
                 break;
             case TRAIN_ROUTE:
-                RouteListener routeListener = new RouteListener(context, train);
-                StationController.subscribeStationClick(routeListener);
+                context.getRouteController().begin(train);
 
                 break;
         }

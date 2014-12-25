@@ -1,26 +1,17 @@
 package fvs.taxe;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.controller.*;
-import fvs.taxe.dialog.TrainClicked;
-import gameLogic.*;
-import gameLogic.goal.Goal;
+import gameLogic.Game;
+import gameLogic.GameState;
+import gameLogic.TurnListener;
 import gameLogic.map.Map;
-import gameLogic.resource.Resource;
-import gameLogic.resource.Train;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class GameScreen extends ScreenAdapter {
@@ -65,7 +56,9 @@ public class GameScreen extends ScreenAdapter {
         topBarController = new TopBarController(context);
         resourceController = new ResourceController(context);
         goalController = new GoalController(context);
-        //routeController = new RouteController();
+        routeController = new RouteController(context);
+
+        context.setRouteController(routeController);
     }
 
 
@@ -84,7 +77,7 @@ public class GameScreen extends ScreenAdapter {
         stationController.renderConnections(map.getConnections(), Color.GRAY);
 
         if(gameLogic.getState() == GameState.ROUTING) {
-            //routeController.drawRoute(routeController.getPlacingPositions(), Color.BLACK);
+            routeController.drawRoute(Color.BLACK);
         }
 
         if(gameLogic.getState() == GameState.ANIMATING) {
