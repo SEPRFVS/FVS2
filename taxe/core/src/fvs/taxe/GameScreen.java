@@ -61,11 +61,11 @@ public class GameScreen extends ScreenAdapter {
         tooltip = new Tooltip(skin);
         stage.addActor(tooltip);
 
-        stationController = new StationController(context);
+        stationController = new StationController(context, tooltip);
         topBarController = new TopBarController(context);
         resourceController = new ResourceController(context);
         goalController = new GoalController(context);
-        routeController = new RouteController();
+        //routeController = new RouteController();
     }
 
 
@@ -84,7 +84,7 @@ public class GameScreen extends ScreenAdapter {
         stationController.renderConnections(map.getConnections(), Color.GRAY);
 
         if(gameLogic.getState() == GameState.ROUTING) {
-            routeController.drawRoute(getPlacingPositions(), Color.BLACK);
+            //routeController.drawRoute(routeController.getPlacingPositions(), Color.BLACK);
         }
 
         if(gameLogic.getState() == GameState.ANIMATING) {

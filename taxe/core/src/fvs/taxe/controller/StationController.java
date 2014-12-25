@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
+import fvs.taxe.Tooltip;
 import fvs.taxe.actor.StationActor;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
@@ -19,26 +20,28 @@ public class StationController {
     public final static int CONNECTION_LINE_WIDTH = 5;
 
     private Context context;
+    private Tooltip tooltip;
     /*
     have to use CopyOnWriteArrayList because when we iterate through our listeners and execute
     their handler's method, one case unsubscribes from the event removing itself from this list
     and this list implementation supports removing elements whilst iterating through it
     */
-    private List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
+    private static List<StationClickListener> stationClickListeners = new CopyOnWriteArrayList<StationClickListener>();
 
-    public StationController(Context context) {
+    public StationController(Context context, Tooltip tooltip) {
         this.context = context;
+        this.tooltip = tooltip;
     }
 
-    public void subscribeStationClick(StationClickListener listener) {
+    public static void subscribeStationClick(StationClickListener listener) {
         stationClickListeners.add(listener);
     }
 
-    public void unsubscribeStationClick(StationClickListener listener) {
+    public static void unsubscribeStationClick(StationClickListener listener) {
         stationClickListeners.remove(listener);
     }
 
-    private void stationClicked(Station station) {
+    private static void stationClicked(Station station) {
         for (StationClickListener listener : stationClickListeners) {
             listener.clicked(station);
         }

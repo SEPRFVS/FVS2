@@ -7,6 +7,7 @@ import fvs.taxe.Button;
 import fvs.taxe.RouteListener;
 import fvs.taxe.StationClickListener;
 import fvs.taxe.controller.Context;
+import fvs.taxe.controller.StationController;
 import fvs.taxe.controller.TrainController;
 import gameLogic.Game;
 import gameLogic.GameState;
@@ -20,8 +21,9 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
     private Train train;
 
     public DialogButtonClicked(Context context, Player player, Train train) {
-        currentPlayer = player;
+        this.currentPlayer = player;
         this.train = train;
+        this.context = context;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
 
                 Game.getInstance().setState(GameState.PLACING);
 
-                subscribeStationClick(new StationClickListener() {
+                StationController.subscribeStationClick(new StationClickListener() {
                     @Override
                     public void clicked(Station station) {
                         train.setPosition(station.getLocation());
@@ -49,15 +51,15 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                         Image trainImage = trainController.renderTrain(train);
                         train.setActor(trainImage);
 
-                        unsubscribeStationClick(this);
+                        StationController.unsubscribeStationClick(this);
                         Game.getInstance().setState(GameState.NORMAL);
                     }
                 });
 
                 break;
             case TRAIN_ROUTE:
-                RouteListener routeListener = new RouteListener(train);
-                subscribeStationClick(routeListener);
+                RouteListener routeListener = new RouteListener(context, train);
+                StationController.subscribeStationClick(routeListener);
 
                 break;
         }

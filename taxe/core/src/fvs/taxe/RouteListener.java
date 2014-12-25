@@ -17,6 +17,7 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
     private Train train;
     private Context context;
     private Map map;
+    private RouteController routeController;
 
     public RouteListener(Context context, Train train) {
         this.train = train;
@@ -24,7 +25,7 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
         map = context.getGameLogic().getMap();
 
         positions.add(train.getPosition());
-        RouteController routeController = new RouteController(context, this, positions);
+        routeController = new RouteController(context, this, positions);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class RouteListener implements StationClickListener, RouteConfirmedListen
 
         if(StationHelper.doesConnectionExist(station.getName(), lastStation.getName())) {
             positions.add(station.getLocation());
-            setPlacingPositions(positions);
+            routeController.setPlacingPositions(positions);
         }
     }
 

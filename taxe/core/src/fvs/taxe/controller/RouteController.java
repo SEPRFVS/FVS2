@@ -25,6 +25,16 @@ public class RouteController {
         addRoutingButtons(listener);
     }
 
+    private List<IPositionable> placingPositions;
+
+    public void setPlacingPositions(List<IPositionable> placingPositions) {
+        this.placingPositions = placingPositions;
+    }
+
+    public List<IPositionable> getPlacingPositions() {
+        return placingPositions;
+    }
+
     private void addRoutingButtons(final RouteConfirmedListener listener) {
         TextButton doneRouting = new TextButton("Route Complete", context.getSkin());
         TextButton cancel = new TextButton("Cancel", context.getSkin());
