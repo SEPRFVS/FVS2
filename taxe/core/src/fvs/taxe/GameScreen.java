@@ -44,13 +44,6 @@ public class GameScreen extends ScreenAdapter {
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         map = gameLogic.getMap();
 
-        gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
-            @Override
-            public void changed() {
-                gameLogic.setState(GameState.ANIMATING);
-            }
-        });
-
         tooltip = new Tooltip(skin);
         stage.addActor(tooltip);
 
@@ -61,6 +54,15 @@ public class GameScreen extends ScreenAdapter {
         routeController = new RouteController(context);
 
         context.setRouteController(routeController);
+        context.setTopBarController(topBarController);
+
+        gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
+            @Override
+            public void changed() {
+                gameLogic.setState(GameState.ANIMATING);
+                topBarController.displayFlashMessage("Time is passing...", Color.BLACK);
+            }
+        });
     }
 
 

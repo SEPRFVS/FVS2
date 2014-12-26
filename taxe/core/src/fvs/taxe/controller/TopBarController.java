@@ -3,11 +3,14 @@ package fvs.taxe.controller;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.GameState;
 import gameLogic.GameStateListener;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class TopBarController {
     public final static int CONTROLS_HEIGHT = 40;
@@ -15,6 +18,7 @@ public class TopBarController {
     private Context context;
     private Color controlsColor = Color.LIGHT_GRAY;
     private TextButton endTurnButton;
+    private Label flashMessage;
 
     public TopBarController(Context context) {
         this.context = context;
@@ -32,6 +36,20 @@ public class TopBarController {
                 }
             }
         });
+
+        createFlashActor();
+    }
+
+    private void createFlashActor() {
+        flashMessage = new Label("", context.getSkin());
+        flashMessage.setPosition(400, TaxeGame.HEIGHT - 24);
+        context.getStage().addActor(flashMessage);
+    }
+
+    public void displayFlashMessage(String message, Color color) {
+        flashMessage.setText(message);
+        flashMessage.setColor(color);
+        flashMessage.addAction(sequence(delay(1), fadeOut(0.25f)));
     }
 
     public void drawBackground() {

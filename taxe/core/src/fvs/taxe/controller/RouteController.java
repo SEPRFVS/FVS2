@@ -55,7 +55,9 @@ public class RouteController {
         IPositionable lastPosition =  positions.get(positions.size() - 1);
         Station lastStation = context.getGameLogic().getMap().getStationFromPosition(lastPosition);
 
-        if(StationHelper.doesConnectionExist(station.getName(), lastStation.getName())) {
+        if(!StationHelper.doesConnectionExist(station.getName(), lastStation.getName())) {
+            context.getTopBarController().displayFlashMessage("This connection doesn't exist", Color.RED);
+        } else {
             positions.add(station.getLocation());
         }
     }
