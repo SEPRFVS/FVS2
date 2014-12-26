@@ -12,11 +12,11 @@ public class Context {
     private Game gameLogic;
     private RouteController routeController;
 
-    public Context(Stage stage, Skin skin, TaxeGame taxeGame) {
+    public Context(Stage stage, Skin skin, TaxeGame taxeGame, Game gameLogic) {
         this.stage = stage;
         this.skin = skin;
         this.taxeGame = taxeGame;
-        this.gameLogic = Game.getInstance();
+        this.gameLogic = gameLogic;
     }
 
     public Stage getStage() {

@@ -44,7 +44,7 @@ public class RouteController {
         isRouting = true;
         positions = new ArrayList<IPositionable>();
         positions.add(train.getPosition());
-        Game.getInstance().setState(GameState.ROUTING);
+        context.getGameLogic().setState(GameState.ROUTING);
         addRoutingButtons();
     }
 
@@ -103,7 +103,7 @@ public class RouteController {
     }
 
     private void endRouting() {
-        Game.getInstance().setState(GameState.NORMAL);
+        context.getGameLogic().setState(GameState.NORMAL);
         routingButtons.remove();
     }
 

@@ -41,9 +41,9 @@ public class TrainController {
             action.addAction(moveTo(next.getX() - TRAIN_OFFSET, next.getY() - TRAIN_OFFSET, duration));
             action.addAction(new RunnableAction() {
                 public void run() {
-                    train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
+                    train.addHistory(station.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
                     System.out.println("Added to history: passed " + station.getName() + " on turn "
-                            + Game.getInstance().getPlayerManager().getTurnNumber());
+                            + context.getGameLogic().getPlayerManager().getTurnNumber());
                 }
             });
             current = next;
@@ -53,7 +53,7 @@ public class TrainController {
 
         action.addAction(new RunnableAction(){
             public void run(){
-                Game.getInstance().getGoalManager().trainArrived(train, train.getPlayer());
+                context.getGameLogic().getGoalManager().trainArrived(train, train.getPlayer());
                 train.setFinalDestination(null);
                 train.setPosition(finalPosition);
             }

@@ -36,16 +36,18 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        context = new Context(stage, skin, game);
-        Gdx.input.setInputProcessor(stage);
+
         gameLogic = Game.getInstance();
+        context = new Context(stage, skin, game, gameLogic);
+        Gdx.input.setInputProcessor(stage);
+
         mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
         map = gameLogic.getMap();
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
             public void changed() {
-                Game.getInstance().setState(GameState.ANIMATING);
+                gameLogic.setState(GameState.ANIMATING);
             }
         });
 
