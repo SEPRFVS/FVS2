@@ -66,8 +66,8 @@ public final class StationHelper {
 
     public static boolean doesConnectionExist(String stationName, String anotherStationName) {
         for (Tuple<String, String> connection : connections) {
-            if (connection.getFirst() == stationName && connection.getSecond() == anotherStationName
-                    || connection.getFirst() == anotherStationName && connection.getSecond() == stationName) {
+            if (connection.getFirst().equals(stationName) && connection.getSecond().equals(anotherStationName)
+                    || connection.getFirst().equals(anotherStationName) && connection.getSecond().equals(stationName)) {
                 return true;
             }
         }
