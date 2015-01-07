@@ -107,6 +107,7 @@ public class RouteController {
     private void endRouting() {
         context.getGameLogic().setState(GameState.NORMAL);
         routingButtons.remove();
+        isRouting = false;
     }
 
     public void drawRoute(Color color) {
