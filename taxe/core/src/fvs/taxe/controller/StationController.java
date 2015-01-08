@@ -85,7 +85,7 @@ public class StationController {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                tooltip.setPosition(collisionStationActor.getX() + 20, collisionStationActor.getY() + 20);
+                tooltip.setPosition(collisionStationActor.getX() + 10, collisionStationActor.getY() + 10);
                 tooltip.show("Junction");
             }
 
