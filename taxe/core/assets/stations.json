@@ -3,42 +3,50 @@
         {
             "name": "Madrid",
             "x": 155,
-            "y": 45
+            "y": 45,
+            "junction": false
         },
         {
             "name": "Paris",
             "x": 340,
-            "y": 290
+            "y": 290,
+            "junction": false
         },
         {
             "name": "London",
             "x": 298,
-            "y": 370
+            "y": 370,
+            "junction": false
         },
         {
             "name": "Glasgow",
             "x": 245,
-            "y": 510
+            "y": 510,
+            "junction": false
         },
         {
             "name": "Lille",
             "x": 362,
-            "y": 331
+            "y": 331,
+            "junction": true
         },
         {
             "name": "Brussels",
             "x": 394,
-            "y": 340
+            "y": 340,
+            "junction": false
         },
         {
             "name": "Amsterdam",
             "x": 401,
-            "y": 380
+            "y": 380,
+            "junction": false
         },
         {
             "name": "Berlin",
             "x": 560,
-            "y": 390
+            "y": 390,
+            "junction": false
         }
     ],
     "connections": [

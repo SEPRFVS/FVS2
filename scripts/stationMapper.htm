@@ -28,8 +28,10 @@
             footer ul li a{color:inherit}
         </style>
         <script type="text/javascript">
-            var Station = function(name,x,y){
+            var Station = function(name,x,y, junction){
+                if(junction == null){junction = false;}
                 this.name = name;
+                this.junction = junction;
                 if(x == null){x = 0;}
                 if(y == null){y = 0;}
                 this.x = x;
@@ -70,7 +72,7 @@
                             var config = JSON.parse(event.target.result);
                             for(station in config.stations){
                                 with(config.stations[station]){
-                                    stations[name] = new Station(name, x, parseInt(window.document.getElementById("map").style.height.replace("px",""))-y);
+                                    stations[name] = new Station(name, x, parseInt(window.document.getElementById("map").style.height.replace("px",""))-y, junction);
                                     drawStation(name);
                                 }
                             }
@@ -146,6 +148,10 @@
                 newStation.setAttribute("onclick","clickStation('" + name + "')");
                 newStation.style.top = stations[name].y + "px";
                 newStation.style.left = stations[name].x + "px";
+                if(stations[name].junction == true){
+                    newStation.style.color = "blue";
+                    newStation.style.backgroundColor = "blue";
+                }
                 newStation.appendChild(window.document.createTextNode('-'));
                 window.document.getElementById("map").appendChild(newStation);
             }
@@ -160,6 +166,11 @@
             
             function editStation(name){
                 window.document.getElementById("over-stationEdit-name").innerHTML = name;
+                if(stations[name].junction == true){
+                    window.document.getElementById("over-stationEdit-type").innerHTML = "Change to Station";
+                }else{
+                    window.document.getElementById("over-stationEdit-type").innerHTML = "Change to Junction";
+                }
                 showOver("stationEdit");
             }
             
@@ -194,6 +205,23 @@
                     with(window.document.getElementById("station-" + name)){
                         style.top = (event.pageY - window.document.getElementsByTagName("header")[0].offsetHeight - 8) + "px";
                         style.left = (event.pageX - parseInt(window.getComputedStyle(window.document.getElementById("map")).marginLeft.replace("px","")) - 8) + "px";
+                    }
+                }
+            }
+            
+            function toggleStationType(name){
+                hideOver("stationEdit");
+                if(stations[name].junction == true){
+                    stations[name].junction = false;
+                    with(window.document.getElementById("station-" + name)){
+                        style.backgroundColor = "red";
+                        style.color = "red";
+                    }
+                }else{
+                    stations[name].junction = true;
+                    with(window.document.getElementById("station-" + name)){
+                        style.backgroundColor = "blue";
+                        style.color = "blue";
                     }
                 }
             }
@@ -329,6 +357,7 @@
                 <p>Station Name: <span id="over-stationEdit-name"></span></p><br/>
                 <button type="button" id="over-stationEdit-position" onclick="repositionStation(window.document.getElementById('over-stationEdit-name').innerHTML);">Reposition</button><br/>
                 <button type="button" id="over-stationEdit-connect" onclick="startConnectStation(window.document.getElementById('over-stationEdit-name').innerHTML);">Make Connection</button><br/>
+                <button type="button" id="over-stationEdit-type" onclick="toggleStationType(window.document.getElementById('over-stationEdit-name').innerHTML);">Make Junction</button><br/>
                 <button type="button" id="over-stationEdit-remove" onclick="removeStation(window.document.getElementById('over-stationEdit-name').innerHTML);">Remove</button><br/>
                 <button type="button" id="over-stationEdit-close" onclick="hideOver('stationEdit');">Close</button>
             </aside>
