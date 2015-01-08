@@ -14,27 +14,30 @@ import com.badlogic.gdx.utils.JsonValue;
 public final class StationHelper {
     private static ArrayList<Tuple<String, String>> connections;
 
-    private static HashMap<String, Position> stations;
+    private static HashMap<String, Tuple<Position, Boolean>> stations;
     
     static {
     	JsonReader jsonReader = new JsonReader();
     	JsonValue jsonVal = jsonReader.parse(Gdx.files.local("stations.json"));
     	
-        stations = new HashMap<String, Position>();
+        stations = new HashMap<String, Tuple<Position, Boolean>>();
         for(JsonValue station = jsonVal.getChild("stations"); station != null; station = station.next){
         	String name = "";
         	int x = 0;
         	int y = 0;
+        	boolean junc = false;
         	for(JsonValue val = station.child; val != null; val = val.next){
         		if(val.name.equalsIgnoreCase("name")){
         			name = val.asString();
         		}else if(val.name.equalsIgnoreCase("x")){
         			x = val.asInt();
-        		}else{
+        		}else if(val.name.equalsIgnoreCase("y")){
         			y = val.asInt();
+        		}else{
+        			junc = val.asBoolean();
         		}
         	}
-        	stations.put(name, new Position(x,y));
+        	stations.put(name, new Tuple<Position, Boolean>(new Position(x,y), junc));
         }
 
         connections = new ArrayList<Tuple<String, String>>();
@@ -52,7 +55,7 @@ public final class StationHelper {
         }
     }
 
-    public static HashMap<String, Position> getStationData() {
+    public static HashMap<String, Tuple<Position, Boolean>> getStationData() {
         return stations;
     }
 

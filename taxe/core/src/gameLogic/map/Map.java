@@ -26,13 +26,23 @@ public class Map {
         stations.add(newStation);
         return newStation;
     }
+    
+    public CollisionStation addJunction(String name, Position location){
+    	CollisionStation newJunction = new CollisionStation(name, location);
+    	stations.add(newJunction);
+    	return newJunction;
+    }
 
     public void addStations(){
         Collection<String> stationNames = StationHelper.getStationNames();
-        HashMap<String, Position> stationData = StationHelper.getStationData();
+        HashMap<String, Tuple<Position,Boolean>> stationData = StationHelper.getStationData();
 
         for (String name : stationNames) {
-            addStation(name, stationData.get(name));
+        	if(stationData.get(name).getSecond() == true){
+        		addJunction(name, stationData.get(name).getFirst());
+        	}else{
+        		addStation(name, stationData.get(name).getFirst());
+        	}
         }
     }
 
