@@ -1,17 +1,21 @@
 package fvs.taxe.controller;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Game;
+import gameLogic.Player;
+import gameLogic.map.CollisionStation;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Station;
+import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
-
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 public class TrainController {
@@ -44,6 +48,28 @@ public class TrainController {
                     train.addHistory(station.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
                     System.out.println("Added to history: passed " + station.getName() + " on turn "
                             + context.getGameLogic().getPlayerManager().getTurnNumber());
+                    
+                    //test for train collisions at Junction point
+                    if(station instanceof CollisionStation){
+                    	boolean collision = false;
+                    	for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
+                    		for(Resource resource : player.getResources()){
+                    			if(resource instanceof Train){
+                    				Train otherTrain = (Train) resource;
+                    				if(otherTrain.getActor() != null){
+                    					if(otherTrain.getActor().getX() < train.getActor().getX() + 30 && otherTrain.getActor().getX() > train.getActor().getX() - 30 && otherTrain.getActor().getY() < train.getActor().getY() + 30 && otherTrain.getActor().getY() > train.getActor().getY() - 30 && otherTrain != train){
+                    						collision = true;
+                    						//TODO destroy trains that have crashed and burned
+                    					}
+                    				}
+                    			}
+                    		}
+                    	}
+                    	if(collision){
+                    		//TODO Maybe have a dialog box as it's quite important
+                    		context.getTopBarController().displayFlashMessage("Two trains collided at a Junction.  They were both destoryed.", Color.RED);
+                    	}
+                    }
                 }
             });
             current = next;
