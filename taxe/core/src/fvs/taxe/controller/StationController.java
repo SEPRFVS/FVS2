@@ -5,10 +5,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
 import fvs.taxe.Tooltip;
+import fvs.taxe.actor.CollisionStationActor;
 import fvs.taxe.actor.StationActor;
+import gameLogic.map.CollisionStation;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Station;
@@ -70,12 +73,40 @@ public class StationController {
 
         context.getStage().addActor(stationActor);
     }
+    
+    private void renderCollisionStation(final Station collisionStation){
+    	final CollisionStationActor collisionStationActor = new CollisionStationActor(collisionStation.getLocation());
+    	
+    	collisionStationActor.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stationClicked(collisionStation);
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                tooltip.setPosition(collisionStationActor.getX() + 20, collisionStationActor.getY() + 20);
+                tooltip.show("Junction");
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                tooltip.hide();
+            }
+        });
+
+        context.getStage().addActor(collisionStationActor);
+    }
 
     public void renderStations() {
         List<Station> stations = context.getGameLogic().getMap().getStations();
 
         for (Station station : stations) {
-            renderStation(station);
+        	if(station instanceof CollisionStation){
+        		renderCollisionStation(station);
+        	}else{
+        		renderStation(station);
+        	}
         }
     }
 
