@@ -1,8 +1,10 @@
 package fvs.taxe.dialog;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import fvs.taxe.Button;
 import fvs.taxe.StationClickListener;
 import fvs.taxe.controller.Context;
@@ -11,6 +13,7 @@ import fvs.taxe.controller.TrainController;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.Player;
+import gameLogic.map.CollisionStation;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
@@ -41,6 +44,11 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                 StationController.subscribeStationClick(new StationClickListener() {
                     @Override
                     public void clicked(Station station) {
+                    	if(station instanceof CollisionStation){
+                    		context.getTopBarController().displayFlashMessage("Trains cannot be placed at junctions.", Color.RED);
+                    		return;
+                    	}
+                    	
                         train.setPosition(station.getLocation());
                         train.addHistory(station.getName(), Game.getInstance().getPlayerManager().getTurnNumber());
 

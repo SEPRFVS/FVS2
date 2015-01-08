@@ -5,6 +5,7 @@ import java.util.Random;
 
 import gameLogic.Game;
 import gameLogic.Player;
+import gameLogic.map.CollisionStation;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
@@ -14,11 +15,14 @@ public class GoalManager {
 
 	private Goal generateRandom(int turn){
 		Map map = Game.getInstance().getMap();
-		Station origin = map.getRandomStation();
+		Station origin;
+		do{
+			origin = map.getRandomStation();
+		} while (origin instanceof CollisionStation);
 		Station destination;
 		do {
 			destination = map.getRandomStation();
-		} while (destination == origin);
+		} while (destination == origin || destination instanceof CollisionStation);
 
 		return new Goal(origin, destination, turn);
 	}
