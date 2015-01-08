@@ -6,10 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
+import gameLogic.map.CollisionStation;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
@@ -25,6 +27,7 @@ public class RouteController {
     private List<IPositionable> positions;
     private boolean isRouting = false;
     private Train train;
+    private boolean canEndRouting = true;
 
     public RouteController(Context context) {
         this.context = context;
@@ -59,6 +62,11 @@ public class RouteController {
             context.getTopBarController().displayFlashMessage("This connection doesn't exist", Color.RED);
         } else {
             positions.add(station.getLocation());
+            if(station instanceof CollisionStation){
+            	canEndRouting = false;
+            }else{
+            	canEndRouting = true;
+            }
         }
     }
 
@@ -105,6 +113,10 @@ public class RouteController {
     }
 
     private void endRouting() {
+    	if(canEndRouting == false){
+    		context.getTopBarController().displayFlashMessage("Your route must end at a station", Color.RED);
+    		return;
+    	}
         context.getGameLogic().setState(GameState.NORMAL);
         routingButtons.remove();
         isRouting = false;
