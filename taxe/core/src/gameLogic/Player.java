@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Player {
     private PlayerManager pm;
-    private int score;
     private List<Resource> resources;
     private List<Goal> goals;
 
@@ -17,14 +16,6 @@ public class Player {
         goals = new ArrayList<Goal>();
         resources = new ArrayList<Resource>();
         this.pm = pm;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void addScore(int score) {
-        this.score += score;
     }
 
     public List<Resource> getResources() {
@@ -52,7 +43,6 @@ public class Player {
     }
     
     public void completeGoal(Goal goal){
-    	addScore(goal.getRewardScore());
     	goal.setComplete();
         changed();
     }
