@@ -12,7 +12,7 @@ public class ResourceManagerTest {
     @Test(expected=RuntimeException.class)
     public void testAddResourceToPlayer() throws Exception {
         PlayerManager pm = new PlayerManager();
-        Player player = new Player(pm);
+        Player player = new Player(pm,1);
         ResourceManager rm = new ResourceManager();
 
         // add enough resources to exceed maximum

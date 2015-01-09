@@ -65,7 +65,7 @@ public class TrainController {
                     				if(otherTrain.getActor() != null){
                     					if(otherTrain.getActor().getX() < train.getActor().getX() + 30 && otherTrain.getActor().getX() > train.getActor().getX() - 30 && otherTrain.getActor().getY() < train.getActor().getY() + 30 && otherTrain.getActor().getY() > train.getActor().getY() - 30 && otherTrain != train){
                     						collision = true;
-                    						//TODO destroy trains that have crashed and burned
+                    						//destroy trains that have crashed and burned
                     						trainsToDestroy.add(new Tuple<Player, Train>(context.getGameLogic().getPlayerManager().getCurrentPlayer(),train));
                     						trainsToDestroy.add(new Tuple<Player, Train>(player,otherTrain));
                     					}

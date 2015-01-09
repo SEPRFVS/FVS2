@@ -11,11 +11,13 @@ public class Player {
     private PlayerManager pm;
     private List<Resource> resources;
     private List<Goal> goals;
+    private int number;
 
-    public Player(PlayerManager pm) {
+    public Player(PlayerManager pm, int playerNumber) {
         goals = new ArrayList<Goal>();
         resources = new ArrayList<Resource>();
         this.pm = pm;
+        number = playerNumber;
     }
 
     public List<Resource> getResources() {
@@ -67,5 +69,9 @@ public class Player {
     
     public PlayerManager getPlayerManager(){
     	return pm;
+    }
+    
+    public int getPlayerNumber(){
+    	return number;
     }
 }

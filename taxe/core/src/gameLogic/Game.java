@@ -57,6 +57,7 @@ public class Game {
 		for (Player player : playerManager.getAllPlayers()) {
 			goalManager.givePlayerGoal(player);
 			resourceManager.addRandomResourceToPlayer(player);
+			resourceManager.addRandomResourceToPlayer(player);
 		}
 	}
 

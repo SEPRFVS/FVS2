@@ -12,7 +12,7 @@ public class PlayerManager {
 	
 	public void createPlayers(int count) {
 		for (int i = 0; i < count; i++) {
-			players.add(new Player(this));
+			players.add(new Player(this, i+1));
 		}
 	}
 	

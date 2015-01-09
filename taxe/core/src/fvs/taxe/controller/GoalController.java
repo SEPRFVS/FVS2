@@ -41,7 +41,7 @@ public class GoalController {
         float x = 10.0f;
         float y = top - 10.0f - TopBarController.CONTROLS_HEIGHT;
 
-        String playerGoals = "Current Player (" + context.getGameLogic().getPlayerManager().getCurrentPlayer().toString() + ") Goals:";
+        String playerGoals = "Player " + context.getGameLogic().getPlayerManager().getCurrentPlayer().getPlayerNumber() + " Goals:";
         game.fontSmall.draw(game.batch, playerGoals, x, y);
 
         for (String goalString : playerGoalStrings()) {
