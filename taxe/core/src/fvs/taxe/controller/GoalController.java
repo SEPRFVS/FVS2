@@ -1,6 +1,9 @@
 package fvs.taxe.controller;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
 import fvs.taxe.TaxeGame;
 import gameLogic.Player;
 import gameLogic.PlayerManager;
@@ -11,6 +14,7 @@ import java.util.List;
 
 public class GoalController {
     private Context context;
+    private Group goalButtons = new Group();
 
     public GoalController(Context context) {
         this.context = context;
@@ -34,6 +38,9 @@ public class GoalController {
 
     public void showCurrentPlayerGoals() {
         TaxeGame game = context.getTaxeGame();
+        
+        goalButtons.remove();
+        goalButtons.clear();
 
         game.batch.begin();
         float top = (float) TaxeGame.HEIGHT;
@@ -43,12 +50,19 @@ public class GoalController {
 
         String playerGoals = "Player " + context.getGameLogic().getPlayerManager().getCurrentPlayer().getPlayerNumber() + " Goals:";
         game.fontSmall.draw(game.batch, playerGoals, x, y);
+        
+        game.batch.end();
+        
+        y -= 15;
 
         for (String goalString : playerGoalStrings()) {
             y -= 30;
-            game.fontSmall.draw(game.batch, goalString, x, y);
+            
+            TextButton button  = new TextButton(goalString, context.getSkin());
+            button.setPosition(x,y);
+            goalButtons.addActor(button);
         }
-
-        game.batch.end();
+        
+        context.getStage().addActor(goalButtons);
     }
 }
