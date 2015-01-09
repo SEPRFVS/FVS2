@@ -87,6 +87,11 @@ public class RouteController {
         doneRouting.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
+                if(canEndRouting == false){
+                    context.getTopBarController().displayFlashMessage("Your route must end at a station", Color.RED);
+                    return;
+                }
+
                 confirmed();
                 endRouting();
             }
@@ -113,10 +118,6 @@ public class RouteController {
     }
 
     private void endRouting() {
-    	if(canEndRouting == false){
-    		context.getTopBarController().displayFlashMessage("Your route must end at a station", Color.RED);
-    		return;
-    	}
         context.getGameLogic().setState(GameState.NORMAL);
         routingButtons.remove();
         isRouting = false;
