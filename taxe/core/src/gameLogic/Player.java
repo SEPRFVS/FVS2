@@ -34,8 +34,15 @@ public class Player {
     }
 
     public void addGoal(Goal goal) {
-        if (goals.size() >= GoalManager.CONFIG_MAX_PLAYER_GOALS) {
-            throw new RuntimeException("Max player goals exceeded");
+    	int uncompleteGoals = 0;
+    	for(Goal existingGoal : goals){
+    		if(existingGoal.getComplete() == false){
+    			uncompleteGoals++;
+    		}
+    	}
+        if (uncompleteGoals >= GoalManager.CONFIG_MAX_PLAYER_GOALS) {
+            //throw new RuntimeException("Max player goals exceeded");
+        	return;
         }
 
         goals.add(goal);

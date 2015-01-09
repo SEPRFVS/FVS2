@@ -1,5 +1,10 @@
 package fvs.taxe.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Util.Tuple;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -52,6 +57,7 @@ public class TrainController {
                     //test for train collisions at Junction point
                     if(station instanceof CollisionStation){
                     	boolean collision = false;
+                    	List<Tuple<Player, Train>> trainsToDestroy = new ArrayList<Tuple<Player, Train>>();
                     	for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
                     		for(Resource resource : player.getResources()){
                     			if(resource instanceof Train){
@@ -60,12 +66,18 @@ public class TrainController {
                     					if(otherTrain.getActor().getX() < train.getActor().getX() + 30 && otherTrain.getActor().getX() > train.getActor().getX() - 30 && otherTrain.getActor().getY() < train.getActor().getY() + 30 && otherTrain.getActor().getY() > train.getActor().getY() - 30 && otherTrain != train){
                     						collision = true;
                     						//TODO destroy trains that have crashed and burned
+                    						trainsToDestroy.add(new Tuple<Player, Train>(context.getGameLogic().getPlayerManager().getCurrentPlayer(),train));
+                    						trainsToDestroy.add(new Tuple<Player, Train>(player,otherTrain));
                     					}
                     				}
                     			}
                     		}
                     	}
                     	if(collision){
+                    		for(Tuple<Player, Train> destroy : trainsToDestroy){
+                    			destroy.getSecond().getActor().clearActions();
+                    			destroy.getFirst().removeResource(destroy.getSecond());
+                    		}
                     		//TODO Maybe have a dialog box as it's quite important
                     		context.getTopBarController().displayFlashMessage("Two trains collided at a Junction.  They were both destoryed.", Color.RED);
                     	}

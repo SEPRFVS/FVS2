@@ -11,7 +11,7 @@ import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
 public class GoalManager {
-	public final static int CONFIG_MAX_PLAYER_GOALS = 7;
+	public final static int CONFIG_MAX_PLAYER_GOALS = 3;
 
 	private Goal generateRandom(int turn){
 		Map map = Game.getInstance().getMap();
@@ -37,6 +37,7 @@ public class GoalManager {
 		for(Goal goal:player.getGoals()){
 			if(goal.isComplete(train)){
 				player.completeGoal(goal);
+				player.removeResource(train);
 			}
 		}
 		System.out.println("Train arrived to final destination: " + train.getFinalDestination().getName());

@@ -5,7 +5,7 @@ import gameLogic.Player;
 import java.util.Random;
 
 public class ResourceManager {
-    private final int CONFIG_MAX_RESOURCES = 10;
+    private final int CONFIG_MAX_RESOURCES = 7;
     private Random random = new Random();
 
     private Resource getRandomResource() {
@@ -27,7 +27,8 @@ public class ResourceManager {
 
     private void addResourceToPlayer(Player player, Resource resource) {
         if (player.getResources().size() >= CONFIG_MAX_RESOURCES) {
-            throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
+            //throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
+        	return;
         }
 
         resource.setPlayer(player);

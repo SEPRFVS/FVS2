@@ -34,6 +34,7 @@ public class Game {
 				Player currentPlayer = playerManager.getCurrentPlayer();
 				goalManager.givePlayerGoal(currentPlayer);
 				resourceManager.addRandomResourceToPlayer(currentPlayer);
+				resourceManager.addRandomResourceToPlayer(currentPlayer);
 			}
 		});
 	}
