@@ -22,6 +22,8 @@ public class Goal {
 	public void addConstraint(String name, String value){
 		if(name == "train"){
 			trainName = value;
+		}else{
+			throw new RuntimeException(name + " is not a valid goal constraint");
 		}
 	}
 

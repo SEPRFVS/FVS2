@@ -91,7 +91,10 @@ public class TrainController {
 
         action.addAction(new RunnableAction(){
             public void run(){
-                context.getGameLogic().getGoalManager().trainArrived(train, train.getPlayer());
+                ArrayList<String> completedGoals = context.getGameLogic().getGoalManager().trainArrived(train, train.getPlayer());
+                for(String message : completedGoals){
+                	context.getTopBarController().displayFlashMessage(message, Color.WHITE);
+                }
                 train.setFinalDestination(null);
                 train.setPosition(finalPosition);
             }

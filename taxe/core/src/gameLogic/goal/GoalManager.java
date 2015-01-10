@@ -1,5 +1,6 @@
 package gameLogic.goal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,14 +40,17 @@ public class GoalManager {
 		player.addGoal(generateRandom(player.getPlayerManager().getTurnNumber()));
 	}
 
-	public void trainArrived(Train train, Player player){
+	public ArrayList<String> trainArrived(Train train, Player player){
 		//TODO fancy goal checking stuff
+		ArrayList<String> completedString = new ArrayList<String>();
 		for(Goal goal:player.getGoals()){
 			if(goal.isComplete(train)){
 				player.completeGoal(goal);
 				player.removeResource(train);
+				completedString.add("Player " + player.getPlayerNumber() + " completed a goal to " + goal.toString() + "!");
 			}
 		}
 		System.out.println("Train arrived to final destination: " + train.getFinalDestination().getName());
+		return completedString;
 	}
 }
