@@ -10,12 +10,19 @@ public class Goal {
 	private Station destination;
 	private int turnIssued;
 	private boolean complete = false;
-	//TODO Add in constraints
+	//constraints
+	private String trainName = null;
 	
 	public Goal(Station origin, Station destination, int turn){
 		this.origin = origin;
 		this.destination = destination;
 		this.turnIssued = turn;
+	}
+	
+	public void addConstraint(String name, String value){
+		if(name == "train"){
+			trainName = value;
+		}
 	}
 
 	public boolean isComplete(Train train){
@@ -26,16 +33,23 @@ public class Goal {
 			}
 		}
 		if(train.getFinalDestination() == destination && passedOrigin){
-			return true;
+			if(trainName == null || trainName.equals(train.getName())){
+				return true;
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
 	}
 	
 	//TODO Rename to be more descriptive of function (Doesn't represent entire goal)
-	//TODO represent goals as boxes instead of strings (Code needed in MapRenderer)
 	public String toString(){
-		return "Send a train from " + origin.getName() + " to " + destination.getName();
+		String trainString = "train";
+		if(trainName != null){
+			trainString = trainName;
+		}
+		return "Send a " + trainString + " from " + origin.getName() + " to " + destination.getName();
 	}
 
 	public void setComplete() {

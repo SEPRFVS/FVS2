@@ -30,6 +30,10 @@ public class Train extends Resource {
         history = new ArrayList<Tuple<String, Integer>>();
         route =  new ArrayList<Station>();
     }
+    
+    public String getName(){
+    	return name;
+    }
 
     public String getImage() {
         return "trains/" + image;

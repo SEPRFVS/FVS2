@@ -1,0 +1,36 @@
+{
+    "trains": [
+        {
+            "name": "Bullet Train",
+            "speed": 50
+        },
+        {
+            "name": "Diesel Train",
+            "speed": 30
+        },
+        {
+            "name": "Electric Train",
+            "speed": 40
+        },
+        {
+            "name": "MagLev Train",
+            "speed": 80
+        },
+        {
+            "name": "Nuclear Train",
+            "speed": 100
+        },
+        {
+            "name": "Petrol Train",
+            "speed": 60
+        },
+        {
+            "name": "Solar Train",
+            "speed": 70
+        },
+        {
+            "name": "Steam Train",
+            "speed": 10
+        }
+    ]
+}

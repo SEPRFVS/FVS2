@@ -9,6 +9,7 @@ import gameLogic.map.CollisionStation;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.resource.Train;
+import gameLogic.resource.TrainHelper;
 
 public class GoalManager {
 	public final static int CONFIG_MAX_PLAYER_GOALS = 3;
@@ -23,8 +24,14 @@ public class GoalManager {
 		do {
 			destination = map.getRandomStation();
 		} while (destination == origin || destination instanceof CollisionStation);
+		
+		Goal goal = new Goal(origin, destination, turn);
+		Random random = new Random();
+		if(random.nextInt(2) == 1){
+			goal.addConstraint("train", TrainHelper.getTrainNames().get(random.nextInt(TrainHelper.getTrainNames().size())));
+		}
 
-		return new Goal(origin, destination, turn);
+		return goal;
 	}
 	
 	//TODO is there a better way as supposed to passing in the player?

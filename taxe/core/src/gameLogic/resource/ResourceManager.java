@@ -4,21 +4,18 @@ import gameLogic.Player;
 
 import java.util.Random;
 
+import Util.Tuple;
+
 public class ResourceManager {
     private final int CONFIG_MAX_RESOURCES = 7;
     private Random random = new Random();
 
     private Resource getRandomResource() {
-        int index = random.nextInt(2);
-
-        switch(index) {
-            case 0:
-                return new Train("Bullet Train", "BulletTrain.png", 50);
-            case 1:
-                return new Train("Nuclear Train", "NuclearTrain.png", 100);
-        }
-
-        throw new RuntimeException("local int index must be wrong" + index);
+            	
+    	int index = random.nextInt(TrainHelper.getTrainNames().size());
+    	Tuple<String, Integer> train = TrainHelper.getTrains().get(index);
+    	return new Train(train.getFirst(), train.getFirst().replaceAll(" ", "") + ".png",train.getSecond());
+    	
     }
 
     public void addRandomResourceToPlayer(Player player) {
