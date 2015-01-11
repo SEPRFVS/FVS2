@@ -30,6 +30,7 @@ public class TrainController {
     public TrainActor renderTrain(Train train) {
         TrainActor trainActor = new TrainActor(train);
         trainActor.addListener(new TrainClicked(context, train));
+        trainActor.setVisible(false);
         context.getStage().addActor(trainActor);
 
         return trainActor;
@@ -38,6 +39,11 @@ public class TrainController {
     public void addMoveActions(final Train train) {
         SequenceAction action = Actions.sequence();
         IPositionable current = train.getPosition();
+        action.addAction(new RunnableAction() {
+        	public void run() {
+        		train.getActor().setVisible(true);
+        	}
+        });
 
         for (final Station station : train.getRoute()) {
             IPositionable next = station.getLocation();
@@ -94,8 +100,9 @@ public class TrainController {
                 for(String message : completedGoals) {
                 	context.getTopBarController().displayFlashMessage(message, Color.WHITE);
                 }
+                System.out.println(train.getFinalDestination().getLocation().getX() + "," + train.getFinalDestination().getLocation().getY());
+                train.setPosition(train.getFinalDestination().getLocation());
                 train.setFinalDestination(null);
-                train.setPosition(finalPosition);
             }
         });
 

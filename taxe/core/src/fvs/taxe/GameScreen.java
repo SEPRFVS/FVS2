@@ -55,6 +55,7 @@ public class GameScreen extends ScreenAdapter {
 
         context.setRouteController(routeController);
         context.setTopBarController(topBarController);
+        context.setStationController(stationController);
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override

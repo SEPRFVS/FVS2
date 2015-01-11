@@ -11,6 +11,10 @@ import fvs.taxe.TaxeGame;
 import fvs.taxe.Tooltip;
 import fvs.taxe.actor.CollisionStationActor;
 import fvs.taxe.actor.StationActor;
+import fvs.taxe.dialog.DialogResourceTrain;
+import fvs.taxe.dialog.DialogStationMultitrain;
+import gameLogic.Game;
+import gameLogic.GameState;
 import gameLogic.Player;
 import gameLogic.map.CollisionStation;
 import gameLogic.map.Connection;
@@ -60,6 +64,10 @@ public class StationController {
         stationActor.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if(Game.getInstance().getState() == GameState.NORMAL){
+                	DialogStationMultitrain dia = new DialogStationMultitrain(station, context.getSkin(), context);
+                    dia.show(context.getStage());
+                }
                 stationClicked(station);
             }
 
@@ -136,7 +144,7 @@ public class StationController {
 		game.batch.begin();
 		game.fontSmall.setColor(Color.BLACK);
 		
-    	for(Station station : context.getGameLogic().getMap().getStations()){
+    	for(Station station : context.getGameLogic().getMap().getStations()) {
     		ArrayList<Train> trainsAtStation = new ArrayList<Train>();
     		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
     			for(Resource resource : player.getResources()) {
@@ -144,16 +152,13 @@ public class StationController {
     					if(((Train) resource).getActor() != null) {
     						if(((Train) resource).getPosition() == station.getLocation()) {
     							trainsAtStation.add((Train) resource);
-    							((Train) resource).getActor().setVisible(false);
-    						}else{
-    							((Train) resource).getActor().setVisible(true);
     						}
     					}
     				}
     			}
     		}
     		if(trainsAtStation.size() > 0) {
-    			game.fontSmall.draw(game.batch, trainsAtStation.size() + "", (float) station.getLocation().getX(), (float) station.getLocation().getY());
+    			game.fontSmall.draw(game.batch, trainsAtStation.size() + "", (float) station.getLocation().getX(), (float) station.getLocation().getY()+18);
     		}
     	}
     	

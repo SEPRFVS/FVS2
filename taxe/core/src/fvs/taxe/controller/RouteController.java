@@ -46,7 +46,8 @@ public class RouteController {
         context.getGameLogic().setState(GameState.ROUTING);
         addRoutingButtons();
 
-        setTrainsVisible(train, false);
+        //setTrainsVisible(train, false);
+        train.getActor().setVisible(true);
     }
 
     private void addStationToRoute(Station station) {
@@ -116,7 +117,8 @@ public class RouteController {
         routingButtons.remove();
         isRouting = false;
 
-        setTrainsVisible(train, true);
+        //setTrainsVisible(train, true);
+        train.getActor().setVisible(false);
     }
 
     public void drawRoute(Color color) {
