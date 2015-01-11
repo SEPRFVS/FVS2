@@ -31,6 +31,14 @@
         {
             "name": "Steam Train",
             "speed": 10
-        }
+        },
+		{
+			"name": "Green Train",
+			"speed": 20
+		},
+		{
+			"name": "Hydrogen Train",
+			"speed": 90
+		}
     ]
 }

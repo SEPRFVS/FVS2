@@ -1,16 +1,19 @@
 package fvs.taxe.controller;
 
 import Util.Tuple;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+
 import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Player;
 import gameLogic.map.CollisionStation;
 import gameLogic.map.IPositionable;
+import gameLogic.map.Position;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
@@ -46,6 +49,11 @@ public class TrainController {
         });
 
         for (final Station station : train.getRoute()) {
+        	action.addAction(new RunnableAction() {
+        		public void run() {
+        			train.setPosition(new Position(0,0));
+        		}
+        	});
             IPositionable next = station.getLocation();
             float duration = Vector2.dst(current.getX(), current.getY(), next.getX(), next.getY()) / train.getSpeed();
             action.addAction(moveTo(next.getX() - TrainActor.width / 2, next.getY() - TrainActor.height / 2, duration));
