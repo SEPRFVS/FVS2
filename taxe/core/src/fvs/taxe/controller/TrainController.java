@@ -56,12 +56,12 @@ public class TrainController {
 
                     	for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
                     		for(Resource resource : player.getResources()) {
-                    			if(resource instanceof Train){
+                    			if(resource instanceof Train) {
                     				Train otherTrain = (Train) resource;
                     				if(otherTrain.getActor() == null) continue;
                                     if(otherTrain == train) continue;
 
-                                    if(train.getActor().getBounds().overlaps(otherTrain.getActor().getBounds())){
+                                    if(train.getActor().getBounds().overlaps(otherTrain.getActor().getBounds())) {
                                         collision = true;
                                         //destroy trains that have crashed and burned
                                         trainsToDestroy.add(new Tuple<Player, Train>(context.getGameLogic().getPlayerManager().getCurrentPlayer(), train));
@@ -87,10 +87,10 @@ public class TrainController {
 
         final IPositionable finalPosition = current;
 
-        action.addAction(new RunnableAction(){
-            public void run(){
+        action.addAction(new RunnableAction() {
+            public void run() {
                 ArrayList<String> completedGoals = context.getGameLogic().getGoalManager().trainArrived(train, train.getPlayer());
-                for(String message : completedGoals){
+                for(String message : completedGoals) {
                 	context.getTopBarController().displayFlashMessage(message, Color.WHITE);
                 }
                 train.setFinalDestination(null);

@@ -21,19 +21,19 @@ public final class StationHelper {
     	JsonValue jsonVal = jsonReader.parse(Gdx.files.local("stations.json"));
     	
         stations = new HashMap<String, Tuple<Position, Boolean>>();
-        for(JsonValue station = jsonVal.getChild("stations"); station != null; station = station.next){
+        for(JsonValue station = jsonVal.getChild("stations"); station != null; station = station.next) {
         	String name = "";
         	int x = 0;
         	int y = 0;
         	boolean junc = false;
-        	for(JsonValue val = station.child; val != null; val = val.next){
-        		if(val.name.equalsIgnoreCase("name")){
+        	for(JsonValue val = station.child; val != null; val = val.next) {
+        		if(val.name.equalsIgnoreCase("name")) {
         			name = val.asString();
-        		}else if(val.name.equalsIgnoreCase("x")){
+        		} else if(val.name.equalsIgnoreCase("x")) {
         			x = val.asInt();
-        		}else if(val.name.equalsIgnoreCase("y")){
+        		} else if(val.name.equalsIgnoreCase("y")) {
         			y = val.asInt();
-        		}else{
+        		} else {
         			junc = val.asBoolean();
         		}
         	}
@@ -41,13 +41,13 @@ public final class StationHelper {
         }
 
         connections = new ArrayList<Tuple<String, String>>();
-        for(JsonValue connection = jsonVal.getChild("connections"); connection != null; connection = connection.next){
+        for(JsonValue connection = jsonVal.getChild("connections"); connection != null; connection = connection.next) {
         	String station1 = "";
         	String station2 = "";
-        	for(JsonValue val = connection.child; val != null; val = val.next){
-        		if(val.name.equalsIgnoreCase("station1")){
+        	for(JsonValue val = connection.child; val != null; val = val.next) {
+        		if(val.name.equalsIgnoreCase("station1")) {
         			station1 = val.asString();
-        		}else{
+        		} else {
         			station2 = val.asString();
         		}
         	}
@@ -63,7 +63,7 @@ public final class StationHelper {
         return stations.keySet();
     }
 
-    public static ArrayList<Tuple<String, String>> getConnections(){
+    public static ArrayList<Tuple<String, String>> getConnections() {
         return connections;
     }
 

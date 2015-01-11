@@ -4,7 +4,7 @@ public class Position extends IPositionable {
 	private int x;
 	private int y;
 	
-	public Position(int x, int y){
+	public Position(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -31,8 +31,11 @@ public class Position extends IPositionable {
 
 	@Override
 	public boolean equals(Object o) {
-		Position pos = (Position) o;
-		return (x == pos.getX() && y == pos.getY());
+		if (o instanceof  Position) {
+			Position pos = (Position) o;
+			return (x == pos.getX() && y == pos.getY());
+		}
+		return false;
 
 	}
 }

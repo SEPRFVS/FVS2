@@ -16,13 +16,13 @@ public final class TrainHelper {
     	JsonValue jsonVal = jsonReader.parse(Gdx.files.local("trains.json"));
     	
     	trains = new ArrayList<Tuple<String, Integer>>();
-    	for(JsonValue train = jsonVal.getChild("trains"); train != null; train = train.next()){
+    	for(JsonValue train = jsonVal.getChild("trains"); train != null; train = train.next()) {
     		String name = "";
     		int speed = 50;
-    		for(JsonValue val  = train.child; val != null; val = val.next()){
-    			if(val.name.equalsIgnoreCase("name")){
+    		for(JsonValue val  = train.child; val != null; val = val.next()) {
+    			if(val.name.equalsIgnoreCase("name")) {
     				name = val.asString();
-    			}else{
+    			} else {
     				speed = val.asInt();
     			}
     		}
@@ -30,15 +30,15 @@ public final class TrainHelper {
     	}
 	}
 	
-	public static ArrayList<String> getTrainNames(){
+	public static ArrayList<String> getTrainNames() {
 		ArrayList<String> names = new ArrayList<String>();
-		for(Tuple<String,Integer> train : trains){
+		for(Tuple<String,Integer> train : trains) {
 			names.add(train.getFirst());
 		}
 		return names;
 	}
 	
-	public static ArrayList<Tuple<String, Integer>> getTrains(){
+	public static ArrayList<Tuple<String, Integer>> getTrains() {
 		return trains;
 	}
 }

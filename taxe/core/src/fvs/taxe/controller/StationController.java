@@ -74,7 +74,7 @@ public class StationController {
         context.getStage().addActor(stationActor);
     }
     
-    private void renderCollisionStation(final Station collisionStation){
+    private void renderCollisionStation(final Station collisionStation) {
     	final CollisionStationActor collisionStationActor = new CollisionStationActor(collisionStation.getLocation());
     	
     	collisionStationActor.addListener(new ClickListener() {
@@ -102,9 +102,9 @@ public class StationController {
         List<Station> stations = context.getGameLogic().getMap().getStations();
 
         for (Station station : stations) {
-        	if(station instanceof CollisionStation){
+        	if(station instanceof CollisionStation) {
         		renderCollisionStation(station);
-        	}else{
+        	} else {
         		renderStation(station);
         	}
         }

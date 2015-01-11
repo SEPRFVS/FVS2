@@ -37,8 +37,8 @@ public class Player {
 
     public void addGoal(Goal goal) {
     	int uncompleteGoals = 0;
-    	for(Goal existingGoal : goals){
-    		if(existingGoal.getComplete() == false){
+    	for(Goal existingGoal : goals) {
+    		if(!existingGoal.getComplete()) {
     			uncompleteGoals++;
     		}
     	}
@@ -51,7 +51,7 @@ public class Player {
         changed();
     }
     
-    public void completeGoal(Goal goal){
+    public void completeGoal(Goal goal) {
     	goal.setComplete();
         changed();
     }
@@ -67,11 +67,11 @@ public class Player {
         return goals;
     }
     
-    public PlayerManager getPlayerManager(){
+    public PlayerManager getPlayerManager() {
     	return pm;
     }
     
-    public int getPlayerNumber(){
+    public int getPlayerNumber() {
     	return number;
     }
 }

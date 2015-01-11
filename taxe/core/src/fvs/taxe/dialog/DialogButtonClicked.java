@@ -43,7 +43,7 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                 StationController.subscribeStationClick(new StationClickListener() {
                     @Override
                     public void clicked(Station station) {
-                    	if(station instanceof CollisionStation){
+                    	if(station instanceof CollisionStation) {
                     		context.getTopBarController().displayFlashMessage("Trains cannot be placed at junctions.", Color.RED);
                     		return;
                     	}

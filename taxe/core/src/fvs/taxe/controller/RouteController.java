@@ -143,7 +143,7 @@ public class RouteController {
         for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
             for(Resource resource : player.getResources()) {
                 if(resource instanceof Train) {
-                    if(((Train) resource).getActor() != null &&  resource != train){
+                    if(((Train) resource).getActor() != null &&  resource != train) {
                         ((Train) resource).getActor().setVisible(visible);
                     }
                 }

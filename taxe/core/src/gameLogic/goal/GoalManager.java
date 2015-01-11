@@ -14,7 +14,7 @@ import java.util.Random;
 public class GoalManager {
 	public final static int CONFIG_MAX_PLAYER_GOALS = 3;
 
-	private Goal generateRandom(int turn){
+	private Goal generateRandom(int turn) {
 		Map map = Game.getInstance().getMap();
 		Station origin;
 		do {
@@ -37,15 +37,15 @@ public class GoalManager {
 		return goal;
 	}
 	
-	public void addRandomGoalToPlayer(Player player){
+	public void addRandomGoalToPlayer(Player player) {
 		player.addGoal(generateRandom(player.getPlayerManager().getTurnNumber()));
 	}
 
-	public ArrayList<String> trainArrived(Train train, Player player){
+	public ArrayList<String> trainArrived(Train train, Player player) {
 		//TODO fancy goal checking stuff
 		ArrayList<String> completedString = new ArrayList<String>();
-		for(Goal goal:player.getGoals()){
-			if(goal.isComplete(train)){
+		for(Goal goal:player.getGoals()) {
+			if(goal.isComplete(train)) {
 				player.completeGoal(goal);
 				player.removeResource(train);
 				completedString.add("Player " + player.getPlayerNumber() + " completed a goal to " + goal.toString() + "!");

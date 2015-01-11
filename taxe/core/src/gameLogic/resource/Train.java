@@ -31,7 +31,7 @@ public class Train extends Resource {
         route =  new ArrayList<Station>();
     }
     
-    public String getName(){
+    public String getName() {
     	return name;
     }
 
@@ -56,7 +56,7 @@ public class Train extends Resource {
         this.actor = actor;
     }
 
-    public TrainActor getActor(){
+    public TrainActor getActor() {
         return actor;
     }
 
@@ -71,7 +71,7 @@ public class Train extends Resource {
         return finalDestination != null;
     }
 
-    public List<Station> getRoute(){
+    public List<Station> getRoute() {
         return route;
     }
 
