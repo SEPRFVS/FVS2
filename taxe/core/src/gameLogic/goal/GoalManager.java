@@ -1,9 +1,5 @@
 package gameLogic.goal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.map.CollisionStation;
@@ -12,31 +8,36 @@ import gameLogic.map.Station;
 import gameLogic.resource.Train;
 import gameLogic.resource.TrainHelper;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class GoalManager {
 	public final static int CONFIG_MAX_PLAYER_GOALS = 3;
 
 	private Goal generateRandom(int turn){
 		Map map = Game.getInstance().getMap();
 		Station origin;
-		do{
+		do {
 			origin = map.getRandomStation();
 		} while (origin instanceof CollisionStation);
 		Station destination;
 		do {
 			destination = map.getRandomStation();
+			// always true, really?
 		} while (destination == origin || destination instanceof CollisionStation);
 		
 		Goal goal = new Goal(origin, destination, turn);
+
+		// Goal with a specific train
 		Random random = new Random();
-		if(random.nextInt(2) == 1){
+		if(random.nextInt(2) == 1) {
 			goal.addConstraint("train", TrainHelper.getTrainNames().get(random.nextInt(TrainHelper.getTrainNames().size())));
 		}
 
 		return goal;
 	}
 	
-	//TODO is there a better way as supposed to passing in the player?
-	public void givePlayerGoal(Player player){
+	public void addRandomGoalToPlayer(Player player){
 		player.addGoal(generateRandom(player.getPlayerManager().getTurnNumber()));
 	}
 
