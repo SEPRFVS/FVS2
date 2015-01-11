@@ -4,11 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-<<<<<<< HEAD
-
-=======
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
->>>>>>> development
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.map.IPositionable;
@@ -47,11 +43,7 @@ public class TrainActor extends Image {
         if (Game.getInstance().getState() == GameState.ANIMATING) {
             super.act(delta);
             updateBounds();
-<<<<<<< HEAD
-            train.setPosition(new Position((int) this.getX(), (int) this.getY()));
-=======
             updateFacingDirection();
->>>>>>> development
         }
     }
 
