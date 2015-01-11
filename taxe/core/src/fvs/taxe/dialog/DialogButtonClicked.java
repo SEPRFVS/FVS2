@@ -3,10 +3,9 @@ package fvs.taxe.dialog;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
 import fvs.taxe.Button;
 import fvs.taxe.StationClickListener;
+import fvs.taxe.actor.TrainActor;
 import fvs.taxe.controller.Context;
 import fvs.taxe.controller.StationController;
 import fvs.taxe.controller.TrainController;
@@ -55,8 +54,8 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                         Gdx.input.setCursorImage(null, 0, 0);
 
                         TrainController trainController = new TrainController(context);
-                        Image trainImage = trainController.renderTrain(train);
-                        train.setActor(trainImage);
+                        TrainActor trainActor = trainController.renderTrain(train);
+                        train.setActor(trainActor);
 
                         StationController.unsubscribeStationClick(this);
                         Game.getInstance().setState(GameState.NORMAL);

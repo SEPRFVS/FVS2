@@ -6,17 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
-import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.Player;
-import gameLogic.map.CollisionStation;
-import gameLogic.map.IPositionable;
-import gameLogic.map.Map;
-import gameLogic.map.Station;
-import gameLogic.map.StationHelper;
+import gameLogic.map.*;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
@@ -51,16 +45,8 @@ public class RouteController {
         positions.add(train.getPosition());
         context.getGameLogic().setState(GameState.ROUTING);
         addRoutingButtons();
-        
-        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
-        	for(Resource resource : player.getResources()){
-        		if(resource instanceof Train){
-        			if(((Train) resource).getActor() != null && ((Train) resource) != this.train){
-        				((Train) resource).getActor().setVisible(false);
-        			}
-        		}
-        	}
-        }
+
+        setTrainsVisible(train, false);
     }
 
     private void addStationToRoute(Station station) {
@@ -74,11 +60,7 @@ public class RouteController {
             context.getTopBarController().displayFlashMessage("This connection doesn't exist", Color.RED);
         } else {
             positions.add(station.getLocation());
-            if(station instanceof CollisionStation){
-            	canEndRouting = false;
-            }else{
-            	canEndRouting = true;
-            }
+            canEndRouting = !(station instanceof CollisionStation);
         }
     }
 
@@ -99,7 +81,7 @@ public class RouteController {
         doneRouting.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                if(canEndRouting == false){
+                if(!canEndRouting) {
                     context.getTopBarController().displayFlashMessage("Your route must end at a station", Color.RED);
                     return;
                 }
@@ -133,16 +115,8 @@ public class RouteController {
         context.getGameLogic().setState(GameState.NORMAL);
         routingButtons.remove();
         isRouting = false;
-        
-        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
-        	for(Resource resource : player.getResources()){
-        		if(resource instanceof Train){
-        			if(((Train) resource).getActor() != null && ((Train) resource) != this.train){
-        				((Train) resource).getActor().setVisible(true);
-        			}
-        		}
-        	}
-        }
+
+        setTrainsVisible(train, true);
     }
 
     public void drawRoute(Color color) {
@@ -162,5 +136,18 @@ public class RouteController {
         }
 
         game.shapeRenderer.end();
+    }
+
+    // Sets all trains on the map visible or invisible except one that we are routing for
+    public void setTrainsVisible(Train train, boolean visible) {
+        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
+            for(Resource resource : player.getResources()) {
+                if(resource instanceof Train) {
+                    if(((Train) resource).getActor() != null &&  resource != train){
+                        ((Train) resource).getActor().setVisible(visible);
+                    }
+                }
+            }
+        }
     }
 }

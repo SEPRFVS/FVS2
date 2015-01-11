@@ -1,7 +1,7 @@
 package gameLogic.resource;
 
 import Util.Tuple;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import fvs.taxe.actor.TrainActor;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Station;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class Train extends Resource {
     private String image;
     private IPositionable position;
-    private Image actor;
+    private TrainActor actor;
     private int speed;
     // Final destination should be set to null after firing the arrival event
     private Station finalDestination;
@@ -52,11 +52,11 @@ public class Train extends Resource {
         return position;
     }
 
-    public void setActor(Image actor) {
+    public void setActor(TrainActor actor) {
         this.actor = actor;
     }
 
-    public Image getActor(){
+    public TrainActor getActor(){
         return actor;
     }
 

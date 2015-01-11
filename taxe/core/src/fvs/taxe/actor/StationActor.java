@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import gameLogic.map.IPositionable;
 
 public class StationActor extends Image {
-    private int width = 32;
-    private int height = 32;
+    private static int width = 20;
+    private static int height = 20;
 
     public StationActor(IPositionable location) {
         super(new Texture(Gdx.files.internal("station_dot.png")));
