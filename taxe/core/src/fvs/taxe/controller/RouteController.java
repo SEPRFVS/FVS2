@@ -11,11 +11,13 @@ import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.Game;
 import gameLogic.GameState;
+import gameLogic.Player;
 import gameLogic.map.CollisionStation;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Map;
 import gameLogic.map.Station;
 import gameLogic.map.StationHelper;
+import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
 
 import java.util.ArrayList;
@@ -49,6 +51,16 @@ public class RouteController {
         positions.add(train.getPosition());
         context.getGameLogic().setState(GameState.ROUTING);
         addRoutingButtons();
+        
+        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
+        	for(Resource resource : player.getResources()){
+        		if(resource instanceof Train){
+        			if(((Train) resource).getActor() != null && ((Train) resource) != this.train){
+        				((Train) resource).getActor().setVisible(false);
+        			}
+        		}
+        	}
+        }
     }
 
     private void addStationToRoute(Station station) {
@@ -121,6 +133,16 @@ public class RouteController {
         context.getGameLogic().setState(GameState.NORMAL);
         routingButtons.remove();
         isRouting = false;
+        
+        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()){
+        	for(Resource resource : player.getResources()){
+        		if(resource instanceof Train){
+        			if(((Train) resource).getActor() != null && ((Train) resource) != this.train){
+        				((Train) resource).getActor().setVisible(true);
+        			}
+        		}
+        	}
+        }
     }
 
     public void drawRoute(Color color) {
