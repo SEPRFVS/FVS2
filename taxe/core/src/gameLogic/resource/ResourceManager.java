@@ -14,7 +14,7 @@ public class ResourceManager {
             	
     	int index = random.nextInt(TrainHelper.getTrainNames().size());
     	Tuple<String, Integer> train = TrainHelper.getTrains().get(index);
-    	return new Train(train.getFirst(), train.getFirst().replaceAll(" ", "") + ".png",train.getSecond());
+    	return new Train(train.getFirst(), train.getFirst().replaceAll(" ", "") + ".png", train.getFirst().replaceAll(" ", "") + "Right.png",train.getSecond());
     	
     }
 
