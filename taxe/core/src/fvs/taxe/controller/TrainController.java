@@ -48,6 +48,7 @@ public class TrainController {
                     train.addHistory(station.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
                     System.out.println("Added to history: passed " + station.getName() + " on turn "
                             + context.getGameLogic().getPlayerManager().getTurnNumber());
+                    train.setPosition(station.getLocation());
                     
                     //test for train collisions at Junction point
                     if(station instanceof CollisionStation) {

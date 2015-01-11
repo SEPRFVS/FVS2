@@ -11,11 +11,15 @@ import fvs.taxe.TaxeGame;
 import fvs.taxe.Tooltip;
 import fvs.taxe.actor.CollisionStationActor;
 import fvs.taxe.actor.StationActor;
+import gameLogic.Player;
 import gameLogic.map.CollisionStation;
 import gameLogic.map.Connection;
 import gameLogic.map.IPositionable;
 import gameLogic.map.Station;
+import gameLogic.resource.Resource;
+import gameLogic.resource.Train;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -70,6 +74,8 @@ public class StationController {
                 tooltip.hide();
             }
         });
+        
+        station.setActor(stationActor);
 
         context.getStage().addActor(stationActor);
     }
@@ -123,5 +129,34 @@ public class StationController {
             game.shapeRenderer.rectLine(start.getX(), start.getY(), end.getX(), end.getY(), CONNECTION_LINE_WIDTH);
         }
         game.shapeRenderer.end();
+    }
+    
+    public void displayStations() {
+    	TaxeGame game = context.getTaxeGame();
+		game.batch.begin();
+		game.fontSmall.setColor(Color.BLACK);
+		
+    	for(Station station : context.getGameLogic().getMap().getStations()){
+    		ArrayList<Train> trainsAtStation = new ArrayList<Train>();
+    		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
+    			for(Resource resource : player.getResources()) {
+    				if(resource instanceof Train) {
+    					if(((Train) resource).getActor() != null) {
+    						if(((Train) resource).getPosition() == station.getLocation()) {
+    							trainsAtStation.add((Train) resource);
+    							((Train) resource).getActor().setVisible(false);
+    						}else{
+    							((Train) resource).getActor().setVisible(true);
+    						}
+    					}
+    				}
+    			}
+    		}
+    		if(trainsAtStation.size() > 0) {
+    			game.fontSmall.draw(game.batch, trainsAtStation.size() + "", (float) station.getLocation().getX(), (float) station.getLocation().getY());
+    		}
+    	}
+    	
+    	game.batch.end();
     }
 }

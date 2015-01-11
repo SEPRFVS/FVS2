@@ -91,6 +91,10 @@ public class GameScreen extends ScreenAdapter {
                 timeAnimated = 0;
             }
         }
+        
+        if(gameLogic.getState() == GameState.NORMAL || gameLogic.getState() == GameState.PLACING){
+        	stationController.displayStations();
+        }
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

@@ -1,8 +1,11 @@
 package gameLogic.map;
 
+import fvs.taxe.actor.StationActor;
+
 public class Station{
 	private String name;
 	private IPositionable location;
+	private StationActor actor;
 
 	public Station(String name, IPositionable location) {
 		this.name = name;
@@ -21,6 +24,14 @@ public class Station{
 	}
 	public void setLocation(IPositionable location) {
 		this.location = location;
+	}
+	
+	public void setActor(StationActor actor){
+		this.actor = actor;
+	}
+	
+	public StationActor getActor(){
+		return actor;
 	}
 	
 }
