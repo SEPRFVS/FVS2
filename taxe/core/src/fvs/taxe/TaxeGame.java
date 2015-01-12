@@ -51,6 +51,9 @@ public class TaxeGame extends Game {
 		if(Gdx.input.isKeyPressed(Input.Keys.R)) {
 			//Run screencapture
 			screenRecorder = new ScreenRecorder(30,4);
+		}else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+			//Take single screenshot
+			screenRecorder = new ScreenRecorder(1,1);
 		}
 		if(screenRecorder != null) {
 			if(screenRecorder.takeScreenshot() == false) {
