@@ -29,9 +29,9 @@ public class DialogStationMultitrain extends Dialog {
 						String destination = "";
 						if(((Train) resource).getFinalDestination() != null) {
 							destination = " to " + ((Train) resource).getFinalDestination().getName();
-							isTrain = true;
 						}
 						button(((Train) resource).getName() + destination + " (Player " + ((Train) resource).getPlayer().getPlayerNumber() + ")", ((Train) resource));
+						isTrain = true;
 					}
 				}
 			}
