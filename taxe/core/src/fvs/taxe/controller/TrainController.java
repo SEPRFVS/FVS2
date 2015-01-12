@@ -103,7 +103,7 @@ public class TrainController {
             public void run() {
                 ArrayList<String> completedGoals = context.getGameLogic().getGoalManager().trainArrived(train, train.getPlayer());
                 for(String message : completedGoals) {
-                	context.getTopBarController().displayFlashMessage(message, Color.WHITE);
+                	context.getTopBarController().displayFlashMessage(message, Color.WHITE, 2);
                 }
                 System.out.println(train.getFinalDestination().getLocation().getX() + "," + train.getFinalDestination().getLocation().getY());
                 train.setPosition(train.getFinalDestination().getLocation());
