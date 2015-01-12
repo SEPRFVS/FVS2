@@ -16,6 +16,10 @@ public class ResourceManager {
     private Random random = new Random();
     private ArrayList<Tuple<String, Integer>> trains;
     
+    public ResourceManager() {
+    	initialise();
+    }
+    
     private void initialise() {
     	JsonReader jsonReader = new JsonReader();
     	JsonValue jsonVal = jsonReader.parse(Gdx.files.local("trains.json"));
