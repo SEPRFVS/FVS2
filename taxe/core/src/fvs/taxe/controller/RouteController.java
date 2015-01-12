@@ -46,7 +46,8 @@ public class RouteController {
         context.getGameLogic().setState(GameState.ROUTING);
         addRoutingButtons();
 
-        //setTrainsVisible(train, false);
+        TrainController trainController = new TrainController(context);
+        trainController.setTrainsVisible(train, false);
         train.getActor().setVisible(true);
     }
 
@@ -117,7 +118,8 @@ public class RouteController {
         routingButtons.remove();
         isRouting = false;
 
-        //setTrainsVisible(train, true);
+        TrainController trainController = new TrainController(context);
+        trainController.setTrainsVisible(train, true);
         train.getActor().setVisible(false);
     }
 
@@ -138,18 +140,5 @@ public class RouteController {
         }
 
         game.shapeRenderer.end();
-    }
-
-    // Sets all trains on the map visible or invisible except one that we are routing for
-    public void setTrainsVisible(Train train, boolean visible) {
-        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
-            for(Resource resource : player.getResources()) {
-                if(resource instanceof Train) {
-                    if(((Train) resource).getActor() != null &&  resource != train) {
-                        ((Train) resource).getActor().setVisible(visible);
-                    }
-                }
-            }
-        }
     }
 }
