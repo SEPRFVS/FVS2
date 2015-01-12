@@ -103,7 +103,7 @@ public class TrainController {
             public void run() {
                 ArrayList<String> completedGoals = context.getGameLogic().getGoalManager().trainArrived(train, train.getPlayer());
                 for(String message : completedGoals) {
-                	context.getTopBarController().displayFlashMessage(message, Color.WHITE);
+                	context.getTopBarController().displayFlashMessage(message, Color.WHITE, 2);
                 }
                 System.out.println(train.getFinalDestination().getLocation().getX() + "," + train.getFinalDestination().getLocation().getY());
                 train.setPosition(train.getFinalDestination().getLocation());
@@ -123,7 +123,14 @@ public class TrainController {
         for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
             for(Resource resource : player.getResources()) {
                 if(resource instanceof Train) {
-                    if(((Train) resource).getActor() != null &&  resource != train) {
+                	boolean trainAtStation = false;
+                	for(Station station : context.getGameLogic().getMap().getStations()) {
+                		if(station.getLocation() == ((Train) resource).getPosition()){
+                			trainAtStation = true;
+                			break;
+                		}
+                	}
+                    if(((Train) resource).getActor() != null && resource != train && trainAtStation == false) {
                         ((Train) resource).getActor().setVisible(visible);
                     }
                 }

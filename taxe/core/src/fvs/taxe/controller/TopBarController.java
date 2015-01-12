@@ -47,15 +47,14 @@ public class TopBarController {
     }
 
     public void displayFlashMessage(String message, Color color) {
-        flashMessage.setText(message);
-        flashMessage.setColor(color);
-        flashMessage.addAction(sequence(delay(1), fadeOut(0.25f)));
+        displayFlashMessage(message, color, 0.25f);
     }
 
     public void displayFlashMessage(String message, Color color, float time) {
         flashMessage.setText(message);
         flashMessage.setColor(color);
-        flashMessage.addAction(sequence(delay(1), fadeOut(time)));
+        flashMessage.addAction(sequence(delay(time), fadeOut(0.25f)));
+
     }
 
     public void drawBackground() {

@@ -39,6 +39,8 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
                 pixmap.dispose();
 
                 Game.getInstance().setState(GameState.PLACING);
+                TrainController trainController = new TrainController(context);
+                trainController.setTrainsVisible(null, false);
 
                 StationController.subscribeStationClick(new StationClickListener() {
                     @Override
@@ -55,6 +57,7 @@ public class DialogButtonClicked implements ResourceDialogClickListener {
 
                         TrainController trainController = new TrainController(context);
                         TrainActor trainActor = trainController.renderTrain(train);
+                        trainController.setTrainsVisible(null, true);
                         train.setActor(trainActor);
 
                         StationController.unsubscribeStationClick(this);

@@ -22,8 +22,9 @@ public class Game {
 		playerManager = new PlayerManager();
 		playerManager.createPlayers(CONFIG_PLAYERS);
 
-		goalManager = new GoalManager();
 		resourceManager = new ResourceManager();
+		goalManager = new GoalManager(resourceManager);
+		
 		map = new Map();
 		
 		state = GameState.NORMAL;
