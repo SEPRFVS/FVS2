@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class DialogStationMultitrain extends Dialog {
 	
 	private Context context;
+	private boolean isTrain = false;
 	
 	public DialogStationMultitrain(Station station, Skin skin, Context context) {
 		super(station.getName(), skin);
@@ -28,6 +29,7 @@ public class DialogStationMultitrain extends Dialog {
 						String destination = "";
 						if(((Train) resource).getFinalDestination() != null) {
 							destination = " to " + ((Train) resource).getFinalDestination().getName();
+							isTrain = true;
 						}
 						button(((Train) resource).getName() + destination + " (Player " + ((Train) resource).getPlayer().getPlayerNumber() + ")", ((Train) resource));
 					}
@@ -36,6 +38,9 @@ public class DialogStationMultitrain extends Dialog {
 		}
 		
 		button("Cancel","CANCEL");
+		if(isTrain == false) {
+			hide();
+		}
 	}
 	
 	@Override
@@ -59,5 +64,9 @@ public class DialogStationMultitrain extends Dialog {
 			TrainClicked clicker = new TrainClicked(context, (Train) obj);
 			clicker.clicked(null, 0, 0);
 		}
+	}
+	
+	public boolean getIsTrain() {
+		return isTrain;
 	}
 }
