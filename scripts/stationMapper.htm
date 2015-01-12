@@ -92,12 +92,16 @@
             function saveMap(){
                 var stationArray = [];
                 for(station in stations){
-                    stationArray.push(stations[station]);
-                    stationArray[stationArray.length-1].y = parseInt(window.document.getElementById("map").style.height.replace("px","")) - stationArray[stationArray.length-1].y;
+					if(stations[station] != null){
+						stationArray.push(stations[station]);
+						stationArray[stationArray.length-1].y = parseInt(window.document.getElementById("map").style.height.replace("px","")) - stationArray[stationArray.length-1].y;
+					}
                 }
                 var connectionArray = [];
                 for(connection in connections){
-                    connectionArray.push(connections[connection]);
+					if(connections[connection] != null){
+						connectionArray.push(connections[connection]);
+					}
                 }
                 var outputJSON = {stations: stationArray, connections: connectionArray};
                 var url = "data:text/json;charset=utf8," + encodeURIComponent(JSON.stringify(outputJSON));

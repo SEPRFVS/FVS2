@@ -66,7 +66,9 @@ public class StationController {
             public void clicked(InputEvent event, float x, float y) {
                 if(Game.getInstance().getState() == GameState.NORMAL){
                 	DialogStationMultitrain dia = new DialogStationMultitrain(station, context.getSkin(), context);
-                    dia.show(context.getStage());
+                	if(dia.getIsTrain()) {
+                		dia.show(context.getStage());
+                	}
                 }
                 stationClicked(station);
             }
