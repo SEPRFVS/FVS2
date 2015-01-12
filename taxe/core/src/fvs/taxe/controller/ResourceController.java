@@ -32,7 +32,7 @@ public class ResourceController {
         game.batch.begin();
         game.fontSmall.setColor(Color.BLACK);
         game.fontSmall.draw(game.batch, "Unplaced Resources:", 10.0f, (float) TaxeGame.HEIGHT - 250.0f);
-        game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float) TaxeGame.WIDTH - 70.0f, 20.0f);
+        //game.fontSmall.draw(game.batch, "FPS:" + Gdx.graphics.getFramesPerSecond(), (float) TaxeGame.WIDTH - 70.0f, 20.0f);
         game.batch.end();
     }
 
