@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="fvs.taxe.actor.CollisionStationActor" project="taxe-core" 
+    file="/taxe-core/src/fvs/taxe/actor/CollisionStationActor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="192" x="136" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="fvs.taxe.actor.TrainActor" project="taxe-core" 
+    file="/taxe-core/src/fvs/taxe/actor/TrainActor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="164" x="368" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="fvs.taxe.actor.StationActor" project="taxe-core" 
+    file="/taxe-core/src/fvs/taxe/actor/StationActor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="153" x="572" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

@@ -1,6 +1,8 @@
 package gameLogic.map;
 
-import Util.Tuple;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.*;
 
@@ -13,8 +15,73 @@ public class Map {
         stations = new ArrayList<Station>();
         connections = new ArrayList<Connection>();
 
-        addStations();
-        addConnections();
+        initialise();
+    }
+
+    private void initialise() {
+        JsonReader jsonReader = new JsonReader();
+        JsonValue jsonVal = jsonReader.parse(Gdx.files.local("stations.json"));
+
+        parseStations(jsonVal);
+        parseConnections(jsonVal);
+    }
+
+    private void parseConnections(JsonValue jsonVal) {
+        for(JsonValue connection = jsonVal.getChild("connections"); connection != null; connection = connection.next) {
+            String station1 = "";
+            String station2 = "";
+
+            for(JsonValue val = connection.child; val != null; val = val.next) {
+                if(val.name.equalsIgnoreCase("station1")) {
+                    station1 = val.asString();
+                } else {
+                    station2 = val.asString();
+                }
+            }
+
+            addConnection(station1, station2);
+        }
+    }
+
+    private void parseStations(JsonValue jsonVal) {
+        for(JsonValue station = jsonVal.getChild("stations"); station != null; station = station.next) {
+            String name = "";
+            int x = 0;
+            int y = 0;
+            boolean isJunction = false;
+
+            for(JsonValue val = station.child; val != null; val = val.next) {
+                if(val.name.equalsIgnoreCase("name")) {
+                    name = val.asString();
+                } else if(val.name.equalsIgnoreCase("x")) {
+                    x = val.asInt();
+                } else if(val.name.equalsIgnoreCase("y")) {
+                    y = val.asInt();
+                } else {
+                    isJunction = val.asBoolean();
+                }
+            }
+
+            if (isJunction) {
+                addJunction(name, new Position(x,y));
+            } else {
+                addStation(name, new Position(x, y));
+            }
+        }
+    }
+
+    public boolean doesConnectionExist(String stationName, String anotherStationName) {
+        for (Connection connection : connections) {
+            String s1 = connection.getStation1().getName();
+            String s2 = connection.getStation2().getName();
+
+            if (s1.equals(stationName) && s2.equals(anotherStationName)
+                || s1.equals(anotherStationName) && s2.equals(stationName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public Station getRandomStation() {
@@ -31,19 +98,6 @@ public class Map {
     	CollisionStation newJunction = new CollisionStation(name, location);
     	stations.add(newJunction);
     	return newJunction;
-    }
-
-    public void addStations() {
-        Collection<String> stationNames = StationHelper.getStationNames();
-        HashMap<String, Tuple<Position,Boolean>> stationData = StationHelper.getStationData();
-
-        for (String name : stationNames) {
-        	if(stationData.get(name).getSecond()) {
-        		addJunction(name, stationData.get(name).getFirst());
-        	} else {
-        		addStation(name, stationData.get(name).getFirst());
-        	}
-        }
     }
 
     public List<Station> getStations() {
@@ -67,13 +121,6 @@ public class Map {
         Station st1 = getStationByName(station1);
         Station st2 = getStationByName(station2);
         return addConnection(st1, st2);
-    }
-
-    public void addConnections() {
-        ArrayList<Tuple<String, String>> connectionPairs = StationHelper.getConnections();
-        for (Tuple<String, String> connectionPair : connectionPairs) {
-            addConnection(connectionPair.getFirst(), connectionPair.getSecond());
-        }
     }
 
     //Get connections from station
