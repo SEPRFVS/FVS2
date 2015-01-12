@@ -1,13 +1,10 @@
 package fvs.taxe.controller;
 
-import Util.Tuple;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-
 import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Player;
@@ -67,8 +64,7 @@ public class TrainController {
                     //test for train collisions at Junction point
                     if(station instanceof CollisionStation) {
                     	boolean collision = false;
-                    	List<Tuple<Player, Train>> trainsToDestroy = new ArrayList<Tuple<Player, Train>>();
-
+                    	List<Train> trainsToDestroy = new ArrayList<Train>();
                     	for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
                     		for(Resource resource : player.getResources()) {
                     			if(resource instanceof Train) {
@@ -79,17 +75,18 @@ public class TrainController {
                                     if(train.getActor().getBounds().overlaps(otherTrain.getActor().getBounds())) {
                                         collision = true;
                                         //destroy trains that have crashed and burned
-                                        trainsToDestroy.add(new Tuple<Player, Train>(context.getGameLogic().getPlayerManager().getCurrentPlayer(), train));
-                                        trainsToDestroy.add(new Tuple<Player, Train>(player, otherTrain));
+                                        trainsToDestroy.add(train);
+                                        trainsToDestroy.add(otherTrain);
                                     }
 
                     			}
                     		}
                     	}
                     	if(collision) {
-                    		for(Tuple<Player, Train> trainToDestroy : trainsToDestroy) {
-                    			trainToDestroy.getSecond().getActor().clearActions();
-                    			trainToDestroy.getFirst().removeResource(trainToDestroy.getSecond());
+                    		for(Train trainToDestroy : trainsToDestroy) {
+                    			trainToDestroy.getActor().clearActions();
+                                trainToDestroy.getActor().remove();
+                    			trainToDestroy.getPlayer().removeResource(trainToDestroy);
                     		}
                     		//TODO Maybe have a dialog box as it's quite important
                     		context.getTopBarController().displayFlashMessage("Two trains collided at a Junction.  They were both destroyed.", Color.RED, 2);
@@ -110,6 +107,7 @@ public class TrainController {
                 }
                 System.out.println(train.getFinalDestination().getLocation().getX() + "," + train.getFinalDestination().getLocation().getY());
                 train.setPosition(train.getFinalDestination().getLocation());
+                train.getActor().setVisible(false);
                 train.setFinalDestination(null);
             }
         });
@@ -117,5 +115,19 @@ public class TrainController {
         // Remove previous actions if any and add new sequential action
         train.getActor().clearActions();
         train.getActor().addAction(action);
+    }
+
+    // Sets all trains on the map visible or invisible except one that we are routing for
+    public void setTrainsVisible(Train train, boolean visible) {
+
+        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
+            for(Resource resource : player.getResources()) {
+                if(resource instanceof Train) {
+                    if(((Train) resource).getActor() != null &&  resource != train) {
+                        ((Train) resource).getActor().setVisible(visible);
+                    }
+                }
+            }
+        }
     }
 }

@@ -66,7 +66,9 @@ public class StationController {
             public void clicked(InputEvent event, float x, float y) {
                 if(Game.getInstance().getState() == GameState.NORMAL){
                 	DialogStationMultitrain dia = new DialogStationMultitrain(station, context.getSkin(), context);
-                    dia.show(context.getStage());
+                	if(dia.getIsTrain()) {
+                		dia.show(context.getStage());
+                	}
                 }
                 stationClicked(station);
             }
@@ -82,15 +84,15 @@ public class StationController {
                 tooltip.hide();
             }
         });
-        
+
         station.setActor(stationActor);
 
         context.getStage().addActor(stationActor);
     }
-    
+
     private void renderCollisionStation(final Station collisionStation) {
     	final CollisionStationActor collisionStationActor = new CollisionStationActor(collisionStation.getLocation());
-    	
+
     	collisionStationActor.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -138,30 +140,37 @@ public class StationController {
         }
         game.shapeRenderer.end();
     }
-    
+
     public void displayStations() {
     	TaxeGame game = context.getTaxeGame();
 		game.batch.begin();
 		game.fontSmall.setColor(Color.BLACK);
-		
-    	for(Station station : context.getGameLogic().getMap().getStations()) {
-    		ArrayList<Train> trainsAtStation = new ArrayList<Train>();
-    		for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
-    			for(Resource resource : player.getResources()) {
-    				if(resource instanceof Train) {
-    					if(((Train) resource).getActor() != null) {
-    						if(((Train) resource).getPosition() == station.getLocation()) {
-    							trainsAtStation.add((Train) resource);
-    						}
-    					}
-    				}
-    			}
-    		}
-    		if(trainsAtStation.size() > 0) {
-    			game.fontSmall.draw(game.batch, trainsAtStation.size() + "", (float) station.getLocation().getX(), (float) station.getLocation().getY()+18);
-    		}
-    	}
-    	
-    	game.batch.end();
+
+        for(Station station : context.getGameLogic().getMap().getStations()) {
+            if(trainsAtStation(station) > 0) {
+                game.fontSmall.draw(game.batch, trainsAtStation(station) + "", (float) station.getLocation().getX() - 6, (float) station.getLocation().getY() + 26);
+            }
+        }
+
+        game.batch.end();
+    }
+
+    private int trainsAtStation(Station station) {
+        // ToDo: refactor in the future
+        TaxeGame game = context.getTaxeGame();
+        int count = 0;
+
+        for(Player player : context.getGameLogic().getPlayerManager().getAllPlayers()) {
+            for(Resource resource : player.getResources()) {
+                if(resource instanceof Train) {
+                    if(((Train) resource).getActor() != null) {
+                        if(((Train) resource).getPosition().equals(station.getLocation())) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
