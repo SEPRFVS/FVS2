@@ -1,7 +1,10 @@
 package fvs.taxe;
 
+import screencapture.ScreenRecorder;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -19,6 +22,9 @@ public class TaxeGame extends Game {
 	public BitmapFont font;
 	public BitmapFont fontSmall;
 	public ShapeRenderer shapeRenderer;
+	
+	//ScreenRecorder
+	public ScreenRecorder screenRecorder;
 
 	@Override
 	public void create() {
@@ -40,6 +46,18 @@ public class TaxeGame extends Game {
 
 	public void render() {
 		super.render(); //important!
+		
+		//Screen Recorder
+		if(Gdx.input.isKeyPressed(Input.Keys.R)) {
+			//Run screencapture
+			screenRecorder = new ScreenRecorder(30,4);
+		}
+		if(screenRecorder != null) {
+			if(screenRecorder.takeScreenshot() == false) {
+				screenRecorder = null;
+			}
+		}
+		
 	}
 
 	public void dispose() {
