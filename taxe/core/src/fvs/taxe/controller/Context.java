@@ -12,7 +12,6 @@ public class Context {
     private Game gameLogic;
     private RouteController routeController;
     private TopBarController topBarController;
-    private StationController stationController;
 
     public Context(Stage stage, Skin skin, TaxeGame taxeGame, Game gameLogic) {
         this.stage = stage;
@@ -52,12 +51,5 @@ public class Context {
     public void setTopBarController(TopBarController topBarController) {
         this.topBarController = topBarController;
     }
-    
-    public StationController getStationController() {
-    	return stationController;
-    }
-    
-    public void setStationController(StationController stationController) {
-    	this.stationController = stationController;
-    }
+
 }
