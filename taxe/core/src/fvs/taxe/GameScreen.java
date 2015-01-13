@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import fvs.taxe.controller.*;
+import fvs.taxe.dialog.DialogEndGame;
 import gameLogic.Game;
 import gameLogic.GameState;
+import gameLogic.GameStateListener;
+import gameLogic.PlayerChangedListener;
 import gameLogic.TurnListener;
 import gameLogic.map.Map;
 
@@ -64,6 +68,15 @@ public class GameScreen extends ScreenAdapter {
                 topBarController.displayFlashMessage("Time is passing...", Color.BLACK);
             }
         });
+        gameLogic.subscribeStateChanged(new GameStateListener() {
+        	@Override
+        	public void changed(GameState state){
+        		if(gameLogic.getPlayerManager().getTurnNumber() == gameLogic.TOTAL_TURNS && state == GameState.NORMAL) {
+        			DialogEndGame dia = new DialogEndGame(GameScreen.this.game, gameLogic.getPlayerManager(), skin);
+        			dia.show(stage);
+        		}
+        	}
+        });
     }
 
 
@@ -99,6 +112,10 @@ public class GameScreen extends ScreenAdapter {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        
+        game.batch.begin();
+        game.fontSmall.draw(game.batch, "Turn " + (gameLogic.getPlayerManager().getTurnNumber() + 1), (float) TaxeGame.WIDTH - 70.0f, 20.0f);
+        game.batch.end();
 
         resourceController.drawHeaderText();
         goalController.showCurrentPlayerGoals();

@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class StationHelperTest {
-
+public class StationHelperTest extends LibGdxTest {
     @Test
     public void testDoesConnectionExist() throws Exception {
         Map map = new Map();
