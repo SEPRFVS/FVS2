@@ -44,7 +44,6 @@ public class Goal {
 		}
 	}
 	
-	//TODO Rename to be more descriptive of function (Doesn't represent entire goal)
 	public String toString() {
 		String trainString = "train";
 		if(trainName != null) {

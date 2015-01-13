@@ -88,7 +88,7 @@ public class TrainController {
                                 trainToDestroy.getActor().remove();
                     			trainToDestroy.getPlayer().removeResource(trainToDestroy);
                     		}
-                    		//TODO Maybe have a dialog box as it's quite important
+
                     		context.getTopBarController().displayFlashMessage("Two trains collided at a Junction.  They were both destroyed.", Color.RED, 2);
                     	}
                     }

@@ -132,7 +132,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
         mapTexture.dispose();
         stage.dispose();
     }

@@ -156,7 +156,6 @@ public class StationController {
     }
 
     private int trainsAtStation(Station station) {
-        // ToDo: refactor in the future
         TaxeGame game = context.getTaxeGame();
         int count = 0;
 

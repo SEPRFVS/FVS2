@@ -47,7 +47,6 @@ public class GoalManager {
 	}
 
 	public ArrayList<String> trainArrived(Train train, Player player) {
-		//TODO fancy goal checking stuff
 		ArrayList<String> completedString = new ArrayList<String>();
 		for(Goal goal:player.getGoals()) {
 			if(goal.isComplete(train)) {
