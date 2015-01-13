@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import fvs.taxe.controller.*;
 import gameLogic.Game;
 import gameLogic.GameState;
@@ -99,6 +100,10 @@ public class GameScreen extends ScreenAdapter {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        
+        game.batch.begin();
+        game.fontSmall.draw(game.batch, "Turn " + gameLogic.getPlayerManager().getTurnNumber(), (float) TaxeGame.WIDTH - 70.0f, 20.0f);
+        game.batch.end();
 
         resourceController.drawHeaderText();
         goalController.showCurrentPlayerGoals();
