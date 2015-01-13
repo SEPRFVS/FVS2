@@ -17,7 +17,7 @@ public class Game {
 	private List<GameStateListener> gameStateListeners = new ArrayList<GameStateListener>();
 
 	private final int CONFIG_PLAYERS = 2;
-	public final int TOTAL_TURNS = 50;
+	public final int TOTAL_TURNS = 30;
 
 	private Game() {
 		playerManager = new PlayerManager();
