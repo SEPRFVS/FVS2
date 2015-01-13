@@ -5,10 +5,7 @@ import gameLogic.PlayerManager;
 import gameLogic.resource.ResourceManager;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class ResourceManagerTest {
-
+public class ResourceManagerTest extends LibGdxTest {
     @Test(expected=RuntimeException.class)
     public void testAddResourceToPlayer() throws Exception {
         PlayerManager pm = new PlayerManager();

@@ -65,8 +65,7 @@ public class ResourceManager {
 
     private void addResourceToPlayer(Player player, Resource resource) {
         if (player.getResources().size() >= CONFIG_MAX_RESOURCES) {
-            //throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
-        	return;
+            throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
         }
 
         resource.setPlayer(player);

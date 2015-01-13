@@ -8,11 +8,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class GameTest {
+public class GameTest extends LibGdxTest {
     private PlayerManager pm;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUpGame() throws Exception {
         Game game = Game.getInstance();
         game.getPlayerManager();
         pm = game.getPlayerManager();
