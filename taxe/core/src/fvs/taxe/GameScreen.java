@@ -12,6 +12,8 @@ import fvs.taxe.controller.*;
 import fvs.taxe.dialog.DialogEndGame;
 import gameLogic.Game;
 import gameLogic.GameState;
+import gameLogic.GameStateListener;
+import gameLogic.PlayerChangedListener;
 import gameLogic.TurnListener;
 import gameLogic.map.Map;
 
@@ -66,10 +68,10 @@ public class GameScreen extends ScreenAdapter {
                 topBarController.displayFlashMessage("Time is passing...", Color.BLACK);
             }
         });
-        gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
+        gameLogic.subscribeStateChanged(new GameStateListener() {
         	@Override
-        	public void changed(){
-        		if(gameLogic.getPlayerManager().getTurnNumber() > gameLogic.TOTAL_TURNS) {
+        	public void changed(GameState state){
+        		if(gameLogic.getPlayerManager().getTurnNumber() == gameLogic.TOTAL_TURNS && state == GameState.NORMAL) {
         			DialogEndGame dia = new DialogEndGame(GameScreen.this.game, gameLogic.getPlayerManager(), skin);
         			dia.show(stage);
         		}
