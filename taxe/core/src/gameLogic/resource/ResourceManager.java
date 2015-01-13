@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import Util.Tuple;
 
 public class ResourceManager {
-    private final int CONFIG_MAX_RESOURCES = 7;
+    public final int CONFIG_MAX_RESOURCES = 7;
     private Random random = new Random();
     private ArrayList<Tuple<String, Integer>> trains;
     
@@ -65,7 +65,7 @@ public class ResourceManager {
 
     private void addResourceToPlayer(Player player, Resource resource) {
         if (player.getResources().size() >= CONFIG_MAX_RESOURCES) {
-            throw new RuntimeException("Player has exceeded CONFIG_MAX_RESOURCES");
+			return;
         }
 
         resource.setPlayer(player);
