@@ -52,8 +52,6 @@ public class RouteController {
     }
 
     private void addStationToRoute(Station station) {
-        // TODO check connection doesn't already exist in positions
-
         // the latest position chosen in the positions so far
         IPositionable lastPosition =  positions.get(positions.size() - 1);
         Station lastStation = context.getGameLogic().getMap().getStationFromPosition(lastPosition);

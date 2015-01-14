@@ -25,5 +25,13 @@ public class PlayerManagerTest {
         assertFalse(p1.equals(pm.getCurrentPlayer()));
     }
 
+    @Test
+    public void testTurnNumber() throws  Exception {
+        int previous = pm.getTurnNumber();
+        pm.turnOver();
+
+        assertTrue("Turn number did not change", previous < pm.getTurnNumber());
+    }
+
 
 }
