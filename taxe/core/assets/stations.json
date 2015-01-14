@@ -181,7 +181,7 @@
       "y": 38
     },
     {
-      "name": "Instanbul",
+      "name": "Istanbul",
       "junction": false,
       "x": "951",
       "y": 79
@@ -400,10 +400,10 @@
     },
     {
       "station1": "Bucharest",
-      "station2": "Instanbul"
+      "station2": "Istanbul"
     },
     {
-      "station1": "Instanbul",
+      "station1": "Istanbul",
       "station2": "Sofia"
     },
     {
