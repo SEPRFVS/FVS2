@@ -106,12 +106,10 @@ public class Map {
         return stations;
     }
 
-    //Get Connections
     public List<Connection> getConnections() {
         return connections;
     }
 
-    //Add Connection
     public Connection addConnection(Station station1, Station station2) {
         Connection newConnection = new Connection(station1, station2);
         connections.add(newConnection);
@@ -136,7 +134,6 @@ public class Map {
         return results;
     }
 
-    //Get Station by Name (May or may not be needed)
     public Station getStationByName(String name) {
         int i = 0;
         while(i < stations.size()) {
@@ -157,5 +154,15 @@ public class Map {
         }
 
         throw new RuntimeException("Station does not exist for that position");
+    }
+
+    public List<Station> createRoute(List<IPositionable> positions) {
+        List<Station> route = new ArrayList<Station>();
+
+        for (IPositionable position : positions) {
+            route.add(getStationFromPosition(position));
+        }
+
+        return route;
     }
 }

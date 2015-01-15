@@ -101,14 +101,7 @@ public class RouteController {
     }
 
     private void confirmed() {
-        List<Station> route = new ArrayList<Station>();
-        Map map = context.getGameLogic().getMap();
-
-        for (IPositionable position : positions) {
-            route.add(map.getStationFromPosition(position));
-        }
-
-        train.setRoute(route);
+        train.setRoute(context.getGameLogic().getMap().createRoute(positions));
 
         TrainController trainController = new TrainController(context);
         trainController.addMoveActions(train);
