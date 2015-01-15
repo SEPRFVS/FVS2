@@ -128,7 +128,6 @@ public class StationController {
 
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(color);
-        //game.shapeRenderer.setProjectionMatrix(camera.combined);
 
         for (Connection connection : connections) {
             IPositionable start = connection.getStation1().getLocation();
