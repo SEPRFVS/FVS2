@@ -103,8 +103,7 @@ public class RouteController {
     private void confirmed() {
         train.setRoute(context.getGameLogic().getMap().createRoute(positions));
 
-        TrainController trainController = new TrainController(context);
-        trainController.addMoveActions(train);
+        TrainMoveController move = new TrainMoveController(context, train);
     }
 
     private void endRouting() {
