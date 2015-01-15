@@ -13,6 +13,7 @@ public class DesktopLauncher {
 		config.height = TaxeGame.HEIGHT;
 		config.width = TaxeGame.WIDTH;
 		config.title = "TaxE";
+		config.resizable = false;
 		config.addIcon("icon/fvs256.png", FileType.Internal);
 		config.addIcon("icon/fvs128.png", FileType.Internal);
 		config.addIcon("icon/fvs64.png", FileType.Internal);
