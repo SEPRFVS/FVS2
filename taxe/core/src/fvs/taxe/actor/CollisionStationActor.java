@@ -1,10 +1,9 @@
 package fvs.taxe.actor;
 
-import gameLogic.map.IPositionable;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import gameLogic.map.IPositionable;
 
 public class CollisionStationActor extends Image {
 	private static int width = 16;

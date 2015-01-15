@@ -1,9 +1,5 @@
 package gameLogic.map;
 
-import gameLogic.resource.Train;
-
-import java.util.List;
-
 public class Connection {
 	private Station station1;
 	private Station station2;

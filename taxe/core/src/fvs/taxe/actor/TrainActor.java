@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.map.IPositionable;
-import gameLogic.map.Position;
 import gameLogic.resource.Train;
 
 public class TrainActor extends Image {

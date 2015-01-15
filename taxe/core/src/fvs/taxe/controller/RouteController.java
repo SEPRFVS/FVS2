@@ -9,9 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.GameState;
-import gameLogic.Player;
-import gameLogic.map.*;
-import gameLogic.resource.Resource;
+import gameLogic.map.CollisionStation;
+import gameLogic.map.IPositionable;
+import gameLogic.map.Map;
+import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
 import java.util.ArrayList;

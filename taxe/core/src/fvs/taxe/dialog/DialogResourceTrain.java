@@ -3,9 +3,7 @@ package fvs.taxe.dialog;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import fvs.taxe.Button;
-import gameLogic.Player;
 import gameLogic.resource.Train;
 
 import java.util.ArrayList;
