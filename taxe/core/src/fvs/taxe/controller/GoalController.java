@@ -42,15 +42,13 @@ public class GoalController {
         goalButtons.remove();
         goalButtons.clear();
 
-        game.batch.begin();
         float top = (float) TaxeGame.HEIGHT;
-        game.fontSmall.setColor(Color.BLACK);
         float x = 10.0f;
         float y = top - 10.0f - TopBarController.CONTROLS_HEIGHT;
 
-        String playerGoals = "Player " + context.getGameLogic().getPlayerManager().getCurrentPlayer().getPlayerNumber() + " Goals:";
-        game.fontSmall.draw(game.batch, playerGoals, x, y);
-        
+        game.batch.begin();
+        game.fontSmall.setColor(Color.BLACK);
+        game.fontSmall.draw(game.batch, playerGoalHeader(), x, y);
         game.batch.end();
         
         y -= 15;
@@ -64,5 +62,9 @@ public class GoalController {
         }
         
         context.getStage().addActor(goalButtons);
+    }
+
+    private String playerGoalHeader() {
+        return "Player " + context.getGameLogic().getPlayerManager().getCurrentPlayer().getPlayerNumber() + " Goals:";
     }
 }
