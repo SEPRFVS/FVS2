@@ -7,13 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
 import fvs.taxe.controller.*;
 import fvs.taxe.dialog.DialogEndGame;
 import gameLogic.Game;
 import gameLogic.GameState;
 import gameLogic.GameStateListener;
-import gameLogic.PlayerChangedListener;
 import gameLogic.TurnListener;
 import gameLogic.map.Map;
 
@@ -59,7 +57,6 @@ public class GameScreen extends ScreenAdapter {
 
         context.setRouteController(routeController);
         context.setTopBarController(topBarController);
-        context.setStationController(stationController);
 
         gameLogic.getPlayerManager().subscribeTurnChanged(new TurnListener() {
             @Override
