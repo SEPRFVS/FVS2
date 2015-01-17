@@ -1,24 +1,11 @@
 package fvs.taxe.controller;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import fvs.taxe.actor.TrainActor;
 import fvs.taxe.dialog.TrainClicked;
 import gameLogic.Player;
-import gameLogic.map.CollisionStation;
-import gameLogic.map.IPositionable;
-import gameLogic.map.Position;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
 public class TrainController {
     private Context context;
