@@ -104,7 +104,7 @@ public class GameScreen extends ScreenAdapter {
         }
         
         if(gameLogic.getState() == GameState.NORMAL || gameLogic.getState() == GameState.PLACING){
-        	stationController.displayStations();
+        	stationController.displayNumberOfTrainsAtStations();
         }
 
         stage.act(Gdx.graphics.getDeltaTime());

@@ -137,7 +137,7 @@ public class StationController {
         game.shapeRenderer.end();
     }
 
-    public void displayStations() {
+    public void displayNumberOfTrainsAtStations() {
     	TaxeGame game = context.getTaxeGame();
 		game.batch.begin();
 		game.fontSmall.setColor(Color.BLACK);
