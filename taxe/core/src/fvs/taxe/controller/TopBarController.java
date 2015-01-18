@@ -47,7 +47,7 @@ public class TopBarController {
     }
 
     public void displayFlashMessage(String message, Color color) {
-        displayFlashMessage(message, color, 0.25f);
+        displayFlashMessage(message, color, 1.75f);
     }
 
     public void displayFlashMessage(String message, Color color, float time) {

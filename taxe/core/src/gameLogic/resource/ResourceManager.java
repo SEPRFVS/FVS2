@@ -1,15 +1,13 @@
 package gameLogic.resource;
 
+import Util.Tuple;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import gameLogic.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
-
-import Util.Tuple;
 
 public class ResourceManager {
     public final int CONFIG_MAX_RESOURCES = 7;

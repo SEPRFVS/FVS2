@@ -4,14 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
-import fvs.taxe.GameScreen;
 import fvs.taxe.MainMenuScreen;
 import fvs.taxe.TaxeGame;
 import gameLogic.Player;
 import gameLogic.PlayerManager;
 import gameLogic.goal.Goal;
-import gameLogic.resource.Train;
 
 public class DialogEndGame extends Dialog{
 	private TaxeGame game;

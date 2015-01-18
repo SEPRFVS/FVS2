@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fvs.taxe.StationClickListener;
 import fvs.taxe.TaxeGame;
 import gameLogic.GameState;
-import gameLogic.Player;
-import gameLogic.map.*;
-import gameLogic.resource.Resource;
+import gameLogic.map.CollisionStation;
+import gameLogic.map.IPositionable;
+import gameLogic.map.Station;
 import gameLogic.resource.Train;
 
 import java.util.ArrayList;
@@ -100,17 +100,9 @@ public class RouteController {
     }
 
     private void confirmed() {
-        List<Station> route = new ArrayList<Station>();
-        Map map = context.getGameLogic().getMap();
+        train.setRoute(context.getGameLogic().getMap().createRoute(positions));
 
-        for (IPositionable position : positions) {
-            route.add(map.getStationFromPosition(position));
-        }
-
-        train.setRoute(route);
-
-        TrainController trainController = new TrainController(context);
-        trainController.addMoveActions(train);
+        TrainMoveController move = new TrainMoveController(context, train);
     }
 
     private void endRouting() {

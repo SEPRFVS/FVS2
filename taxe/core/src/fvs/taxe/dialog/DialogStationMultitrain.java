@@ -1,14 +1,13 @@
 package fvs.taxe.dialog;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import fvs.taxe.controller.Context;
 import gameLogic.Player;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
-
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class DialogStationMultitrain extends Dialog {
 	
@@ -39,7 +38,7 @@ public class DialogStationMultitrain extends Dialog {
 		}
 		
 		button("Cancel","CANCEL");
-		if(isTrain == false) {
+		if(!isTrain) {
 			hide();
 		}
 	}
