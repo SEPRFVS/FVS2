@@ -9,6 +9,7 @@ import fvs.taxe.actor.TrainActor;
 import gameLogic.Player;
 import gameLogic.map.CollisionStation;
 import gameLogic.map.IPositionable;
+import gameLogic.map.Position;
 import gameLogic.map.Station;
 import gameLogic.resource.Resource;
 import gameLogic.resource.Train;
@@ -34,6 +35,7 @@ public class TrainMoveController {
         return new RunnableAction() {
             public void run() {
                 train.getActor().setVisible(true);
+                train.setPosition(new Position(-1, -1));
             }
         };
     }
@@ -45,7 +47,7 @@ public class TrainMoveController {
                 train.addHistory(station.getName(), context.getGameLogic().getPlayerManager().getTurnNumber());
                 System.out.println("Added to history: passed " + station.getName() + " on turn "
                         + context.getGameLogic().getPlayerManager().getTurnNumber());
-                train.setPosition(station.getLocation());
+                // train.setPosition(station.getLocation());
 
                 collisions(station);
             }
