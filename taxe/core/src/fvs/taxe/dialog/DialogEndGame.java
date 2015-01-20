@@ -34,6 +34,9 @@ public class DialogEndGame extends Dialog{
 				highscore = goalsComplete;
 				playernum = player.getPlayerNumber();
 			}
+			else {
+				playernum = 0;
+			}
 		}
 		if(playernum != 0) {
 			text("PLAYER " + playernum + " WINS!");
