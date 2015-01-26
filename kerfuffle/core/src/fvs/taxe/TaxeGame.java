@@ -10,15 +10,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
 public class TaxeGame extends Game {
-	
-	//public static final int WIDTH=1366,HEIGHT=768;
-	// Using native res of the map image we are using at the moment
-	public static final int WIDTH=1022,HEIGHT=678;
+	public static final int WIDTH=1280,HEIGHT=720;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
 	public BitmapFont fontSmall;
 	public ShapeRenderer shapeRenderer;
+	
+	public static boolean spyMode=false;
 
 	@Override
 	public void create() {

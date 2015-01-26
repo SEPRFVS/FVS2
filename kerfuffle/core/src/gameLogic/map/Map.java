@@ -50,13 +50,14 @@ public class Map {
             String name = "";
             int x = 0;
             int y = 0;
+            int xoffset = 255;
             boolean isJunction = false;
 
             for(JsonValue val = station.child; val != null; val = val.next) {
                 if(val.name.equalsIgnoreCase("name")) {
                     name = val.asString();
                 } else if(val.name.equalsIgnoreCase("x")) {
-                    x = val.asInt();
+                    x = xoffset+ val.asInt();
                 } else if(val.name.equalsIgnoreCase("y")) {
                     y = val.asInt();
                 } else {

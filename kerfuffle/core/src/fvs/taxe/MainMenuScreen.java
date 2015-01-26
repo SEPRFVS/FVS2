@@ -1,91 +1,113 @@
 package fvs.taxe;
 
+import Util.Sprite;
+import Util.SpriteButton;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
+import com.badlogic.gdx.scenes.scene2d.Stage;
+/**
+ * 
+ * @author Robert Precious <rp825@york.ac.uk>
+ * 
+ * Change to incorporate actual images and new design. Sprites are images without an action and SpriteButtons are actionable Sprites.
+ *
+ */
 public class MainMenuScreen extends ScreenAdapter {
-    TaxeGame game;
-    OrthographicCamera camera;
-    Rectangle playBounds;
-    Rectangle exitBounds;
-    Vector3 touchPoint;
-    Texture mapTexture;
-    Image mapImage;
+	TaxeGame game;
+	OrthographicCamera camera;
+	//New Game Menu Textures
+	Texture startgameTexture,loadgameTexture, exitgameTexture, backdropTexture, mapTexture, 
+	normalModeTexture, spyModeTexture;
+	SpriteButton startgameButton, loadgameButton, exitgameButton,
+	normalMode, spyMode;
+	Sprite backdrop, map;
+	Stage startMenuObjects;
 
-    public MainMenuScreen(TaxeGame game) {
-        this.game = game;
-        camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
-        camera.setToOrtho(false);
+	public MainMenuScreen(final TaxeGame game) {
+		this.game = game;
+		camera = new OrthographicCamera(TaxeGame.WIDTH, TaxeGame.HEIGHT);
+		camera.setToOrtho(false);
+		startMenuObjects = new Stage();
+		Gdx.input.setInputProcessor(startMenuObjects);
 
-        playBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 350, 400, 100);
-        exitBounds = new Rectangle(TaxeGame.WIDTH/2 - 200, 200, 400, 100);
-        touchPoint = new Vector3();
-        mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
-        mapImage = new Image(mapTexture);
-    }
+		//NewGame Menu Textures
+		startgameTexture = new Texture(Gdx.files.internal("NewGameMenu/start_game.png"));
+		loadgameTexture = new Texture(Gdx.files.internal("NewGameMenu/load_game.png"));
+		exitgameTexture = new Texture(Gdx.files.internal("NewGameMenu/exit_game.png"));
+		backdropTexture = new Texture(Gdx.files.internal("NewGameMenu/menu_backdrop.png"));
+		mapTexture = new Texture(Gdx.files.internal("gamemap.png"));
 
-    public void update() {
-        if (Gdx.input.justTouched()) {
-            camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (playBounds.contains(touchPoint.x, touchPoint.y)) {
-                game.setScreen(new GameScreen(game));
-                return;
-            }
-            if (exitBounds.contains(touchPoint.x, touchPoint.y)) {
-                Gdx.app.exit();
-            }
-        }
-    }
 
-    public void draw() {
-        GL20 gl = Gdx.gl;
-        gl.glClearColor(1, 1, 1, 1);
-        gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//NewGame Sprites
+		backdrop = new Sprite(440,160,backdropTexture);
+		map = new Sprite(0,0,mapTexture);
 
-        //Draw transparent map in the background
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+		//NewGame Sprite Buttons
+		startgameButton = new SpriteButton(450, 410, startgameTexture){
+			@Override
+			protected void onClicked(){
+				loadgameButton.toggleVisible();
+				exitgameButton.toggleVisible();
+				normalMode.toggleVisible();
+				spyMode.toggleVisible();
+			}
+		};
 
-        game.batch.begin();
-        Color c = game.batch.getColor();
-        game.batch.setColor(c.r, c.g, c.b, (float) 0.3);
-        game.batch.draw(mapTexture, 0, 0);
-        game.batch.setColor(c);
-        game.batch.end();
+		loadgameButton = new SpriteButton(450, 335, loadgameTexture);
 
-        //Draw rectangles, did not use TextButtons because it was easier not to
-        game.shapeRenderer.setProjectionMatrix(camera.combined);
-        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		exitgameButton = new SpriteButton(450, 260, exitgameTexture){
+			@Override
+			protected void onClicked(){
+				Gdx.app.exit();
+			}
+		};
 
-        game.shapeRenderer.setColor(Color.GREEN);
-        game.shapeRenderer.rect(playBounds.getX(), playBounds.getY(), playBounds.getWidth(), playBounds.getHeight());
-        game.shapeRenderer.setColor(Color.RED);
-        game.shapeRenderer.rect(exitBounds.getX(), exitBounds.getY(), exitBounds.getWidth(), exitBounds.getHeight());
-        game.shapeRenderer.end();
+		//Mode selection
+		normalModeTexture = new Texture(Gdx.files.internal("NewGameMenu/normalModeButton.png"));
+		spyModeTexture = new Texture(Gdx.files.internal("NewGameMenu/spyModeButton.png"));
 
-        //Draw text into rectangles
-        game.batch.begin();
-        String startGameString = "Start game";
-        game.font.draw(game.batch, startGameString, playBounds.getX() + playBounds.getWidth()/2 - game.font.getBounds(startGameString).width/2,
-                playBounds.getY() + playBounds.getHeight()/2 + game.font.getBounds(startGameString).height/2); // center the text
-        String exitGameString = "Exit";
-        game.font.draw(game.batch, exitGameString, exitBounds.getX() + exitBounds.getWidth()/2 - game.font.getBounds(exitGameString).width/2,
-                exitBounds.getY() + exitBounds.getHeight()/2 + game.font.getBounds(exitGameString).height/2); // center the text
+		normalMode = new SpriteButton(540, 290, normalModeTexture){
+			@Override
+			protected void onClicked(){
+				game.setScreen(new GameScreen(game));
+			}
+		};
+		
+		spyMode = new SpriteButton(660, 290, spyModeTexture){
+			@Override
+			protected void onClicked(){
+				TaxeGame.spyMode=true;
+				game.setScreen(new GameScreen(game));
+			}
+		};
+		
+		normalMode.setVisible(false);
+		spyMode.setVisible(false);
 
-        game.batch.end();
-    }
+		startMenuObjects.addActor(map);
+		startMenuObjects.addActor(backdrop);
+		startMenuObjects.addActor(startgameButton);
+		startMenuObjects.addActor(loadgameButton);
+		startMenuObjects.addActor(exitgameButton);
+		
+		startMenuObjects.addActor(normalMode);
+		startMenuObjects.addActor(spyMode);
+	}
 
-    @Override
-    public void render(float delta) {
-        update();
-        draw();
-    }
+	public void draw() {
+
+	}
+
+	@Override
+	public void render(float delta) {
+		//update();
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		startMenuObjects.act(Gdx.graphics.getDeltaTime());
+		startMenuObjects.draw();
+
+	}
 }

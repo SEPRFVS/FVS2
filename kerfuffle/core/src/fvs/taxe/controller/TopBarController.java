@@ -1,28 +1,31 @@
 package fvs.taxe.controller;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import fvs.taxe.GameScreen;
+import fvs.taxe.TaxeGame;
+import gameLogic.GameState;
+import gameLogic.GameStateListener;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import fvs.taxe.TaxeGame;
-import gameLogic.GameState;
-import gameLogic.GameStateListener;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class TopBarController {
-    public final static int CONTROLS_HEIGHT = 40;
+    public final static int CONTROLS_HEIGHT = 85;
 
     private Context context;
-    private Color controlsColor = Color.LIGHT_GRAY;
+    private Color controlsColor = Color.DARK_GRAY;
     private TextButton endTurnButton;
     private Label flashMessage;
 
     public TopBarController(Context context) {
         this.context = context;
-
+        
         context.getGameLogic().subscribeStateChanged(new GameStateListener() {
             @Override
             public void changed(GameState state) {
@@ -31,9 +34,11 @@ public class TopBarController {
                         controlsColor = Color.GREEN;
                         break;
                     default:
-                        controlsColor = Color.LIGHT_GRAY;
+                        controlsColor = Color.DARK_GRAY;
                         break;
                 }
+                
+                	
             }
         });
 
@@ -75,6 +80,9 @@ public class TopBarController {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 context.getGameLogic().getPlayerManager().turnOver();
+                if (TaxeGame.spyMode){
+                	GameScreen.toggleMap();
+                }
             }
         });
 
