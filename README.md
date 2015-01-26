@@ -1,4 +1,4 @@
-FVS2
+Locomotion Kerfuffle
 ====
 
 Assessment 2 Project Code
