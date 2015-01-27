@@ -25,7 +25,7 @@ public class TaxeGame extends Game {
 		shapeRenderer = new ShapeRenderer();
 
 		//create font
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("arial.ttf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("SourceSansPro-Regular.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		// font size 50 pixels
 		parameter.size = 50;
